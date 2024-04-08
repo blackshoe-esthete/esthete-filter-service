@@ -23,11 +23,14 @@ public class KafkaUserInfoConsumerServiceImpl implements KafkaUserInfoConsumerSe
         KafkaDto.UserInfo userInfoDto = null;
 
         try {
+            // 역직렬화
             userInfoDto = objectMapper.readValue(payload, KafkaDto.UserInfo.class);
         } catch (Exception e) {
                log.error("Error while converting json string to user object", e);
         }
 
         log.info("User info : {}", userInfoDto);
+        acknowledgment.acknowledge();
+
     }
 }
