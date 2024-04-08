@@ -18,6 +18,19 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// kafka
+	implementation 'org.springframework.kafka:spring-kafka'
+
+	//lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	//swagger
+	implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: '2.2.20'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 }
 
 tasks.named('bootBuildImage') {
