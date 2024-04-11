@@ -5,11 +5,11 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.type.SqlTypes;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -45,11 +45,11 @@ public class Attribute {
     @Column(name = "shadows")
     private Float shadows;
 
-    @CreationTimestamp
+    @CreatedDate
     @Column(name = "created_at", nullable = false, length = 20)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @LastModifiedDate
     @Column(name = "updated_at", length = 20)
     private LocalDateTime updatedAt;
 
@@ -57,8 +57,8 @@ public class Attribute {
     @JoinColumn(name = "filter_id", foreignKey = @ForeignKey(name = "attribute_fk_filter_id"))
     private Filter filter; // Attribute와 일대일 양방향, 주인
 
-    public void setFilter(Filter filter){
+    public void updateFilter(Filter filter){
         this.filter = filter;
-        filter.setAttribute(this);
+        filter.updateAttribute(this);
     }
 }

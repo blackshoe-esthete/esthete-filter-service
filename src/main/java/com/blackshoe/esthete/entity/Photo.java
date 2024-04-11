@@ -4,10 +4,10 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
@@ -23,20 +23,17 @@ public class Photo {
     @Column(name = "photo_id")
     private Long id;
 
-    @Column(name = "photo_uuid")
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID uuid;
+    @Column(name = "photo_uuid", columnDefinition = "BINARY(16)", unique = true)
+    private UUID photoId;
 
     @Column(name = "img_url")
     private String imgUrl;
 
-    @CreationTimestamp
+    @CreatedDate
     @Column(name = "created_at", nullable = false, length = 20)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @LastModifiedDate
     @Column(name = "updated_at", length = 20)
     private LocalDateTime updatedAt;
 
@@ -45,16 +42,16 @@ public class Photo {
     private Filter filter; // Filter와 다대일 양방향, 주인
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tmp_filter_id", foreignKey = @ForeignKey(name = "photo_fk_tmp_filter_id"))
-    private TemporaryFilter tmpFilter; // TmpFilter와 다대일 양방향, 주인
+    @JoinColumn(name = "temporary_filter_id", foreignKey = @ForeignKey(name = "photo_fk_temporary_filter_id"))
+    private TemporaryFilter temporaryFilter; // TemporaryFilter와 다대일 양방향, 주인
 
-    public void setFilter(Filter filter){
+    public void updateFilter(Filter filter){
         this.filter = filter;
-        filter.getPhotos().add(this);
+        //filter.getPhotos().add(this);
     }
 
-    public void setTmpFilter(TemporaryFilter tmpFilter){
-        this.tmpFilter = tmpFilter;
-        tmpFilter.getPhotos().add(this);
+    public void updateTemporaryFilter(TemporaryFilter temporaryFilter){
+        this.temporaryFilter = temporaryFilter;
+        temporaryFilter.getPhotos().add(this);
     }
 }

@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -19,14 +19,6 @@ public class FilterTag {
     @Column(name = "filter_tag_id")
     private Long id;
 
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false, length = 20)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at", length = 20)
-    private LocalDateTime updatedAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "filter_id", foreignKey = @ForeignKey(name = "filter_tag_fk_filter_id"))
     private Filter filter; // Filter와 다대일 양방향, 주인
@@ -35,12 +27,20 @@ public class FilterTag {
     @JoinColumn(name = "tag_id", foreignKey = @ForeignKey(name = "filter_tag_fk_tag_id"))
     private Tag tag; // FilterTag와 다대일 양방향, 주인
 
-    public void setFilter(Filter filter){
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, length = 20)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at", length = 20)
+    private LocalDateTime updatedAt;
+
+    public void updateFilter(Filter filter){
         this.filter = filter;
-        filter.getFilterTags().add(this);
+        //filter.getFilterTags().add(this);
     }
 
-    public void setTag(Tag tag){
+    public void updateTag(Tag tag){
         this.tag = tag;
         tag.getFilterTags().add(this);
     }

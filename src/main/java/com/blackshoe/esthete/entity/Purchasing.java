@@ -4,10 +4,10 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
@@ -23,17 +23,18 @@ public class Purchasing {
     @Column(name = "purchasing_id")
     private Long id;
 
-    @Column(name = "purchasing_uuid")
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID uuid;
+    @Column(name = "purchasing_uuid", columnDefinition = "BINARY(16)", unique = true)
+    private UUID purchasingId;
 
-    @CreationTimestamp
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "purchasing_fk_user_id"))
+    private User user; //ERD에서 수정, B/L 내부 로직이기 때문에 uuid 대신 user id 사용
+
+    @CreatedDate
     @Column(name = "created_at", nullable = false, length = 20)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @LastModifiedDate
     @Column(name = "updated_at", length = 20)
     private LocalDateTime updatedAt;
 
@@ -41,8 +42,15 @@ public class Purchasing {
     @JoinColumn(name = "filter_id", foreignKey = @ForeignKey(name = "purchasing_fk_filter_id"))
     private Filter filter; // Filter와 다대일 양방향, 주인
 
-    public void setFilter(Filter filter){
+    public void updateFilter(Filter filter){
         this.filter = filter;
-        filter.getPurchasing().add(this);
+        //filter.getPurchasing().add(this);
+    }
+
+    @PrePersist
+    public void updateFilterId() {
+        if (this.purchasingId == null) {
+            this.purchasingId = UUID.randomUUID();
+        }
     }
 }
