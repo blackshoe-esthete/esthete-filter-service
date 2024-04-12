@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Table(name = "likes")
+@Table(name = "like")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Like {
     @Id

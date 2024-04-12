@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name = "user_tags")
+@Table(name = "user_tag")
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 @Getter @Builder
 @AllArgsConstructor

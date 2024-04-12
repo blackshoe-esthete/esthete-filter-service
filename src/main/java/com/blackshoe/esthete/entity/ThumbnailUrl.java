@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.UUID;
 @Entity
-@Table(name = "thumbnail_urls")
+@Table(name = "thumbnail_url")
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 @Getter
 @AllArgsConstructor

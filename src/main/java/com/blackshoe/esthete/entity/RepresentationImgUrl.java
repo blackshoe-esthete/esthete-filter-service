@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Table(name = "representation_img_urls")
+@Table(name = "representation_img_url")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RepresentationImgUrl {
     @Id
