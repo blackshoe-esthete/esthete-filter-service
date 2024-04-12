@@ -5,29 +5,26 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Getter
-@Table(name = "purchasing")
+@Table(name = "purchases")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Purchasing {
+public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "purchasing_id")
+    @Column(name = "purchase_id")
     private Long id;
 
-    @Column(name = "purchasing_uuid", columnDefinition = "BINARY(16)", unique = true)
-    private UUID purchasingId;
+    @Column(name = "purchase_uuid", columnDefinition = "BINARY(16)", unique = true)
+    private UUID purchaseId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "purchasing_fk_user_id"))
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "purchase_fk_user_id"))
     private User user; //ERD에서 수정, B/L 내부 로직이기 때문에 uuid 대신 user id 사용
 
     @CreatedDate
@@ -39,7 +36,7 @@ public class Purchasing {
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "filter_id", foreignKey = @ForeignKey(name = "purchasing_fk_filter_id"))
+    @JoinColumn(name = "filter_id", foreignKey = @ForeignKey(name = "purchase_fk_filter_id"))
     private Filter filter; // Filter와 다대일 양방향, 주인
 
     public void updateFilter(Filter filter){
@@ -49,8 +46,8 @@ public class Purchasing {
 
     @PrePersist
     public void updateFilterId() {
-        if (this.purchasingId == null) {
-            this.purchasingId = UUID.randomUUID();
+        if (this.purchaseId == null) {
+            this.purchaseId = UUID.randomUUID();
         }
     }
 }

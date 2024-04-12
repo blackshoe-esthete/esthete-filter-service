@@ -17,7 +17,7 @@ import java.util.*;
 
 @Entity
 @Getter
-@Table(name = "filter")
+@Table(name = "filters")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Filter {
     @Id

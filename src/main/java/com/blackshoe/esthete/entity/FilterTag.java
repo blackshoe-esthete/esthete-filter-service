@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "filter_tag")
+@Table(name = "filter_tags")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FilterTag {
     @Id
