@@ -54,4 +54,8 @@ public class Photo {
         this.temporaryFilter = temporaryFilter;
         temporaryFilter.getPhotos().add(this);
     }
+
+    public String getStringId() {
+        return this.photoId.toString();
+    }
 }

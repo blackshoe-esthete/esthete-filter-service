@@ -15,7 +15,7 @@ import java.util.*;
 
 @Entity
 @Getter
-@Table(name = "user")
+@Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
     @Id
@@ -24,7 +24,7 @@ public class User {
     private Long id;
 
     @Column(columnDefinition = "BINARY(16)", name = "user_uuid", unique = true)
-    private UUID uuid;
+    private UUID userId;
 
     @Column(name = "profile_img_url")
     private String profileImgUrl;
@@ -60,5 +60,9 @@ public class User {
 
     public void addUserTag(UserTag userTag){
         //this.userTag.add(userTag);
+    }
+
+    public String getStringId() {
+        return this.userId.toString();
     }
 }

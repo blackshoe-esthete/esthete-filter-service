@@ -58,4 +58,7 @@ public class ThumbnailUrl {
         }
     }
 
+    public String getStringId() {
+        return this.thumbnailUrlId.toString();
+    }
 }

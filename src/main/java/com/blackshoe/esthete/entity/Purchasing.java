@@ -53,4 +53,8 @@ public class Purchasing {
             this.purchasingId = UUID.randomUUID();
         }
     }
+
+    public String getStringId() {
+        return this.purchasingId.toString();
+    }
 }

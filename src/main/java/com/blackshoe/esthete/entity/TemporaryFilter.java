@@ -20,7 +20,7 @@ public class TemporaryFilter {
     private Long id;
 
     @Column(name = "temporary_filter_uuid", columnDefinition = "BINARY(16)", unique = true)
-    private UUID uuid;
+    private UUID temporaryFilterId;
 
     @Column(name = "name")
     private String name;
@@ -52,5 +52,8 @@ public class TemporaryFilter {
     public void updateUser(User user){
         this.user = user;
         user.addTemporaryFilter(this);
+    }
+    public String getStringId() {
+        return this.temporaryFilterId.toString();
     }
 }

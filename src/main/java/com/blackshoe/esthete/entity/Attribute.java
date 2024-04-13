@@ -59,6 +59,6 @@ public class Attribute {
 
     public void updateFilter(Filter filter){
         this.filter = filter;
-        filter.updateAttribute(this);
+        filter.setAttribute(this);
     }
 }

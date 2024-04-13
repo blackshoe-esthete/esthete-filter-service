@@ -87,7 +87,7 @@ public class Filter {
         user.addFilter(this);
     }
 
-    public void updateAttribute(Attribute attribute){
+    public void setAttribute(Attribute attribute){
         this.attribute = attribute;
     }
 
@@ -98,13 +98,14 @@ public class Filter {
     public void addLike(Like like){
         this.likes.add(like);
     }
-
     public void removeLike(Like like){
         this.likes.remove(like);
     }
-
     public void increaseLikeCount() {
         this.likeCount++;
+    }
+    public void decreaseLikeCount() {
+        this.likeCount--;
     }
     public void increaseViewCount() {
         this.viewCount++;
@@ -112,5 +113,9 @@ public class Filter {
 
     public void setThumbnailUrl(ThumbnailUrl thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public String getStringId() {
+        return this.filterId.toString();
     }
 }

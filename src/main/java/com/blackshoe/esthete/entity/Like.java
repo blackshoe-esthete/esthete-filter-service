@@ -28,7 +28,10 @@ public class Like {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "like_fk_user_id"))
-    private User user; //ERD에서 수정, B/L 내부 로직이기 때문에 uuid 대신 user id 사용
+    private User user;
+
+    @JoinColumn(name = "user_id", columnDefinition = "BINARY(16)", unique = true)
+    private UUID userId;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, length = 20)
@@ -45,5 +48,13 @@ public class Like {
     public void updateFilter(Filter filter){
         this.filter = filter;
         filter.addLike(this);
+    }
+
+    public Boolean isUserLike(User user){
+        return this.user.equals(user);
+    }
+
+    public String getStringId() {
+        return this.likeId.toString();
     }
 }

@@ -40,4 +40,8 @@ public class RepresentationImgUrl {
         this.filter = filter;
         filter.addRepresentationImgUrl(this); //명시적으로
     }
+
+    public String getStringId() {
+        return this.representationImgUrlId.toString();
+    }
 }

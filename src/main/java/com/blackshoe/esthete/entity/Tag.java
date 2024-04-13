@@ -26,7 +26,7 @@ public class Tag {
     private Long id;
 
     @Column(name = "tag_uuid", columnDefinition = "BINARY(16)", unique = true)
-    private UUID uuid;
+    private UUID tagId;
 
     @Column(name = "name")
     private String name;
@@ -42,4 +42,7 @@ public class Tag {
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FilterTag> filterTags = new ArrayList();
 
+    public String getStringId() {
+        return this.tagId.toString();
+    }
 }
