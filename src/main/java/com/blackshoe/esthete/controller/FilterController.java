@@ -41,15 +41,15 @@ public class FilterController {
             return ResponseEntity.status(HttpStatus.OK).body(
                     searchService.searchAllByFilterNameOrWriterNameNotContaining(searchAllRequest, page, size));
         }
-//        if(tagId == null) {
-//            FilterDto.SearchWithKeywordRequest searchWithKeywordRequest = FilterDto.SearchWithKeywordRequest.builder()
-//                    .userId(userId)
-//                    .keyword(keyword)
-//                    .build();
-//
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    searchService.searchAllByFilterNameOrWriterNameContaining(searchWithKeywordRequest, page, size));
-//        }
+        if(tagId == null) {
+            FilterDto.SearchWithKeywordRequest searchWithKeywordRequest = FilterDto.SearchWithKeywordRequest.builder()
+                    .userId(userId)
+                    .keyword(keyword)
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    searchService.searchAllByFilterNameOrWriterNameContaining(searchWithKeywordRequest, page, size));
+        }
 //
 //        FilterDto.SearchWithKeywordAndTagRequest searchWithTagRequest = FilterDto.SearchWithKeywordAndTagRequest.builder()
 //                .userId(userId)
