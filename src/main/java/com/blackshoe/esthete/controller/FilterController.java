@@ -50,14 +50,14 @@ public class FilterController {
             return ResponseEntity.status(HttpStatus.OK).body(
                     searchService.searchAllByFilterNameOrWriterNameContaining(searchWithKeywordRequest, page, size));
         }
-//
-//        FilterDto.SearchWithKeywordAndTagRequest searchWithTagRequest = FilterDto.SearchWithKeywordAndTagRequest.builder()
-//                .userId(userId)
-//                .keyword(keyword)
-//                .tagId(tagId)
-//                .build();
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                searchService.searchAllByFilterNameOrWriterNameContainingAndHasTag(searchWithTagRequest, page, size));
+
+        FilterDto.SearchWithKeywordAndTagRequest searchWithTagRequest = FilterDto.SearchWithKeywordAndTagRequest.builder()
+                .userId(userId)
+                .keyword(keyword)
+                .tagId(tagId)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                searchService.searchAllByFilterNameOrWriterNameContainingAndHasTag(searchWithTagRequest, page, size));
     }
 }
