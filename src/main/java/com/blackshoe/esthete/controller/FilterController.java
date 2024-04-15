@@ -135,20 +135,6 @@ public class FilterController {
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
     //필터 상세보기
-    @GetMapping("/{filterId}/details")
-    public ResponseEntity<ResponseDto<FilterDto.FilterDetailsResponse>> getFilterDetail(
-            @RequestHeader("Authorization") String accessToken,
-            @PathVariable UUID filterId) {
-
-        UUID userId = jwtService.extractUserId(accessToken);
-
-        FilterDto.FilterDetailsResponse filterDetailResponse = filterService.getDetails(filterId, userId);
-
-        ResponseDto responseDto = ResponseDto.success(filterDetailResponse);
-
-        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
-    }
-
 
     //필터 구매하기
     @PostMapping("/purchase")

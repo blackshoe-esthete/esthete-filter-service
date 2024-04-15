@@ -64,8 +64,8 @@ public class Filter {
 //    @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Purchasing> purchasing = new ArrayList();
 //
-    @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FilterTag> filterTags = new ArrayList();
+//    @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<FilterTag> filterTags = new ArrayList();
 
     @ColumnDefault("0")
     @Column(name = "like_count")
