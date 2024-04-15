@@ -18,10 +18,12 @@ public class JwtServiceImpl implements JwtService {
             token = token.replace("Bearer ", "");
 
             Claims claims = Jwts.parser()
-                    .setSigningKey(SECRET_KEY)
+                    .setSigningKey(SECRET_KEY.getBytes())
                     .parseClaimsJws(token)
                     .getBody();
-            return UUID.fromString(claims.getSubject());
+
+            String userId = claims.get("userId", String.class);
+            return UUID.fromString(userId);
 
         } catch (JwtException e) {
             throw new SignatureException("유효하지 않은 토큰입니다.");
