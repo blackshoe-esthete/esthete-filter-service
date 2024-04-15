@@ -73,12 +73,23 @@ public class FilterController {
 
         UUID userId = jwtService.extractUserId(accessToken);
 
-        return ResponseEntity.status(HttpStatus.OK).body(filterService.getCreatedFilterList(userId));
+        FilterDto.CreatedFilterListResponse createdFilterListResponse = filterService.getCreatedFilterList(userId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(createdFilterListResponse);
     }
-    
+
 
     //구매 필터 리스트 조회
+    @GetMapping("/purchased")
+    public ResponseEntity<FilterDto.PurchasedFilterListResponse> getPurchasedFilterList(
+            @RequestHeader("Authorization") String accessToken) {
 
+        UUID userId = jwtService.extractUserId(accessToken);
+
+        FilterDto.PurchasedFilterListResponse purchasedFilterListResponse = filterService.getPurchasedFilterList(userId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(purchasedFilterListResponse);
+    }
     //필터 설정값 조회
 
     //필터 썸네일, 대표사진 조회
