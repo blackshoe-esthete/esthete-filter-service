@@ -1,6 +1,7 @@
 package com.blackshoe.esthete.controller;
 
 import com.blackshoe.esthete.dto.FilterDto;
+import com.blackshoe.esthete.dto.ResponseDto;
 import com.blackshoe.esthete.service.FilterService;
 import com.blackshoe.esthete.service.JwtService;
 import com.blackshoe.esthete.service.PurchasingService;
@@ -68,27 +69,31 @@ public class FilterController {
 
     //제작 필터 리스트 조회
     @GetMapping("/created")
-    public ResponseEntity<FilterDto.CreatedListResponse> getCreatedFilterList(
+    public ResponseEntity<ResponseDto<FilterDto.CreatedListResponse>> getCreatedFilterList(
             @RequestHeader("Authorization") String accessToken) {
 
         UUID userId = jwtService.extractUserId(accessToken);
 
         FilterDto.CreatedListResponse createdFilterListResponse = filterService.getCreatedFilterList(userId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(createdFilterListResponse);
+        ResponseDto responseDto = ResponseDto.success(createdFilterListResponse);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
 
     //구매 필터 리스트 조회
     @GetMapping("/purchased")
-    public ResponseEntity<FilterDto.PurchasedListResponse> getPurchasedFilterList(
+    public ResponseEntity<ResponseDto<FilterDto.PurchasedListResponse>> getPurchasedFilterList(
             @RequestHeader("Authorization") String accessToken) {
 
         UUID userId = jwtService.extractUserId(accessToken);
 
         FilterDto.PurchasedListResponse purchasedFilterListResponse = filterService.getPurchasedFilterList(userId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(purchasedFilterListResponse);
+        ResponseDto responseDto = ResponseDto.success(purchasedFilterListResponse);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
     //필터 설정값 조회
     @GetMapping("/{filterId}/attributes")
@@ -99,7 +104,6 @@ public class FilterController {
         UUID userId = jwtService.extractUserId(accessToken);
 
         FilterDto.AttributeResponse filterAttributesResponse = filterService.getFilterAttributes(filterId);
-
 
         return ResponseEntity.status(HttpStatus.OK).body(filterAttributesResponse);
     }
@@ -118,7 +122,18 @@ public class FilterController {
     }
 
     @GetMapping("/{filterId}/representations")
+    public ResponseEntity<ResponseDto<FilterDto.RepresentationImgListResponse>> getFilterRepresentations(
+            @RequestHeader("Authorization") String accessToken,
+            @PathVariable UUID filterId) {
 
+        UUID userId = jwtService.extractUserId(accessToken);
+
+        FilterDto.RepresentationImgListResponse representationImgListResponse = filterService.getFilterRepresentations(filterId);
+
+        ResponseDto responseDto = ResponseDto.success(representationImgListResponse);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
     //필터 상세보기
 
     //필터 구매하기

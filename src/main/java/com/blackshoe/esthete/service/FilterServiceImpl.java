@@ -100,5 +100,23 @@ public class FilterServiceImpl implements FilterService{
 
         return filterThumbnailResponse;
     }
-    
+
+    @Override
+    public FilterDto.RepresentationImgListResponse getFilterRepresentations(UUID filterId) {
+
+        Filter filter = filterRepository.findByFilterId(filterId).orElseThrow
+                (() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER));
+
+        List<String> representationImgList = filter.getRepresentationImgUrls().stream()
+                .map(representation -> representation.getCloudfrontUrl())
+                .collect(Collectors.toList());
+
+        FilterDto.RepresentationImgListResponse representationImgListResponse = FilterDto.RepresentationImgListResponse.builder()
+                .representationImgList(representationImgList)
+                .build();
+
+        return representationImgListResponse;
+
+    }
+
 }

@@ -11,4 +11,6 @@ public interface FilterService {
     FilterDto.AttributeResponse getFilterAttributes(UUID filterId);
 
     FilterDto.ThumbnailResponse getFilterThumbnail(UUID filterId);
+
+    FilterDto.RepresentationImgListResponse getFilterRepresentations(UUID filterId);
 }
