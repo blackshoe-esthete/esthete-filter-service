@@ -50,12 +50,19 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TemporaryFilter> temporaryFilters = new ArrayList();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Purchasing> purchasings = new ArrayList();
+
     public void addFilter(Filter filter){
         this.filters.add(filter);
     }
 
     public void addTemporaryFilter(TemporaryFilter temporaryFilter){
         this.temporaryFilters.add(temporaryFilter);
+    }
+
+    public void addPurchasing(Purchasing purchasing){
+        this.purchasings.add(purchasing);
     }
 
     public void addUserTag(UserTag userTag){

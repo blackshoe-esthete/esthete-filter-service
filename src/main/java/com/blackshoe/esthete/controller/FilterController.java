@@ -2,6 +2,7 @@ package com.blackshoe.esthete.controller;
 
 import com.blackshoe.esthete.dto.FilterDto;
 import com.blackshoe.esthete.service.JwtService;
+import com.blackshoe.esthete.service.PurchasingService;
 import com.blackshoe.esthete.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class FilterController {
 
     private final SearchService searchService;
+    private final PurchasingService purchasingService;
     private final JwtService jwtService;
 
     @GetMapping("/searching")
@@ -73,5 +75,14 @@ public class FilterController {
     //필터 상세보기
 
     //필터 구매하기
-    @PostMapping
+    @PostMapping("/purchase")
+    public ResponseEntity<FilterDto.PurchaseResponse> purchaseFilter(
+            @RequestHeader("Authorization") String accessToken,
+            @RequestBody FilterDto.PurchaseRequest purchaseRequest) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+        purchaseRequest.setUserId(userId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(purchasingService.purchaseFilter(purchaseRequest));
+    }
 }

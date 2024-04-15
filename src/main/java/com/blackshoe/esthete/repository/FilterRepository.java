@@ -9,7 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+import java.util.UUID;
+
 public interface FilterRepository extends JpaRepository<Filter, Long>{
+
+    @Query("SELECT f FROM Filter f WHERE f.filterId = :filterId")
+    Optional<Filter> findByFilterId(UUID filterId);
 
     //join filter, user, like
     @Query("SELECT new com.blackshoe.esthete.dto.FilterDto$SearchFilterResponse(f, u, :viewer, l)" +
@@ -32,4 +38,6 @@ public interface FilterRepository extends JpaRepository<Filter, Long>{
             " FROM Filter f JOIN f.user u LEFT JOIN Like l ON f.filterId = l.filter.filterId AND l.user = :viewer" +
             " ORDER BY f.viewCount DESC, f.createdAt DESC")
     Page<FilterDto.SearchFilterResponse> searchAllByFilterNameOrWriterNameContaining(User viewer, Pageable pageable);
+
+
 }
