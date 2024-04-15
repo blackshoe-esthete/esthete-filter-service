@@ -171,4 +171,33 @@ public class FilterDto {
         private List<String> representationImgList;
     }
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public class FilterTagListResponse {
+        private List<String> filterTagList;
+    }
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public class FilterDetailsResponse {
+        private AttributeResponse filterAttributes;
+        private String filterThumbnail;
+        private RepresentationImgListResponse representationImgList;
+        private FilterTagListResponse filterTagList;
+        private Long likeCount;
+        private String userId;
+        private String profileImgUrl;
+        private String nickname;
+        private Boolean isLike;
+        private LocalDateTime createdAt;
+
+
+    }
 }
