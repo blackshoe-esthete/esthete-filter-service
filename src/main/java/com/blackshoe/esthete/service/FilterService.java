@@ -5,8 +5,10 @@ import com.blackshoe.esthete.dto.FilterDto;
 import java.util.UUID;
 
 public interface FilterService {
-    FilterDto.CreatedFilterListResponse getCreatedFilterList(UUID userId);
-    FilterDto.PurchasedFilterListResponse getPurchasedFilterList(UUID userId);
+    FilterDto.CreatedListResponse getCreatedFilterList(UUID userId);
+    FilterDto.PurchasedListResponse getPurchasedFilterList(UUID userId);
 
-    FilterDto.FilterAttributesResponse getFilterAttributes(UUID filterId);
+    FilterDto.AttributeResponse getFilterAttributes(UUID filterId);
+
+    FilterDto.ThumbnailResponse getFilterThumbnail(UUID filterId);
 }

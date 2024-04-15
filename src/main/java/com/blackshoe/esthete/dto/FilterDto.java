@@ -108,8 +108,8 @@ public class FilterDto {
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class CreatedFilterListResponse {
-        List<ViewFilterListResponse> createdFilterList;
+    public static class CreatedListResponse {
+        List<FilterBasicInfoResponse> createdFilterList;
     }
 
     @Data
@@ -118,8 +118,8 @@ public class FilterDto {
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class PurchasedFilterListResponse {
-        List<ViewFilterListResponse> purchasedFilterList;
+    public static class PurchasedListResponse {
+        List<FilterBasicInfoResponse> purchasedFilterList;
     }
 
     @Data
@@ -128,7 +128,7 @@ public class FilterDto {
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class ViewFilterListResponse{
+    public static class FilterBasicInfoResponse{
         private String filterId;
         private String filterName;
         private String filterThumbnailUrl;
@@ -140,7 +140,7 @@ public class FilterDto {
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public class FilterAttributesResponse {
+    public class AttributeResponse {
         private String filterId;
         private Float brightness;
         private Float sharpness;
@@ -151,5 +151,24 @@ public class FilterDto {
         private Float shadows;
     }
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public class ThumbnailResponse {
+        private String filterThumbnailUrl;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public class RepresentationImgListResponse {
+        private List<String> representationImgList;
+    }
 
 }

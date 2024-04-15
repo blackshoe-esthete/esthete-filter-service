@@ -68,12 +68,12 @@ public class FilterController {
 
     //제작 필터 리스트 조회
     @GetMapping("/created")
-    public ResponseEntity<FilterDto.CreatedFilterListResponse> getCreatedFilterList(
+    public ResponseEntity<FilterDto.CreatedListResponse> getCreatedFilterList(
             @RequestHeader("Authorization") String accessToken) {
 
         UUID userId = jwtService.extractUserId(accessToken);
 
-        FilterDto.CreatedFilterListResponse createdFilterListResponse = filterService.getCreatedFilterList(userId);
+        FilterDto.CreatedListResponse createdFilterListResponse = filterService.getCreatedFilterList(userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(createdFilterListResponse);
     }
@@ -81,30 +81,43 @@ public class FilterController {
 
     //구매 필터 리스트 조회
     @GetMapping("/purchased")
-    public ResponseEntity<FilterDto.PurchasedFilterListResponse> getPurchasedFilterList(
+    public ResponseEntity<FilterDto.PurchasedListResponse> getPurchasedFilterList(
             @RequestHeader("Authorization") String accessToken) {
 
         UUID userId = jwtService.extractUserId(accessToken);
 
-        FilterDto.PurchasedFilterListResponse purchasedFilterListResponse = filterService.getPurchasedFilterList(userId);
+        FilterDto.PurchasedListResponse purchasedFilterListResponse = filterService.getPurchasedFilterList(userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(purchasedFilterListResponse);
     }
     //필터 설정값 조회
     @GetMapping("/{filterId}/attributes")
-    public ResponseEntity<FilterDto.FilterAttributesResponse> getFilterAttributes(
+    public ResponseEntity<FilterDto.AttributeResponse> getFilterAttributes(
             @RequestHeader("Authorization") String accessToken,
             @PathVariable UUID filterId) {
 
         UUID userId = jwtService.extractUserId(accessToken);
 
-        FilterDto.FilterAttributesResponse filterAttributesResponse = filterService.getFilterAttributes(filterId);
+        FilterDto.AttributeResponse filterAttributesResponse = filterService.getFilterAttributes(filterId);
 
 
         return ResponseEntity.status(HttpStatus.OK).body(filterAttributesResponse);
     }
 
     //필터 썸네일, 대표사진 조회
+    @GetMapping("/{filterId}/thumbnail")
+    public ResponseEntity<FilterDto.ThumbnailResponse> getFilterThumbnail(
+            @RequestHeader("Authorization") String accessToken,
+            @PathVariable UUID filterId) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+
+        FilterDto.ThumbnailResponse filterThumbnailResponse = filterService.getFilterThumbnail(filterId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(filterThumbnailResponse);
+    }
+
+    @GetMapping("/{filterId}/representations")
 
     //필터 상세보기
 

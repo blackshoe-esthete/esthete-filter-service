@@ -25,19 +25,19 @@ public class FilterServiceImpl implements FilterService{
     private final UserRepository userRepository;
     private final FilterRepository filterRepository;
     @Override
-    public FilterDto.CreatedFilterListResponse getCreatedFilterList(UUID userId) {
+    public FilterDto.CreatedListResponse getCreatedFilterList(UUID userId) {
         User user = userRepository.findByUserId(userId).orElseThrow
                 (() -> new UserException(UserErrorResult.NOT_FOUND_USER));
 
-        List<FilterDto.ViewFilterListResponse> createdFilterList = user.getFilters().stream()
-                .map(filter -> FilterDto.ViewFilterListResponse.builder()
+        List<FilterDto.FilterBasicInfoResponse> createdFilterList = user.getFilters().stream()
+                .map(filter -> FilterDto.FilterBasicInfoResponse.builder()
                         .filterId(filter.getFilterId().toString())
                         .filterName(filter.getName())
                         .filterThumbnailUrl(filter.getThumbnailUrl().getCloudfrontUrl())
                         .build())
                 .collect(Collectors.toList());
 
-        FilterDto.CreatedFilterListResponse createdFilterListResponse = FilterDto.CreatedFilterListResponse.builder()
+        FilterDto.CreatedListResponse createdFilterListResponse = FilterDto.CreatedListResponse.builder()
                 .createdFilterList(createdFilterList)
                 .build();
 
@@ -45,20 +45,20 @@ public class FilterServiceImpl implements FilterService{
     }
 
     @Override
-    public FilterDto.PurchasedFilterListResponse getPurchasedFilterList(UUID userId) {
+    public FilterDto.PurchasedListResponse getPurchasedFilterList(UUID userId) {
 
         User user = userRepository.findByUserId(userId).orElseThrow
                 (() -> new UserException(UserErrorResult.NOT_FOUND_USER));
 
-        List<FilterDto.ViewFilterListResponse> purchasedFilterList = user.getPurchasings().stream()
-                .map(purchasing -> FilterDto.ViewFilterListResponse.builder()
+        List<FilterDto.FilterBasicInfoResponse> purchasedFilterList = user.getPurchasings().stream()
+                .map(purchasing -> FilterDto.FilterBasicInfoResponse.builder()
                         .filterId(purchasing.getFilter().getFilterId().toString())
                         .filterName(purchasing.getFilter().getName())
                         .filterThumbnailUrl(purchasing.getFilter().getThumbnailUrl().getCloudfrontUrl())
                         .build())
                 .collect(Collectors.toList());
 
-        FilterDto.PurchasedFilterListResponse purchasedFilterListResponse = FilterDto.PurchasedFilterListResponse.builder()
+        FilterDto.PurchasedListResponse purchasedFilterListResponse = FilterDto.PurchasedListResponse.builder()
                 .purchasedFilterList(purchasedFilterList)
                 .build();
 
@@ -66,14 +66,14 @@ public class FilterServiceImpl implements FilterService{
     }
 
     @Override
-    public FilterDto.FilterAttributesResponse getFilterAttributes(UUID filterId) {
+    public FilterDto.AttributeResponse getFilterAttributes(UUID filterId) {
 
         Filter filter = filterRepository.findByFilterId(filterId).orElseThrow
                 (() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER));
 
         Attribute attribute = filter.getAttribute();
 
-        FilterDto.FilterAttributesResponse filterAttributesResponse = FilterDto.FilterAttributesResponse
+        FilterDto.AttributeResponse filterAttributesResponse = FilterDto.AttributeResponse
                 .builder()
                 .filterId(filter.getStringId())
                 .brightness(attribute.getBrightness())
@@ -87,4 +87,18 @@ public class FilterServiceImpl implements FilterService{
 
         return filterAttributesResponse;
     }
+
+    @Override
+    public FilterDto.ThumbnailResponse getFilterThumbnail(UUID filterId) {
+
+        Filter filter = filterRepository.findByFilterId(filterId).orElseThrow
+                (() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER));
+
+        FilterDto.ThumbnailResponse filterThumbnailResponse = FilterDto.ThumbnailResponse.builder()
+                .filterThumbnailUrl(filter.getThumbnailUrl().getCloudfrontUrl())
+                .build();
+
+        return filterThumbnailResponse;
+    }
+    
 }
