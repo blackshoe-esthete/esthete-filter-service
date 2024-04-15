@@ -1,6 +1,7 @@
 package com.blackshoe.esthete.controller;
 
 import com.blackshoe.esthete.dto.FilterDto;
+import com.blackshoe.esthete.service.FilterService;
 import com.blackshoe.esthete.service.JwtService;
 import com.blackshoe.esthete.service.PurchasingService;
 import com.blackshoe.esthete.service.SearchService;
@@ -21,6 +22,7 @@ public class FilterController {
 
     private final SearchService searchService;
     private final PurchasingService purchasingService;
+    private final FilterService filterService;
     private final JwtService jwtService;
 
     @GetMapping("/searching")
@@ -65,6 +67,15 @@ public class FilterController {
     }
 
     //제작 필터 리스트 조회
+    @GetMapping("/created")
+    public ResponseEntity<FilterDto.CreatedFilterListResponse> getCreatedFilterList(
+            @RequestHeader("Authorization") String accessToken) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+
+        return ResponseEntity.status(HttpStatus.OK).body(filterService.getCreatedFilterList(userId));
+    }
+    
 
     //구매 필터 리스트 조회
 

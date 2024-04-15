@@ -9,8 +9,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.swing.text.View;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class FilterDto {
 
@@ -83,7 +86,7 @@ public class FilterDto {
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public class PurchaseRequest {
+    public static class PurchaseRequest {
         private UUID filterId;
         private UUID userId;
     }
@@ -98,6 +101,36 @@ public class FilterDto {
         private String purchasedAt;
     }
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class CreatedFilterListResponse {
+        List<ViewFilterListResponse> createdFilterList;
+    }
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class PurchasedFilterListResponse {
+        List<ViewFilterListResponse> purchasedFilterList;
+    }
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class ViewFilterListResponse{
+        private String filterId;
+        private String filterName;
+        private String filterThumbnailUrl;
+
+    }
 }
