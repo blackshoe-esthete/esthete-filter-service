@@ -7,4 +7,6 @@ import java.util.UUID;
 public interface FilterService {
     FilterDto.CreatedFilterListResponse getCreatedFilterList(UUID userId);
     FilterDto.PurchasedFilterListResponse getPurchasedFilterList(UUID userId);
+
+    FilterDto.FilterAttributesResponse getFilterAttributes(UUID filterId);
 }

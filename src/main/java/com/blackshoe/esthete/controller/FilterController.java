@@ -91,6 +91,18 @@ public class FilterController {
         return ResponseEntity.status(HttpStatus.OK).body(purchasedFilterListResponse);
     }
     //필터 설정값 조회
+    @GetMapping("/{filterId}/attributes")
+    public ResponseEntity<FilterDto.FilterAttributesResponse> getFilterAttributes(
+            @RequestHeader("Authorization") String accessToken,
+            @PathVariable UUID filterId) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+
+        FilterDto.FilterAttributesResponse filterAttributesResponse = filterService.getFilterAttributes(filterId);
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(filterAttributesResponse);
+    }
 
     //필터 썸네일, 대표사진 조회
 

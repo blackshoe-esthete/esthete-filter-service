@@ -4,6 +4,7 @@ import com.blackshoe.esthete.entity.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -133,4 +134,22 @@ public class FilterDto {
         private String filterThumbnailUrl;
 
     }
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public class FilterAttributesResponse {
+        private String filterId;
+        private Float brightness;
+        private Float sharpness;
+        private Float exposure;
+        private Float contrast;
+        private Float saturation;
+        private Float highlights;
+        private Float shadows;
+    }
+
+
 }
