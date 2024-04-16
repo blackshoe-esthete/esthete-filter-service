@@ -62,7 +62,7 @@ public class CreateServiceImpl implements CreateService{
                 .shadows(requestDto.getShadows())
                 .build();
 
-        tmpFilter.setAttribute(attribute);
+        attribute.updateTemporaryFilter(tmpFilter);
         tmpFilter.updateUser(user);
 
         TemporaryFilter savedTmpFilter = temporaryFilterRepository.save(tmpFilter);
