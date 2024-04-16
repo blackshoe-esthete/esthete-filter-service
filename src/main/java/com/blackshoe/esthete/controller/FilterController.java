@@ -45,7 +45,7 @@ public class FilterController {
                     .build();
 
             return ResponseEntity.status(HttpStatus.OK).body(
-                    searchService.searchAllByFilterNameOrWriterNameNotContaining(searchAllRequest, page, size));
+                    searchService.searchAll(searchAllRequest, page, size));
         }
         if(tagId == null) {
             FilterDto.SearchWithKeywordRequest searchWithKeywordRequest = FilterDto.SearchWithKeywordRequest.builder()

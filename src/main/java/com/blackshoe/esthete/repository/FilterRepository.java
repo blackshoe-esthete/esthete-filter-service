@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
+import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,10 +34,12 @@ public interface FilterRepository extends JpaRepository<Filter, Long>{
     Page<FilterDto.SearchFilterResponse> searchAllByFilterNameOrWriterNameContainingAndHasTag(User viewer, Tag tag, String keyword, Pageable pageable);
 
     //keyword is null
-    @Query("SELECT new com.blackshoe.esthete.dto.FilterDto$SearchFilterResponse(f, u, :viewer, l)" +
-            " FROM Filter f JOIN f.user u LEFT JOIN Like l ON f.filterId = l.filter.filterId AND l.user = :viewer" +
-            " ORDER BY f.viewCount DESC, f.createdAt DESC")
-    Page<FilterDto.SearchFilterResponse> searchAllByFilterNameOrWriterNameContaining(User viewer, Pageable pageable);
-
+    @Query("SELECT new com.blackshoe.esthete.dto.FilterDto$SearchFilterResponse(" +
+            "f, u, :user, l) " +
+            "FROM Filter f " +
+            "JOIN f.user u " +
+            "LEFT JOIN Like l ON f.filterId = l.filter.filterId AND l.user = :user " +
+            "ORDER BY f.viewCount DESC, f.createdAt DESC")
+    Page<FilterDto.SearchFilterResponse> searchAll(@Param("user") User user, Pageable pageable);
 
 }

@@ -50,13 +50,15 @@ public class SearchServiceImpl implements SearchService{
     }
 
     @Override
-    public Page<FilterDto.SearchFilterResponse> searchAllByFilterNameOrWriterNameNotContaining(FilterDto.SearchAllRequest searchRequest, int page, int size) {
+    public Page<FilterDto.SearchFilterResponse> searchAll(FilterDto.SearchAllRequest searchRequest, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         User viewer = userRepository.findByUserId(searchRequest.getUserId())
             .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
 
-        return filterRepository.searchAllByFilterNameOrWriterNameContaining(viewer, pageable);
+        log.info("searchAll viewer: {}", viewer.getNickname().toString());
+
+        return filterRepository.searchAll(viewer, pageable);
     }
 
 }
