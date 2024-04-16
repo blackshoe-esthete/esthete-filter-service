@@ -138,5 +138,74 @@ public class CreateServiceImpl implements CreateService{
                 .build();
     }
 
+    @Override
+    public List<FilterCreateDto.RepresentationImgUrl> uploadFilterRepresentativeImages(List<MultipartFile> representationImgs, UUID temporaryFilterId) {
+        List<FilterCreateDto.RepresentationImgUrl> representationImgUrlDtos = new ArrayList<>();
+
+        for(MultipartFile representationImg : representationImgs){
+            String s3FilePath = temporaryFilterId + "/" + REPRESENTATION_IMG_DIRECTORY;
+
+            FilterCreateDto.RepresentationImgUrl representationImgUrlDto;
+
+            if(representationImg == null || representationImg.isEmpty()){
+                representationImgUrlDto = FilterCreateDto.RepresentationImgUrl.builder()
+                        .cloudfrontUrl("")
+                        .s3Url("")
+                        .build();
+
+                representationImgUrlDtos.add(representationImgUrlDto);
+                continue;
+            }
+
+            String fileExtension = representationImg.getOriginalFilename().substring(representationImg.getOriginalFilename().lastIndexOf("."));
+            String key = ROOT_DIRECTORY + "/" + s3FilePath + "/" + UUID.randomUUID() + fileExtension;
+
+            if(representationImg.getSize() > 52428800){
+                throw new FilterException(FilterErrorResult.INVALID_THUMBNAIL_IMG_SIZE);
+            }
+
+            try {
+                PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                        .bucket(BUCKET)
+                        .key(key)
+                        .build();
+
+                amazonS3Client.putObject(putObjectRequest, RequestBody.fromInputStream(representationImg.getInputStream(), representationImg.getSize()));
+            } catch (Exception e) {
+                //log.error(e.getMessage());
+                throw new FilterException(FilterErrorResult.THUMBNAIL_IMG_UPLOAD_FAILED);
+            }
+
+            String s3Url = "https://" + BUCKET + ".s3.amazonaws.com/" + key;
+            String cloudFrontUrl = "https://" + DISTRIBUTION_DOMAIN + "/" + key;
+
+            representationImgUrlDto = FilterCreateDto.RepresentationImgUrl.builder()
+                    .s3Url(s3Url)
+                    .cloudfrontUrl(cloudFrontUrl)
+                    .build();
+
+            representationImgUrlDtos.add(representationImgUrlDto);
+        }
+        return representationImgUrlDtos;
+    }
+
+    @Override
+    public FilterCreateDto.createTmpFilterResponse saveRepresentationImage(List<FilterCreateDto.RepresentationImgUrl> representationImgUrls, UUID temporaryFilterId){
+        TemporaryFilter temporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
+
+        for(FilterCreateDto.RepresentationImgUrl representationImgUrl : representationImgUrls){
+            RepresentationImgUrl representationImgUrlEntity = RepresentationImgUrl.builder()
+                    .cloudfrontUrl(representationImgUrl.getCloudfrontUrl())
+                    .s3Url(representationImgUrl.getS3Url())
+                    .build();
+
+            representationImgUrlEntity.updateTemporaryFilter(temporaryFilter);
+            representationImgUrlRepository.save(representationImgUrlEntity);
+        }
+
+        return FilterCreateDto.createTmpFilterResponse.builder()
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
 
 }

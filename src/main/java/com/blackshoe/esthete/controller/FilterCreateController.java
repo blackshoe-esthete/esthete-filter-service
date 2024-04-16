@@ -42,4 +42,13 @@ public class FilterCreateController {
         return ResponseEntity.status(HttpStatus.CREATED).body(tmpFilterResponse);
     }
 
+    @PostMapping(value = "/{temporaryFilterId}/representation", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<FilterCreateDto.createTmpFilterResponse> saveFilterRepresentation(
+            @PathVariable UUID temporaryFilterId,
+            @RequestPart(name = "representation_img") List<MultipartFile> representationImg){
+        List<FilterCreateDto.RepresentationImgUrl> representationImgUrls = createService.uploadFilterRepresentativeImages(representationImg, temporaryFilterId);
+        FilterCreateDto.createTmpFilterResponse representationImageResponse = createService.saveRepresentationImage(representationImgUrls, temporaryFilterId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(representationImageResponse);
+    }
+
 }
