@@ -129,7 +129,7 @@ public class CreateServiceImpl implements CreateService{
                 .cloudfrontUrl(thumbnailImgUrl.getCloudfrontUrl())
                 .build();
 
-        temporaryFilter.setThumbnailUrl(thumbnailUrl);
+        thumbnailUrl.updateTemporaryFilter(temporaryFilter);
 
         TemporaryFilter savedTmpFilter = temporaryFilterRepository.save(temporaryFilter);
 
