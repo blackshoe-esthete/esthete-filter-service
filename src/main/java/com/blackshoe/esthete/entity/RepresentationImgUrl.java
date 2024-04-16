@@ -2,6 +2,7 @@ package com.blackshoe.esthete.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,9 +37,31 @@ public class RepresentationImgUrl {
     @JoinColumn(name = "filter_id", foreignKey = @ForeignKey(name = "representation_fk_filter_id"))
     private Filter filter; // Filter와 다대일 양방향, 주인
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "temporary_filter_id", foreignKey = @ForeignKey(name = "representation_fk_temporary_filter_id"))
+    private TemporaryFilter temporaryFilter;
+
     public void updateFilter(Filter filter){
         this.filter = filter;
-        filter.addRepresentationImgUrl(this); //명시적으로
+        filter.addRepresentationImgUrl(this);
+    }
+
+    public void updateTemporaryFilter(TemporaryFilter temporaryFilter){
+        this.temporaryFilter = temporaryFilter;
+        temporaryFilter.addRepresentationImgUrl(this);
+    }
+
+    @Builder
+    public RepresentationImgUrl(String cloudfrontUrl, String s3Url) {
+        this.cloudfrontUrl = cloudfrontUrl;
+        this.s3Url = s3Url;
+    }
+
+    @PrePersist
+    public void updateRepresentationUrlId() {
+        if (representationImgUrlId == null) {
+            representationImgUrlId = UUID.randomUUID();
+        }
     }
 
     public String getStringId() {

@@ -42,6 +42,7 @@ public class Tag {
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FilterTag> filterTags = new ArrayList();
 
+
     public String getStringId() {
         return this.tagId.toString();
     }

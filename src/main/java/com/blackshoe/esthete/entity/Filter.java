@@ -18,7 +18,6 @@ import java.util.*;
 @Entity
 @Getter
 @Table(name = "filter")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Filter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,6 +81,9 @@ public class Filter {
         }
     }
 
+    @Builder
+    public Filter(){}
+
     public void updateUser(User user){
         this.user = user;
         user.addFilter(this);
@@ -94,6 +96,7 @@ public class Filter {
     public void addRepresentationImgUrl(RepresentationImgUrl representationImgUrl){
         this.representationImgUrls.add(representationImgUrl);
     }
+
 
     public void addLike(Like like){
         this.likes.add(like);

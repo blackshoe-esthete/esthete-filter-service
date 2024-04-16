@@ -73,7 +73,7 @@ public class FilterDto {
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public class SearchAllRequest {
+    public static class SearchAllRequest {
         private UUID userId;
     }
 }

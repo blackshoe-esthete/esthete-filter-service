@@ -15,4 +15,12 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+  cloud:
+    aws:
+      s3:
+        bucket: ${S3_BUCKET}
+        root-directory: ${S3_ROOT_DIRECTORY}
+        thumbnail-directory: ${S3_THUMBNAIL_DIRECTORY}
+      cloudfront:
+        distribution-domain: ${CLOUDFRONT_DISTRIBUTION_DOMAIN}

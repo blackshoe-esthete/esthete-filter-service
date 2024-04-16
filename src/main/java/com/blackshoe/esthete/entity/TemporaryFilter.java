@@ -2,6 +2,7 @@ package com.blackshoe.esthete.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,7 +13,6 @@ import java.util.*;
 @Entity
 @Getter
 @Table(name = "temporary_filter")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TemporaryFilter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +46,12 @@ public class TemporaryFilter {
     @OneToOne(mappedBy = "temporaryFilter", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private ThumbnailUrl thumbnailUrl;
 
+    @OneToOne(mappedBy = "temporaryFilter", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Attribute attribute; //추가함
+
+    @OneToMany(mappedBy = "temporaryFilter", fetch = FetchType.LAZY ,cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RepresentationImgUrl> representationImgUrls = new ArrayList(); //추가함
+
     public void setThumbnailUrl(ThumbnailUrl thumbnailUrl){
         this.thumbnailUrl = thumbnailUrl;
     }
@@ -56,4 +62,28 @@ public class TemporaryFilter {
     public String getStringId() {
         return this.temporaryFilterId.toString();
     }
+    public void setAttribute(Attribute attribute){
+        this.attribute = attribute;
+    } //추가함
+
+    public void addRepresentationImgUrl(RepresentationImgUrl representationImgUrl){
+        this.representationImgUrls.add(representationImgUrl); //추가함
+    }
+
+    @PrePersist
+    public void setTemporaryFilterId() {
+        if (temporaryFilterId == null) {
+            temporaryFilterId = UUID.randomUUID();
+        }
+    }
+
+    @Builder
+    public TemporaryFilter(){}
+
+
+    public void updateTemporaryFilterInfo(String name, String description){
+        this.name = name;
+        this.description = description;
+    }
+
 }

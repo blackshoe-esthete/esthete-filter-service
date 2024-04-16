@@ -27,11 +27,11 @@ public class ThumbnailUrl {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "filter_id", foreignKey = @ForeignKey(name = "thumbnail_url_fk_filter_id"))
-    private Filter filter; // Attribute와 일대일 양방향, 주인
+    private Filter filter;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "temporary_filter_id", foreignKey = @ForeignKey(name = "thumbnail_url_fk_temporary_filter_id"))
-    private TemporaryFilter temporaryFilter; // Attribute와 일대일 양방향, 주인
+    private TemporaryFilter temporaryFilter;
 
 
     public void updateFilter(Filter filter){
@@ -45,8 +45,8 @@ public class ThumbnailUrl {
     }
 
     @Builder
-    public ThumbnailUrl(UUID thumbnailUrlId, String cloudfrontUrl, String s3Url) {
-        this.thumbnailUrlId = thumbnailUrlId;
+    public ThumbnailUrl(String cloudfrontUrl, String s3Url) {
+        //this.thumbnailUrlId = thumbnailUrlId;
         this.cloudfrontUrl = cloudfrontUrl;
         this.s3Url = s3Url;
     }

@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Table(name = "like")
+@Table(name = "likes")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Like {
     @Id
@@ -31,7 +31,7 @@ public class Like {
     private User user;
 
     @JoinColumn(name = "user_id", columnDefinition = "BINARY(16)", unique = true)
-    private UUID userId;
+    private UUID userUuId;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, length = 20)
