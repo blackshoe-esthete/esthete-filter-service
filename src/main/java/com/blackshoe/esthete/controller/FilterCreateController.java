@@ -33,5 +33,13 @@ public class FilterCreateController {
         return ResponseEntity.status(HttpStatus.CREATED).body(filterAttributeResponse);
     }
 
+    @PostMapping(value = "/{temporaryFilterId}/thumbnail", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<FilterCreateDto.createTmpFilterResponse> saveFilterThumnail(
+            @PathVariable UUID temporaryFilterId,
+            @RequestPart(name = "thumbnail") MultipartFile thumbnail){
+        FilterCreateDto.ThumbnailImgUrl thumbnailImgUrl = createService.uploadFilterThumbnail(thumbnail, temporaryFilterId);
+        FilterCreateDto.createTmpFilterResponse tmpFilterResponse = createService.saveThumbnailImage(thumbnailImgUrl, temporaryFilterId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(tmpFilterResponse);
+    }
 
 }

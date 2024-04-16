@@ -9,5 +9,8 @@ import java.util.UUID;
 public interface CreateService {
     FilterCreateDto.filterAttributeResponse saveFilterAttribute(UUID userID, FilterCreateDto.filterAttributeRequest requestDto);
 
+    FilterCreateDto.ThumbnailImgUrl uploadFilterThumbnail(MultipartFile thumbnailImg, UUID temporaryFilterId);
+
+    FilterCreateDto.createTmpFilterResponse saveThumbnailImage(FilterCreateDto.ThumbnailImgUrl thumbnailImgUrl, UUID temporaryFilterId);
 
 }
