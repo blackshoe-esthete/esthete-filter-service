@@ -34,15 +34,15 @@ public class CreateServiceImpl implements CreateService{
     private final ThumbnailUrlRepository thumbnailUrlRepository;
     private final FilterTagRepository filterTagRepository;
 
-    @Value("${spring.cloud.aws.s3.bucket}")
+    @Value("${cloud.aws.s3.bucket}")
     private String BUCKET;
-    @Value("${spring.cloud.aws.cloudfront.distribution-domain}")
+    @Value("${cloud.aws.cloudfront.distribution-domain}")
     private String DISTRIBUTION_DOMAIN;
-    @Value("${spring.cloud.aws.s3.root-directory}")
+    @Value("${cloud.aws.s3.root-directory}")
     private String ROOT_DIRECTORY;
-    @Value("${spring.cloud.aws.s3.thumbnail-directory}")
+    @Value("${cloud.aws.s3.thumbnail-directory}")
     private String THUMBNAIL_DIRECTORY;
-    @Value("${spring.cloud.aws.s3.thumbnail-directory}")
+    @Value("${cloud.aws.s3.representation-directory}")
     private String REPRESENTATION_IMG_DIRECTORY;
 
 
