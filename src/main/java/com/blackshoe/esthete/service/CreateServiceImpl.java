@@ -229,4 +229,51 @@ public class CreateServiceImpl implements CreateService{
 
     }
 
+    @Override
+    public FilterCreateDto.createTmpFilterResponse saveTempFilterToFilter(UUID temporaryFilterId, FilterCreateDto.TmpFilterInformationRequest requestDto){
+        TemporaryFilter temporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
+
+        for(UUID tag : requestDto.getTagList().getTags()){
+            FilterTag filterTag = FilterTag.builder().build();
+            filterTag.updateTemporaryFilter(temporaryFilter);
+            //tag레포에서 객체 찾는다.
+            Tag savedtag = tagRepository.findByTagId(tag).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TAG));
+            //임시필터태그 테이블에 해당 태그 객체 연결
+            filterTag.updateTag(savedtag);
+        }
+        temporaryFilter.updateTemporaryFilterInfo(requestDto.getName(), requestDto.getDescription());
+        TemporaryFilter savedTemporaryFilter = temporaryFilterRepository.save(temporaryFilter);
+
+        User user = userRepository.findByUserId(savedTemporaryFilter.getUser().getUserId()).orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+
+        Filter filter = Filter.builder().build();
+
+        filter.updateUser(user);
+
+        Attribute attribute = attributeRepository.findByTemporaryFilter(savedTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_ATTRIBUTE));
+        attribute.updateFilter(filter);
+
+        ThumbnailUrl thumbnailUrl = thumbnailUrlRepository.findByTemporaryFilter(savedTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_THUMBNAIL_IMG_URL));
+        thumbnailUrl.updateFilter(filter);
+
+        List<RepresentationImgUrl> representationImgUrls = representationImgUrlRepository.findAllByTemporaryFilter(savedTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_REPRESENTATION_IMG_URL));
+
+        for(RepresentationImgUrl representationImgUrl : representationImgUrls) {
+            representationImgUrl.updateFilter(filter);
+        }
+
+        List<FilterTag> temporaryFilterTags = filterTagRepository.findAllByTemporaryFilter(savedTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER_TAG));
+
+        for(FilterTag temporaryFilterTag : temporaryFilterTags) {
+            temporaryFilterTag.updateFilter(filter);
+        }
+
+        temporaryFilterRepository.delete(savedTemporaryFilter);
+
+        return FilterCreateDto.createTmpFilterResponse.builder()
+                .createdAt(LocalDateTime.now())
+                .build();
+
+    }
+
 }
