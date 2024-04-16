@@ -37,7 +37,7 @@ public class FilterTag {
 
     public void updateFilter(Filter filter){
         this.filter = filter;
-        //filter.getFilterTags().add(this);
+        filter.getFilterTags().add(this);
     }
 
     public void updateTag(Tag tag){
