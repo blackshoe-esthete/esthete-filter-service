@@ -17,4 +17,7 @@ public interface CreateService {
 
     FilterCreateDto.createTmpFilterResponse saveRepresentationImage(List<FilterCreateDto.RepresentationImgUrl> representationImgUrls, UUID temporaryFilterId);
 
+    FilterCreateDto.createTmpFilterResponse saveTempFilterInformation(UUID temporaryFilterId, FilterCreateDto.TmpFilterInformationRequest requestDto);
+
+
 }

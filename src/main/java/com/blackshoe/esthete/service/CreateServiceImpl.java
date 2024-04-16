@@ -208,4 +208,25 @@ public class CreateServiceImpl implements CreateService{
                 .build();
     }
 
+    @Override
+    public FilterCreateDto.createTmpFilterResponse saveTempFilterInformation(UUID temporaryFilterId, FilterCreateDto.TmpFilterInformationRequest requestDto){
+        TemporaryFilter temporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
+
+        for(UUID tag : requestDto.getTagList().getTags()){
+            FilterTag filterTag = FilterTag.builder().build();
+            filterTag.updateTemporaryFilter(temporaryFilter);
+            //tag레포에서 객체 찾는다.
+            Tag savedtag = tagRepository.findByTagId(tag).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TAG));
+            //임시필터태그 테이블에 해당 태그 객체 연결
+            filterTag.updateTag(savedtag);
+        }
+        temporaryFilter.updateTemporaryFilterInfo(requestDto.getName(), requestDto.getDescription());
+        TemporaryFilter savedTemporaryFilter = temporaryFilterRepository.save(temporaryFilter);
+
+        return FilterCreateDto.createTmpFilterResponse.builder()
+                .createdAt(savedTemporaryFilter.getCreatedAt())
+                .build();
+
+    }
+
 }

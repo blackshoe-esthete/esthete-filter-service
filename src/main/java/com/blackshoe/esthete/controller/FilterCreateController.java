@@ -51,4 +51,12 @@ public class FilterCreateController {
         return ResponseEntity.status(HttpStatus.CREATED).body(representationImageResponse);
     }
 
+    @PostMapping("/{temporary_filter_id}/information")
+    ResponseEntity<FilterCreateDto.createTmpFilterResponse> saveTmpFilterInformation(
+            @PathVariable UUID temporaryFilterId,
+            @RequestBody FilterCreateDto.TmpFilterInformationRequest requestDto){
+        FilterCreateDto.createTmpFilterResponse tmpFilterResponse = createService.saveTempFilterInformation(temporaryFilterId, requestDto);
+        return  ResponseEntity.status(HttpStatus.OK).body(tmpFilterResponse);
+    }
+
 }
