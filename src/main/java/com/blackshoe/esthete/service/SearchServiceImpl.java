@@ -17,6 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -29,10 +31,12 @@ public class SearchServiceImpl implements SearchService{
     public Page<FilterDto.SearchFilterResponse> searchAllByFilterNameOrWriterNameContaining(FilterDto.SearchWithKeywordRequest searchRequest, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        User viewer = userRepository.findByUserId(searchRequest.getUserId())
+        UUID userId = searchRequest.getUserId();
+
+        User user = userRepository.findByUserId(userId)
             .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
         
-        return filterRepository.searchAllByFilterNameOrWriterNameContaining(viewer, searchRequest.getKeyword(), pageable);
+        return filterRepository.searchAllByFilterNameOrWriterNameContaining(userId, searchRequest.getKeyword(), pageable);
 
     }
 
@@ -40,13 +44,15 @@ public class SearchServiceImpl implements SearchService{
     public Page<FilterDto.SearchFilterResponse> searchAllByFilterNameOrWriterNameContainingAndHasTag(FilterDto.SearchWithKeywordAndTagRequest searchWithTagRequest, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        User viewer = userRepository.findByUserId(searchWithTagRequest.getUserId())
+        UUID userId = searchWithTagRequest.getUserId();
+
+        User user = userRepository.findByUserId(userId)
             .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
 
         Tag tag = tagRepository.findByTagId(searchWithTagRequest.getTagId())
             .orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TAG));
 
-        return filterRepository.searchAllByFilterNameOrWriterNameContainingAndHasTag(viewer, tag, searchWithTagRequest.getKeyword(), pageable);
+        return filterRepository.searchAllByFilterNameOrWriterNameContainingAndHasTag(userId, tag, searchWithTagRequest.getKeyword(), pageable);
     }
 
     @Override
@@ -56,9 +62,9 @@ public class SearchServiceImpl implements SearchService{
         User viewer = userRepository.findByUserId(searchRequest.getUserId())
             .orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
 
-        log.info("searchAll viewer: {}", viewer.getNickname().toString());
+        log.info("searchAll user: {}", viewer.getNickname().toString());
 
-        return filterRepository.searchAll(viewer, pageable);
+        return filterRepository.searchAll(searchRequest.getUserId(), pageable);
     }
 
 }

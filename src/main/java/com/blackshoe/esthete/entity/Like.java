@@ -50,8 +50,8 @@ public class Like {
         filter.addLike(this);
     }
 
-    public Boolean isUserLike(User user){
-        return this.user.equals(user);
+    public Boolean isUserLike(UUID viewerId){
+        return this.userId.equals(viewerId);
     }
 
     public String getStringId() {

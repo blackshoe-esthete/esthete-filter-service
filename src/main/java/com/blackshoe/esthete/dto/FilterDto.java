@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Slf4j
 public class FilterDto {
 
     @Data
@@ -32,28 +31,17 @@ public class FilterDto {
         private Long likeCount;
         private Boolean isLike;
         private String filterThumbnailUrl;
-
         private String userId;
         private String nickname;
         private String profileImgUrl;
 
-        public SearchFilterResponse(Filter filter, User writer, Long test, Like like) {
-            log.info("test : {}", test);
-            this.filterId = filter.getFilterId().toString();
-            this.filterName = filter.getName();
-            this.likeCount = filter.getLikeCount();
-            this.filterThumbnailUrl = filter.getThumbnailUrl().getCloudfrontUrl();
-            this.userId = writer.getUserId().toString();
-            this.nickname = writer.getNickname();
-            this.profileImgUrl = writer.getProfileImgUrl();
-        }
 
-        public SearchFilterResponse(Filter filter, User writer, User viewer, Like like) {
+        public SearchFilterResponse(Filter filter, User writer, UUID viewerId, Like like) {
             this.filterId = filter.getFilterId().toString();
             this.filterName = filter.getName();
             this.likeCount = filter.getLikeCount();
             this.filterThumbnailUrl = filter.getThumbnailUrl().getCloudfrontUrl();
-            this.isLike = (like != null && like.isUserLike(viewer));
+            this.isLike = (like != null && like.isUserLike(viewerId));
             this.userId = writer.getUserId().toString();
             this.nickname = writer.getNickname();
             this.profileImgUrl = writer.getProfileImgUrl();
