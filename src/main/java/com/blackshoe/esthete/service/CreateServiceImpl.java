@@ -281,7 +281,22 @@ public class CreateServiceImpl implements CreateService{
 
         Filter savedFilter = filterRepository.save(filter);
 
+        //임시저장 필터 자식들과 연관관계 끊기 -> 데이터 삭제
+        for(FilterTag temporaryFilterTag : temporaryFilterTags) {
+            temporaryFilterTag.deleteTemporaryFilter(savedTemporaryFilter);
+        }
 
+        for(RepresentationImgUrl representationImgUrl : representationImgUrls) {
+            representationImgUrl.deleteTemporaryFilter(savedTemporaryFilter);
+        }
+
+        thumbnailUrl.deleteTemporaryFilter(savedTemporaryFilter);
+
+        attribute.deleteTemporaryFilter(savedTemporaryFilter);
+
+        savedTemporaryFilter.deleteUser(user);
+
+        temporaryFilterRepository.save(savedTemporaryFilter);
 
         return FilterCreateDto.createTmpFilterResponse.builder()
                 .createdAt(savedFilter.getCreatedAt())
