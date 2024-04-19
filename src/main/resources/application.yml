@@ -18,20 +18,19 @@ spring:
       ddl-auto: update
   jwt:
     secret: ${JWT_SECRET}
-
-cloud:
-  aws:
-    credentials:
-      access-key: ${AWS_ACCESS_KEY}
-      secret-key: ${AWS_SECRET_KEY}
-    s3:
-      bucket: ${S3_BUCKET}
-      root-directory: ${S3_ROOT_DIRECTORY}
-      thumbnail-directory: ${S3_THUMBNAIL_DIRECTORY}
-      representation-directory: ${S3_REPRESENTATION_DIRECTORY}
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
-    cloudfront:
-      distribution-domain: ${CLOUDFRONT_DISTRIBUTION_DOMAIN}
+  cloud:
+    aws:
+      credentials:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+      s3:
+        bucket: ${S3_BUCKET}
+        root-directory: ${S3_ROOT_DIRECTORY}
+        thumbnail-directory: ${S3_THUMBNAIL_DIRECTORY}
+        representation-directory: ${S3_REPRESENTATION_DIRECTORY}
+      region:
+        static: ${S3_BUCKET_REGION}
+      stack:
+        auto: false
+      cloudfront:
+        distribution-domain: ${CLOUDFRONT_DISTRIBUTION_DOMAIN}

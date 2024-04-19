@@ -44,6 +44,11 @@ public class ThumbnailUrl {
         temporaryFilter.setThumbnailUrl(this);
     }
 
+    public void deleteTemporaryFilter(TemporaryFilter temporaryFilter){
+        this.temporaryFilter = null;
+        temporaryFilter.setThumbnailUrl(null);
+    }
+
     @Builder
     public ThumbnailUrl(String cloudfrontUrl, String s3Url) {
         //this.thumbnailUrlId = thumbnailUrlId;

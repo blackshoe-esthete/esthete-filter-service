@@ -42,9 +42,9 @@ public class FilterCreateController {
         return ResponseEntity.status(HttpStatus.CREATED).body(tmpFilterResponse);
     }
 
-    @PostMapping(value = "/{temporaryFilterId}/representation", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/{temporary_filter_id}/representation", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<FilterCreateDto.createTmpFilterResponse> saveFilterRepresentation(
-            @PathVariable UUID temporaryFilterId,
+            @PathVariable(name = "temporary_filter_id") UUID temporaryFilterId,
             @RequestPart(name = "representation_img") List<MultipartFile> representationImg){
         List<FilterCreateDto.RepresentationImgUrl> representationImgUrls = createService.uploadFilterRepresentativeImages(representationImg, temporaryFilterId);
         FilterCreateDto.createTmpFilterResponse representationImageResponse = createService.saveRepresentationImage(representationImgUrls, temporaryFilterId);
@@ -53,7 +53,7 @@ public class FilterCreateController {
 
     @PostMapping("/{temporary_filter_id}/information")
     ResponseEntity<FilterCreateDto.createTmpFilterResponse> saveTmpFilterInformation(
-            @PathVariable UUID temporaryFilterId,
+            @PathVariable(name = "temporary_filter_id") UUID temporaryFilterId,
             @RequestBody FilterCreateDto.TmpFilterInformationRequest requestDto){
         FilterCreateDto.createTmpFilterResponse tmpFilterResponse = createService.saveTempFilterInformation(temporaryFilterId, requestDto);
         return  ResponseEntity.status(HttpStatus.OK).body(tmpFilterResponse);
@@ -61,7 +61,7 @@ public class FilterCreateController {
 
     @PostMapping("/{temporary_filter_id}/completion")
     ResponseEntity<FilterCreateDto.createTmpFilterResponse> completeFilterCreation(
-            @PathVariable UUID temporaryFilterId,
+            @PathVariable(name = "temporary_filter_id") UUID temporaryFilterId,
             @RequestBody FilterCreateDto.TmpFilterInformationRequest requestDto){
         FilterCreateDto.createTmpFilterResponse filterResponse = createService.saveTempFilterToFilter(temporaryFilterId, requestDto);
         return  ResponseEntity.status(HttpStatus.OK).body(filterResponse);

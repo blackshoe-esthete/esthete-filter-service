@@ -18,7 +18,7 @@ public class JwtServiceImpl implements JwtService {
             token = token.replace("Bearer ", "");
 
             Claims claims = Jwts.parser()
-                    .setSigningKey(SECRET_KEY.getBytes())
+                    .setSigningKey(SECRET_KEY)
                     .parseClaimsJws(token)
                     .getBody();
 

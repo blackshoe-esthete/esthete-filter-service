@@ -7,12 +7,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Table(name = "filter_tag")
+@EntityListeners(AuditingEntityListener.class)
 public class FilterTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +23,7 @@ public class FilterTag {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "filter_id", foreignKey = @ForeignKey(name = "filter_tag_fk_filter_id"))
-    private Filter filter; // Filter와 다대일 양방향, 주인
+    private Filter filter; // Filter와 다대일 단방향, 주인
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "temporary_filter_id", foreignKey = @ForeignKey(name = "filter_tag_fk_temporary_filter_id"))
@@ -47,9 +49,15 @@ public class FilterTag {
         //filter.getFilterTags().add(this);
     }
 
+
     public void updateTemporaryFilter(TemporaryFilter temporaryFilter){
         this.temporaryFilter = temporaryFilter;
     }
+
+    public void deleteTemporaryFilter(TemporaryFilter temporaryFilter){
+        this.temporaryFilter = null;
+    }
+
 
     public void updateTag(Tag tag){
         this.tag = tag;

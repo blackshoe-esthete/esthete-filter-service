@@ -1,5 +1,7 @@
 package com.blackshoe.esthete.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.blackshoe.esthete.dto.FilterCreateDto;
 import com.blackshoe.esthete.entity.*;
 import com.blackshoe.esthete.exception.FilterErrorResult;
@@ -8,6 +10,7 @@ import com.blackshoe.esthete.exception.UserErrorResult;
 import com.blackshoe.esthete.exception.UserException;
 import com.blackshoe.esthete.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +19,16 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import java.awt.*;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.List;
 
 import static org.hibernate.query.sqm.tree.SqmNode.log;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class CreateServiceImpl implements CreateService{
 
@@ -33,16 +40,17 @@ public class CreateServiceImpl implements CreateService{
     private final AttributeRepository attributeRepository;
     private final ThumbnailUrlRepository thumbnailUrlRepository;
     private final FilterTagRepository filterTagRepository;
+    private final FilterRepository filterRepository;
 
-    @Value("${cloud.aws.s3.bucket}")
+    @Value("${spring.cloud.aws.s3.bucket}")
     private String BUCKET;
-    @Value("${cloud.aws.cloudfront.distribution-domain}")
+    @Value("${spring.cloud.aws.cloudfront.distribution-domain}")
     private String DISTRIBUTION_DOMAIN;
-    @Value("${cloud.aws.s3.root-directory}")
+    @Value("${spring.cloud.aws.s3.root-directory}")
     private String ROOT_DIRECTORY;
-    @Value("${cloud.aws.s3.thumbnail-directory}")
+    @Value("${spring.cloud.aws.s3.thumbnail-directory}")
     private String THUMBNAIL_DIRECTORY;
-    @Value("${cloud.aws.s3.representation-directory}")
+    @Value("${spring.cloud.aws.s3.representation-directory}")
     private String REPRESENTATION_IMG_DIRECTORY;
 
 
@@ -55,7 +63,7 @@ public class CreateServiceImpl implements CreateService{
         Attribute attribute = Attribute.builder()
                 .brightness(requestDto.getBrightness())
                 .sharpness(requestDto.getSharpness())
-                .exposure(requestDto.getContrast())
+                .exposure(requestDto.getExposure())
                 .contrast(requestDto.getContrast())
                 .saturation(requestDto.getSaturation())
                 .highlights(requestDto.getHighlights())
@@ -75,7 +83,7 @@ public class CreateServiceImpl implements CreateService{
     }
 
     @Override
-    @Transactional
+    @Transactional // rootdirect -> 임시저장UUIDdirect -> thumbnail -> 파일
     public FilterCreateDto.ThumbnailImgUrl uploadFilterThumbnail(MultipartFile thumbnailImg, UUID temporaryFilterId) {
         String s3FilePath = temporaryFilterId + "/" + THUMBNAIL_DIRECTORY;
 
@@ -101,13 +109,14 @@ public class CreateServiceImpl implements CreateService{
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(BUCKET)
                     .key(key)
+                    .contentType(thumbnailImg.getContentType())
                     .build();
-
             amazonS3Client.putObject(putObjectRequest, RequestBody.fromInputStream(thumbnailImg.getInputStream(), thumbnailImg.getSize()));
         } catch (Exception e) {
-            //log.error(e.getMessage());
+            log.error(e.getMessage());
             throw new FilterException(FilterErrorResult.THUMBNAIL_IMG_UPLOAD_FAILED);
         }
+
 
         String s3Url = "https://" + BUCKET + ".s3.amazonaws.com/" + key;
         String cloudFrontUrl = "https://" + DISTRIBUTION_DOMAIN + "/" + key;
@@ -138,7 +147,7 @@ public class CreateServiceImpl implements CreateService{
                 .build();
     }
 
-    @Override
+    @Override // rootdirect -> 임시저장UUIDdirect -> thumbnail -> 파일
     public List<FilterCreateDto.RepresentationImgUrl> uploadFilterRepresentativeImages(List<MultipartFile> representationImgs, UUID temporaryFilterId) {
         List<FilterCreateDto.RepresentationImgUrl> representationImgUrlDtos = new ArrayList<>();
 
@@ -168,6 +177,7 @@ public class CreateServiceImpl implements CreateService{
                 PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                         .bucket(BUCKET)
                         .key(key)
+                        .contentType(representationImg.getContentType())
                         .build();
 
                 amazonS3Client.putObject(putObjectRequest, RequestBody.fromInputStream(representationImg.getInputStream(), representationImg.getSize()));
@@ -208,11 +218,12 @@ public class CreateServiceImpl implements CreateService{
                 .build();
     }
 
-    @Override
+    @Override // 똑같은 버튼 눌렀을때 중복처리되는거 예외처리하기
     public FilterCreateDto.createTmpFilterResponse saveTempFilterInformation(UUID temporaryFilterId, FilterCreateDto.TmpFilterInformationRequest requestDto){
         TemporaryFilter temporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
 
         for(UUID tag : requestDto.getTagList().getTags()){
+            log.info("tag : " + tag);
             FilterTag filterTag = FilterTag.builder().build();
             filterTag.updateTemporaryFilter(temporaryFilter);
             //tag레포에서 객체 찾는다.
@@ -230,15 +241,15 @@ public class CreateServiceImpl implements CreateService{
     }
 
     @Override
+    @Transactional
     public FilterCreateDto.createTmpFilterResponse saveTempFilterToFilter(UUID temporaryFilterId, FilterCreateDto.TmpFilterInformationRequest requestDto){
         TemporaryFilter temporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
 
         for(UUID tag : requestDto.getTagList().getTags()){
+            log.info("tag : " + tag);
             FilterTag filterTag = FilterTag.builder().build();
             filterTag.updateTemporaryFilter(temporaryFilter);
-            //tag레포에서 객체 찾는다.
             Tag savedtag = tagRepository.findByTagId(tag).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TAG));
-            //임시필터태그 테이블에 해당 태그 객체 연결
             filterTag.updateTag(savedtag);
         }
         temporaryFilter.updateTemporaryFilterInfo(requestDto.getName(), requestDto.getDescription());
@@ -268,10 +279,12 @@ public class CreateServiceImpl implements CreateService{
             temporaryFilterTag.updateFilter(filter);
         }
 
-        temporaryFilterRepository.delete(savedTemporaryFilter);
+        Filter savedFilter = filterRepository.save(filter);
+
+
 
         return FilterCreateDto.createTmpFilterResponse.builder()
-                .createdAt(LocalDateTime.now())
+                .createdAt(savedFilter.getCreatedAt())
                 .build();
 
     }

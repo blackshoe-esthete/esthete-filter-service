@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @Getter
 @Table(name = "attribute")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class Attribute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,6 +72,11 @@ public class Attribute {
     public void updateTemporaryFilter(TemporaryFilter temporaryFilter){ //추가함
         this.temporaryFilter = temporaryFilter;
         temporaryFilter.setAttribute(this);
+    }
+
+    public void deleteTemporaryFilter(TemporaryFilter temporaryFilter){
+        this.temporaryFilter = null;
+        temporaryFilter.setAttribute(null);
     }
 
 

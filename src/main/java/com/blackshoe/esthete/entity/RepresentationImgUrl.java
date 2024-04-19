@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Table(name = "representation_img_url")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class RepresentationImgUrl {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +51,11 @@ public class RepresentationImgUrl {
     public void updateTemporaryFilter(TemporaryFilter temporaryFilter){
         this.temporaryFilter = temporaryFilter;
         temporaryFilter.addRepresentationImgUrl(this);
+    }
+
+    public void deleteTemporaryFilter(TemporaryFilter temporaryFilter){
+        this.temporaryFilter = null;
+        temporaryFilter.deleteRepresentationImgUrl(this);
     }
 
     @Builder
