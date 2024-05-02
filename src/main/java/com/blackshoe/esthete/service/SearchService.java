@@ -7,5 +7,5 @@ public interface SearchService {
     Page<FilterDto.SearchFilterResponse> searchAllByFilterNameOrWriterNameContaining(FilterDto.SearchWithKeywordRequest searchRequest, int page, int size);
     Page<FilterDto.SearchFilterResponse> searchAllByFilterNameOrWriterNameContainingAndHasTag(FilterDto.SearchWithKeywordAndTagRequest searchWithTagRequest, int page, int size);
 
-    Page<FilterDto.SearchFilterResponse> searchAllByFilterNameOrWriterNameNotContaining(FilterDto.SearchAllRequest searchRequest, int page, int size);
+    Page<FilterDto.SearchFilterResponse> searchAll(FilterDto.SearchAllRequest searchRequest, int page, int size);
 }

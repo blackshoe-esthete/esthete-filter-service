@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.text.View;
 import java.time.LocalDateTime;
@@ -30,17 +31,17 @@ public class FilterDto {
         private Long likeCount;
         private Boolean isLike;
         private String filterThumbnailUrl;
-
         private String userId;
         private String nickname;
         private String profileImgUrl;
 
-        public SearchFilterResponse(Filter filter, User writer, User viewer, Like like) {
+
+        public SearchFilterResponse(Filter filter, User writer, UUID viewerId, Like like) {
             this.filterId = filter.getFilterId().toString();
             this.filterName = filter.getName();
             this.likeCount = filter.getLikeCount();
             this.filterThumbnailUrl = filter.getThumbnailUrl().getCloudfrontUrl();
-            this.isLike = like.isUserLike(viewer);
+            this.isLike = (like != null && like.isUserLike(viewerId));
             this.userId = writer.getUserId().toString();
             this.nickname = writer.getNickname();
             this.profileImgUrl = writer.getProfileImgUrl();
@@ -140,7 +141,7 @@ public class FilterDto {
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public class AttributeResponse {
+    public static class AttributeResponse {
         private String filterId;
         private Float brightness;
         private Float sharpness;
@@ -157,7 +158,7 @@ public class FilterDto {
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public class ThumbnailResponse {
+    public static class ThumbnailResponse {
         private String filterThumbnailUrl;
     }
 
@@ -167,7 +168,7 @@ public class FilterDto {
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public class RepresentationImgListResponse {
+    public static class RepresentationImgListResponse {
         private List<String> representationImgList;
     }
 
@@ -177,7 +178,7 @@ public class FilterDto {
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public class FilterTagListResponse {
+    public static class FilterTagListResponse {
         private List<String> filterTagList;
     }
     @Data
@@ -186,7 +187,7 @@ public class FilterDto {
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public class FilterDetailsResponse {
+    public static class FilterDetailsResponse {
         private AttributeResponse filterAttributes;
         private String filterThumbnail;
         private RepresentationImgListResponse representationImgList;

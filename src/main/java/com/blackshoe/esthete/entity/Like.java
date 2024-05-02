@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Table(name = "like")
+@Table(name = "likes")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Like {
     @Id
@@ -27,10 +27,10 @@ public class Like {
     private UUID likeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "like_fk_user_id"))
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "likes_fk_user_id"))
     private User user;
 
-    @JoinColumn(name = "user_id", columnDefinition = "BINARY(16)", unique = true)
+    @Column(name = "user_uuid", columnDefinition = "BINARY(16)", unique = true)
     private UUID userId;
 
     @CreatedDate
@@ -50,8 +50,8 @@ public class Like {
         filter.addLike(this);
     }
 
-    public Boolean isUserLike(User user){
-        return this.user.equals(user);
+    public Boolean isUserLike(UUID viewerId){
+        return this.userId.equals(viewerId);
     }
 
     public String getStringId() {
