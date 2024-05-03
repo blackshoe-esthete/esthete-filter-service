@@ -18,8 +18,9 @@ import java.util.*;
 
 @Entity
 @Getter
-@Table(name = "filter")
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "filters")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Filter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,8 +66,8 @@ public class Filter {
 //    @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Purchasing> purchasing = new ArrayList();
 //
-//    @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<FilterTag> filterTags = new ArrayList();
+    @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FilterTag> filterTags = new ArrayList();
 
     @ColumnDefault("0")
     @Column(name = "like_count")
@@ -84,7 +85,10 @@ public class Filter {
     }
 
     @Builder
-    public Filter(){}
+    public Filter(String name, String description){
+        this.name = name;
+        this.description = description;
+    }
 
     public void updateUser(User user){
         this.user = user;

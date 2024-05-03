@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Table(name = "tag")
+@Table(name = "tags")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Tag {

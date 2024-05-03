@@ -2,6 +2,7 @@ package com.blackshoe.esthete.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,7 +17,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@Table(name = "purchasing")
+@Table(name = "purchasings")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Purchasing {
@@ -44,9 +45,23 @@ public class Purchasing {
     @JoinColumn(name = "filter_id", foreignKey = @ForeignKey(name = "purchasing_fk_filter_id"))
     private Filter filter; // Filter와 다대일 양방향, 주인
 
+    @Builder
+    public Purchasing(UUID purchasingId, User user, Filter filter, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.purchasingId = purchasingId;
+        this.user = user;
+        this.filter = filter;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public void updateFilter(Filter filter){
         this.filter = filter;
         //filter.getPurchasing().add(this);
+    }
+
+    public void updateUser(User user){
+        this.user = user;
+        user.addPurchasing(this);
     }
 
     @PrePersist

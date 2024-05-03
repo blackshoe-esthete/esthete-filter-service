@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "filter_tag")
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "filter_tags")
 public class FilterTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +46,7 @@ public class FilterTag {
 
     public void updateFilter(Filter filter){
         this.filter = filter;
-        //filter.getFilterTags().add(this);
+        filter.getFilterTags().add(this);
     }
 
 
