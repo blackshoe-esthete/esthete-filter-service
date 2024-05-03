@@ -21,7 +21,7 @@ public interface CreateService {
 //
 //    FilterCreateDto.createTmpFilterResponse saveTempFilterToFilter(UUID temporaryFilterId, FilterCreateDto.TmpFilterInformationRequest requestDto);
 
-    FilterCreateDto.TmpFilterResponse saveTemporaryFilter(UUID userId, MultipartFile thumbnailImg, List<MultipartFile> representationImgs, FilterCreateDto.CreateTmpFilterRequest requestDto);
+    FilterCreateDto.TmpFilterResponse saveTemporaryFilter(UUID userId, MultipartFile thumbnailImg, List<MultipartFile> representationImgs, FilterCreateDto.CreateFilterRequest requestDto);
 
-    FilterCreateDto.TmpFilterResponse saveFilter(UUID userId, MultipartFile thumbnail, List<MultipartFile> representationImg, FilterCreateDto.CreateTmpFilterRequest requestDto);
+    FilterCreateDto.CreateFilterResponse saveFilter(UUID userId, MultipartFile thumbnail, List<MultipartFile> representationImg, FilterCreateDto.CreateFilterRequest requestDto);
 }

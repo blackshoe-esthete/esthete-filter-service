@@ -72,21 +72,21 @@ public class FilterCreateController {
             @RequestHeader("Authorization") String accessToken,
             @RequestPart(name = "thumbnail") MultipartFile thumbnail,
             @RequestPart(name = "representation_img") List<MultipartFile> representationImg,
-            @RequestBody FilterCreateDto.CreateTmpFilterRequest requestDto){
+            @RequestBody FilterCreateDto.CreateFilterRequest requestDto){
         UUID userId = jwtService.extractUserId(accessToken);
         FilterCreateDto.TmpFilterResponse tmpFilterResponse = createService.saveTemporaryFilter(userId, thumbnail, representationImg, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(tmpFilterResponse);
     }
 
-//    @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-//    public ResponseEntity<FilterCreateDto.TmpFilterResponse> saveFilter(
-//            @RequestHeader("Authorization") String accessToken,
-//            @RequestPart(name = "thumbnail") MultipartFile thumbnail,
-//            @RequestPart(name = "representation_img") List<MultipartFile> representationImg,
-//            @RequestBody FilterCreateDto.CreateTmpFilterRequest requestDto){
-//        UUID userId = jwtService.extractUserId(accessToken);
-//        FilterCreateDto.TmpFilterResponse tmpFilterResponse = createService.saveFilter(userId, thumbnail, representationImg, requestDto);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(tmpFilterResponse);
-//    }
+    @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<FilterCreateDto.CreateFilterResponse> saveFilter(
+            @RequestHeader("Authorization") String accessToken,
+            @RequestPart(name = "thumbnail") MultipartFile thumbnail,
+            @RequestPart(name = "representation_img") List<MultipartFile> representationImg,
+            @RequestBody FilterCreateDto.CreateFilterRequest requestDto){
+        UUID userId = jwtService.extractUserId(accessToken);
+        FilterCreateDto.CreateFilterResponse filterResponse = createService.saveFilter(userId, thumbnail, representationImg, requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(filterResponse);
+    }
 
 }

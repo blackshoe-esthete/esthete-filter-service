@@ -165,17 +165,28 @@ public class FilterCreateDto {
         private List<UUID> tags;
     }
 
+
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class CreateTmpFilterRequest {
+    public static class CreateFilterRequest {
         private FilterAttribute filterAttribute;
-//        private ThumbnailImgUrl thumbnailImgUrl;
-//        private RepresentationImgUrl representationImgUrl;
         private FilterInformation filterInformation;
+        private UUID tmpFilterId;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class CreateFilterResponse {
+        private UUID filterId;
+        private LocalDateTime createdAt;
     }
 
 }
