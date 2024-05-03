@@ -8,4 +8,6 @@ import java.util.*;
 
 public interface FilterTagRepository extends JpaRepository<FilterTag, Long> {
     Optional<List<FilterTag>> findAllByTemporaryFilter(TemporaryFilter temporaryFilter);
+
+    Boolean existsAllByTemporaryFilter(TemporaryFilter findTemporaryFilter);
 }

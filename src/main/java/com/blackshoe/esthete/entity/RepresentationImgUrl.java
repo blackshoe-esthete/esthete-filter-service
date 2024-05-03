@@ -58,6 +58,11 @@ public class RepresentationImgUrl {
         temporaryFilter.deleteRepresentationImgUrl(this);
     }
 
+    public void updateRepresentationImgUrl(String cloudfrontUrl, String s3Url){
+        this.cloudfrontUrl = cloudfrontUrl;
+        this.s3Url = s3Url;
+    }
+
     @Builder
     public RepresentationImgUrl(String cloudfrontUrl, String s3Url) {
         this.cloudfrontUrl = cloudfrontUrl;

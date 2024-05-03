@@ -479,7 +479,7 @@ public class CreateServiceImpl implements CreateService{
                         .key(key)
                         .build();
                 amazonS3Client.deleteObject(deleteObjectRequest);
-                log.info("객체 삭제중");
+                log.info("썸네일 객체 삭제중");
 
             } catch (Exception e) {
                 log.error(e.getMessage());
@@ -594,7 +594,7 @@ public class CreateServiceImpl implements CreateService{
                             .key(key)
                             .build();
                     amazonS3Client.deleteObject(deleteObjectRequest);
-                    log.info("객체 삭제중");
+                    log.info("대표사진 객체 삭제중");
 
                 } catch (Exception e) {
                     log.error(e.getMessage());
@@ -663,15 +663,27 @@ public class CreateServiceImpl implements CreateService{
         if(temporaryFilterId != null && filterId == null){
             TemporaryFilter findTemporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
 
-            for(FilterCreateDto.RepresentationImgUrl representationImgUrl : representationImgUrls){
-                RepresentationImgUrl representationImgUrlEntity = RepresentationImgUrl.builder()
-                        .cloudfrontUrl(representationImgUrl.getCloudfrontUrl())
-                        .s3Url(representationImgUrl.getS3Url())
-                        .build();
+            if(representationImgUrlRepository.existsAllByTemporaryFilter(findTemporaryFilter)) { // 두번째 임시저장 -> update
+                log.info("두번째 임시저장 -> 대표사진 업데이트 중");
+                List<RepresentationImgUrl> findAllRepresentationImgUrl = representationImgUrlRepository.findAllByTemporaryFilter(findTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_REPRESENTATION_IMG_URL));
 
-                representationImgUrlEntity.updateTemporaryFilter(findTemporaryFilter);
-                representationImgUrlRepository.save(representationImgUrlEntity);
+                for(RepresentationImgUrl representationImgUrl : findAllRepresentationImgUrl){
+                    representationImgUrl.updateRepresentationImgUrl(representationImgUrl.getCloudfrontUrl(), representationImgUrl.getS3Url());
+                    representationImgUrlRepository.save(representationImgUrl);
+                }
+            }else{//첫 임시저장
+                log.info("첫 임시저장 -> 대표사진 생성 중");
+                for(FilterCreateDto.RepresentationImgUrl representationImgUrl : representationImgUrls){
+                    RepresentationImgUrl representationImgUrlEntity = RepresentationImgUrl.builder()
+                            .cloudfrontUrl(representationImgUrl.getCloudfrontUrl())
+                            .s3Url(representationImgUrl.getS3Url())
+                            .build();
+
+                    representationImgUrlEntity.updateTemporaryFilter(findTemporaryFilter);
+                    representationImgUrlRepository.save(representationImgUrlEntity);
+                }
             }
+
         }
         else if(filterId != null && temporaryFilterId == null){
             Filter findFilter = filterRepository.findByFilterId(filterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER));
@@ -692,7 +704,10 @@ public class CreateServiceImpl implements CreateService{
     // 똑같은 버튼 눌렀을때 중복처리되는거 예외처리하기
     public void saveTempFilterInformation(UUID temporaryFilterId, FilterCreateDto.CreateFilterRequest requestDto, UUID filterId){
         if(temporaryFilterId != null && filterId == null){
+
             TemporaryFilter findTemporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
+            if(filterTagRepository.existsAllByTemporaryFilter(findTemporaryFilter)) {}
+
 
             for(UUID tag : requestDto.getFilterInformation().getTagList().getTags()){
                 log.info("tag : " + tag);
