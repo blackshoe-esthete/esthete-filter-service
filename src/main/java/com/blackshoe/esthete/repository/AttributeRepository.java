@@ -10,4 +10,6 @@ import java.util.UUID;
 public interface AttributeRepository extends JpaRepository<Attribute, Long> {
 
     Optional<Attribute> findByTemporaryFilter(TemporaryFilter temporaryFilter);
+
+    Boolean existsByTemporaryFilter(TemporaryFilter findTemporaryFilter);
 }

@@ -58,256 +58,6 @@ public class CreateServiceImpl implements CreateService{
     @Value("${spring.cloud.aws.s3.representation-directory}")
     private String REPRESENTATION_IMG_DIRECTORY;
 
-
-//    @Override
-//    public FilterCreateDto.filterAttributeResponse saveFilterAttribute(UUID userId, FilterCreateDto.filterAttributeRequest requestDto){
-//        User user = userRepository.findByUserId(userId).orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
-//
-//        TemporaryFilter tmpFilter = TemporaryFilter.builder().build();
-//
-//        Attribute attribute = Attribute.builder()
-//                .brightness(requestDto.getBrightness())
-//                .sharpness(requestDto.getSharpness())
-//                .exposure(requestDto.getExposure())
-//                .contrast(requestDto.getContrast())
-//                .saturation(requestDto.getSaturation())
-//                .highlights(requestDto.getHighlights())
-//                .shadows(requestDto.getShadows())
-//                .build();
-//
-//        attribute.updateTemporaryFilter(tmpFilter);
-//        tmpFilter.updateUser(user);
-//
-//        TemporaryFilter savedTmpFilter = temporaryFilterRepository.save(tmpFilter);
-//
-//        return FilterCreateDto.filterAttributeResponse.builder()
-//                .tmpFilterId(savedTmpFilter.getTemporaryFilterId())
-//                .createdAt(savedTmpFilter.getCreatedAt())
-//                .build();
-//
-//    }
-//
-//    @Override
-//    @Transactional // rootdirect -> 임시저장UUIDdirect -> thumbnail -> 파일
-//    public FilterCreateDto.ThumbnailImgUrl uploadFilterThumbnail(MultipartFile thumbnailImg, UUID temporaryFilterId) {
-//        String s3FilePath = temporaryFilterId + "/" + THUMBNAIL_DIRECTORY;
-//
-//        FilterCreateDto.ThumbnailImgUrl thumbnailImgUrlDto;
-//
-//        if(thumbnailImg == null || thumbnailImg.isEmpty()) {
-//            thumbnailImgUrlDto = FilterCreateDto.ThumbnailImgUrl.builder()
-//                    .cloudfrontUrl("")
-//                    .s3Url("")
-//                    .build();
-//
-//            return thumbnailImgUrlDto;
-//        }
-//
-//        String fileExtension = thumbnailImg.getOriginalFilename().substring(thumbnailImg.getOriginalFilename().lastIndexOf("."));
-//        String key = ROOT_DIRECTORY + "/" + s3FilePath + "/" + UUID.randomUUID() + fileExtension;
-//
-//        if (thumbnailImg.getSize() > 52428800) {
-//            throw new FilterException(FilterErrorResult.INVALID_THUMBNAIL_IMG_SIZE);
-//        }
-//
-//        try {
-//            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-//                    .bucket(BUCKET)
-//                    .key(key)
-//                    .contentType(thumbnailImg.getContentType())
-//                    .build();
-//            amazonS3Client.putObject(putObjectRequest, RequestBody.fromInputStream(thumbnailImg.getInputStream(), thumbnailImg.getSize()));
-//        } catch (Exception e) {
-//            log.error(e.getMessage());
-//            throw new FilterException(FilterErrorResult.THUMBNAIL_IMG_UPLOAD_FAILED);
-//        }
-//
-//
-//        String s3Url = "https://" + BUCKET + ".s3.amazonaws.com/" + key;
-//        String cloudFrontUrl = "https://" + DISTRIBUTION_DOMAIN + "/" + key;
-//
-//        thumbnailImgUrlDto = FilterCreateDto.ThumbnailImgUrl.builder()
-//                .s3Url(s3Url)
-//                .cloudfrontUrl(cloudFrontUrl)
-//                .build();
-//
-//        return thumbnailImgUrlDto;
-//    }
-//
-//    @Override
-//    public FilterCreateDto.createTmpFilterResponse saveThumbnailImage(FilterCreateDto.ThumbnailImgUrl thumbnailImgUrl, UUID temporaryFilterId){
-//        TemporaryFilter temporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
-//
-//        ThumbnailUrl thumbnailUrl = ThumbnailUrl.builder()
-//                .s3Url(thumbnailImgUrl.getS3Url())
-//                .cloudfrontUrl(thumbnailImgUrl.getCloudfrontUrl())
-//                .build();
-//
-//        thumbnailUrl.updateTemporaryFilter(temporaryFilter);
-//
-//        TemporaryFilter savedTmpFilter = temporaryFilterRepository.save(temporaryFilter);
-//
-//        return FilterCreateDto.createTmpFilterResponse.builder()
-//                .createdAt(savedTmpFilter.getCreatedAt())
-//                .build();
-//    }
-//
-//    @Override // rootdirect -> 임시저장UUIDdirect -> thumbnail -> 파일
-//    public List<FilterCreateDto.RepresentationImgUrl> uploadFilterRepresentativeImages(List<MultipartFile> representationImgs, UUID temporaryFilterId) {
-//        List<FilterCreateDto.RepresentationImgUrl> representationImgUrlDtos = new ArrayList<>();
-//
-//        for(MultipartFile representationImg : representationImgs){
-//            String s3FilePath = temporaryFilterId + "/" + REPRESENTATION_IMG_DIRECTORY;
-//
-//            FilterCreateDto.RepresentationImgUrl representationImgUrlDto;
-//
-//            if(representationImg == null || representationImg.isEmpty()){
-//                representationImgUrlDto = FilterCreateDto.RepresentationImgUrl.builder()
-//                        .cloudfrontUrl("")
-//                        .s3Url("")
-//                        .build();
-//
-//                representationImgUrlDtos.add(representationImgUrlDto);
-//                continue;
-//            }
-//
-//            String fileExtension = representationImg.getOriginalFilename().substring(representationImg.getOriginalFilename().lastIndexOf("."));
-//            String key = ROOT_DIRECTORY + "/" + s3FilePath + "/" + UUID.randomUUID() + fileExtension;
-//
-//            if(representationImg.getSize() > 52428800){
-//                throw new FilterException(FilterErrorResult.INVALID_THUMBNAIL_IMG_SIZE);
-//            }
-//
-//            try {
-//                PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-//                        .bucket(BUCKET)
-//                        .key(key)
-//                        .contentType(representationImg.getContentType())
-//                        .build();
-//
-//                amazonS3Client.putObject(putObjectRequest, RequestBody.fromInputStream(representationImg.getInputStream(), representationImg.getSize()));
-//            } catch (Exception e) {
-//                //log.error(e.getMessage());
-//                throw new FilterException(FilterErrorResult.THUMBNAIL_IMG_UPLOAD_FAILED);
-//            }
-//
-//            String s3Url = "https://" + BUCKET + ".s3.amazonaws.com/" + key;
-//            String cloudFrontUrl = "https://" + DISTRIBUTION_DOMAIN + "/" + key;
-//
-//            representationImgUrlDto = FilterCreateDto.RepresentationImgUrl.builder()
-//                    .s3Url(s3Url)
-//                    .cloudfrontUrl(cloudFrontUrl)
-//                    .build();
-//
-//            representationImgUrlDtos.add(representationImgUrlDto);
-//        }
-//        return representationImgUrlDtos;
-//    }
-//
-//    @Override
-//    public FilterCreateDto.createTmpFilterResponse saveRepresentationImage(List<FilterCreateDto.RepresentationImgUrl> representationImgUrls, UUID temporaryFilterId){
-//        TemporaryFilter temporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
-//
-//        for(FilterCreateDto.RepresentationImgUrl representationImgUrl : representationImgUrls){
-//            RepresentationImgUrl representationImgUrlEntity = RepresentationImgUrl.builder()
-//                    .cloudfrontUrl(representationImgUrl.getCloudfrontUrl())
-//                    .s3Url(representationImgUrl.getS3Url())
-//                    .build();
-//
-//            representationImgUrlEntity.updateTemporaryFilter(temporaryFilter);
-//            representationImgUrlRepository.save(representationImgUrlEntity);
-//        }
-//
-//        return FilterCreateDto.createTmpFilterResponse.builder()
-//                .createdAt(LocalDateTime.now())
-//                .build();
-//    }
-//
-//    @Override // 똑같은 버튼 눌렀을때 중복처리되는거 예외처리하기
-//    public FilterCreateDto.createTmpFilterResponse saveTempFilterInformation(UUID temporaryFilterId, FilterCreateDto.TmpFilterInformationRequest requestDto){
-//        TemporaryFilter temporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
-//
-//        for(UUID tag : requestDto.getTagList().getTags()){
-//            log.info("tag : " + tag);
-//            FilterTag filterTag = FilterTag.builder().build();
-//            filterTag.updateTemporaryFilter(temporaryFilter);
-//            //tag레포에서 객체 찾는다.
-//            Tag savedtag = tagRepository.findByTagId(tag).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TAG));
-//            //임시필터태그 테이블에 해당 태그 객체 연결
-//            filterTag.updateTag(savedtag);
-//        }
-//        temporaryFilter.updateTemporaryFilterInfo(requestDto.getName(), requestDto.getDescription());
-//        TemporaryFilter savedTemporaryFilter = temporaryFilterRepository.save(temporaryFilter);
-//
-//        return FilterCreateDto.createTmpFilterResponse.builder()
-//                .createdAt(savedTemporaryFilter.getCreatedAt())
-//                .build();
-//
-//    }
-//
-//    @Override
-//    @Transactional
-//    public FilterCreateDto.createTmpFilterResponse saveTempFilterToFilter(UUID temporaryFilterId, FilterCreateDto.TmpFilterInformationRequest requestDto){
-//        TemporaryFilter temporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
-//
-//        for(UUID tag : requestDto.getTagList().getTags()){
-//            log.info("tag : " + tag);
-//            FilterTag filterTag = FilterTag.builder().build();
-//            filterTag.updateTemporaryFilter(temporaryFilter);
-//            Tag savedtag = tagRepository.findByTagId(tag).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TAG));
-//            filterTag.updateTag(savedtag);
-//        }
-//        temporaryFilter.updateTemporaryFilterInfo(requestDto.getName(), requestDto.getDescription());
-//        TemporaryFilter savedTemporaryFilter = temporaryFilterRepository.save(temporaryFilter);
-//
-//        User user = userRepository.findByUserId(savedTemporaryFilter.getUser().getUserId()).orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
-//
-//        Filter filter = Filter.builder().build();
-//
-//        filter.updateUser(user);
-//
-//        Attribute attribute = attributeRepository.findByTemporaryFilter(savedTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_ATTRIBUTE));
-//        attribute.updateFilter(filter);
-//
-//        ThumbnailUrl thumbnailUrl = thumbnailUrlRepository.findByTemporaryFilter(savedTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_THUMBNAIL_IMG_URL));
-//        thumbnailUrl.updateFilter(filter);
-//
-//        List<RepresentationImgUrl> representationImgUrls = representationImgUrlRepository.findAllByTemporaryFilter(savedTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_REPRESENTATION_IMG_URL));
-//
-//        for(RepresentationImgUrl representationImgUrl : representationImgUrls) {
-//            representationImgUrl.updateFilter(filter);
-//        }
-//
-//        List<FilterTag> temporaryFilterTags = filterTagRepository.findAllByTemporaryFilter(savedTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER_TAG));
-//
-//        for(FilterTag temporaryFilterTag : temporaryFilterTags) {
-//            temporaryFilterTag.updateFilter(filter);
-//        }
-//
-//        Filter savedFilter = filterRepository.save(filter);
-//
-//        //임시저장 필터 자식들과 연관관계 끊기 -> 데이터 삭제
-//        for(FilterTag temporaryFilterTag : temporaryFilterTags) {
-//            temporaryFilterTag.deleteTemporaryFilter(savedTemporaryFilter);
-//        }
-//
-//        for(RepresentationImgUrl representationImgUrl : representationImgUrls) {
-//            representationImgUrl.deleteTemporaryFilter(savedTemporaryFilter);
-//        }
-//
-//        thumbnailUrl.deleteTemporaryFilter(savedTemporaryFilter);
-//
-//        attribute.deleteTemporaryFilter(savedTemporaryFilter);
-//
-//        savedTemporaryFilter.deleteUser(user);
-//
-//        temporaryFilterRepository.save(savedTemporaryFilter);
-//
-//        return FilterCreateDto.createTmpFilterResponse.builder()
-//                .createdAt(savedFilter.getCreatedAt())
-//                .build();
-//
-//    }
     @Override
     @Transactional // 임시저장
     public FilterCreateDto.TmpFilterResponse saveTemporaryFilter(UUID userId, MultipartFile thumbnailImg, List<MultipartFile> representationImgs, FilterCreateDto.CreateFilterRequest requestDto){
@@ -343,7 +93,6 @@ public class CreateServiceImpl implements CreateService{
             temporaryFilter.updateUser(user);
             temporaryFilterRepository.save(temporaryFilter); // @PrePersist로 인한 널값 방지
 
-            log.info("else 문 : "+String.valueOf(temporaryFilter.getTemporaryFilterId()));
 
             //속성 설정
             saveFilterAttribute(temporaryFilter.getTemporaryFilterId(), requestDto, null);
@@ -378,6 +127,7 @@ public class CreateServiceImpl implements CreateService{
     public FilterCreateDto.CreateFilterResponse saveFilter(UUID userId, MultipartFile thumbnailImg, List<MultipartFile> representationImgs, FilterCreateDto.CreateFilterRequest requestDto){
         Optional<TemporaryFilter> findTemporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(requestDto.getTmpFilterId());
         if(findTemporaryFilter.isPresent()){ // 임시저장 테이블에 해당 필터가 있는 경우 -> 테이블 업데이트 후 삭제하고 필터 테이블로 옮김
+            log.info("임시저장 이력이 있는 저장");
             //내용 업데이트 기능
             //속성 설정
             saveFilterAttribute(findTemporaryFilter.get().getTemporaryFilterId(), requestDto, null);
@@ -402,6 +152,7 @@ public class CreateServiceImpl implements CreateService{
                     .build();
 
         }else{ // 임시저장을 거치치 않고 바로 필터 저장하는 경우 -> 바로 필터 테이블로 저장
+            log.info("바로 필터 저장");
             User user = userRepository.findByUserId(userId).orElseThrow(() -> new UserException(UserErrorResult.NOT_FOUND_USER));
 
             Filter filter = Filter.builder().build();
@@ -431,21 +182,39 @@ public class CreateServiceImpl implements CreateService{
     public void saveFilterAttribute(UUID temporaryFilterId, FilterCreateDto.CreateFilterRequest requestDto, UUID filterId){
         if(temporaryFilterId != null && filterId == null){ // 임시저장테이블에 이미 연결되어 있는 경우, 업데이트 진행
             TemporaryFilter findTemporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
-            Attribute findAttribute = attributeRepository.findByTemporaryFilter(findTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_ATTRIBUTE));
-            //속성 업데이트
-            findAttribute.changeAttribute(requestDto.getFilterAttribute().getBrightness(),
-                    requestDto.getFilterAttribute().getSharpness(),
-                    requestDto.getFilterAttribute().getExposure(),
-                    requestDto.getFilterAttribute().getContrast(),
-                    requestDto.getFilterAttribute().getSaturation(),
-                    requestDto.getFilterAttribute().getHighlights(),
-                    requestDto.getFilterAttribute().getShadows());
 
-            attributeRepository.save(findAttribute);
+            if(attributeRepository.existsByTemporaryFilter(findTemporaryFilter)){ // 두번째 임시저장 경우, 업데이트 진행
+                log.info("두번째 임시저장 경우, 속성 업데이트");
+                Attribute findAttribute = attributeRepository.findByTemporaryFilter(findTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_ATTRIBUTE));
+                //속성 업데이트
+                findAttribute.changeAttribute(requestDto.getFilterAttribute().getBrightness(),
+                        requestDto.getFilterAttribute().getSharpness(),
+                        requestDto.getFilterAttribute().getExposure(),
+                        requestDto.getFilterAttribute().getContrast(),
+                        requestDto.getFilterAttribute().getSaturation(),
+                        requestDto.getFilterAttribute().getHighlights(),
+                        requestDto.getFilterAttribute().getShadows());
+
+                attributeRepository.save(findAttribute);
+            }
+            else{//첫 임시저장
+                log.info("첫 임시저장 경우, 속성 생성");
+                Attribute attribute = Attribute.builder()
+                        .brightness(requestDto.getFilterAttribute().getBrightness())
+                        .sharpness(requestDto.getFilterAttribute().getSharpness())
+                        .exposure(requestDto.getFilterAttribute().getExposure())
+                        .contrast(requestDto.getFilterAttribute().getContrast())
+                        .saturation(requestDto.getFilterAttribute().getSaturation())
+                        .highlights(requestDto.getFilterAttribute().getHighlights())
+                        .shadows(requestDto.getFilterAttribute().getShadows())
+                        .build();
+                attribute.updateTemporaryFilter(findTemporaryFilter);
+                attributeRepository.save(attribute);
+            }
         }
         else if(filterId != null && temporaryFilterId == null){
             Filter findFilter = filterRepository.findByFilterId(filterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER));
-
+            log.info("바로 저장 경우, 속성 생성");
             Attribute attribute = Attribute.builder()
                     .brightness(requestDto.getFilterAttribute().getBrightness())
                     .sharpness(requestDto.getFilterAttribute().getSharpness())
@@ -457,6 +226,7 @@ public class CreateServiceImpl implements CreateService{
                     .build();
 
             attribute.updateFilter(findFilter);
+            attributeRepository.save(attribute);
         }
 
     }
@@ -464,26 +234,28 @@ public class CreateServiceImpl implements CreateService{
     // rootdirect -> 임시저장UUIDdirect -> thumbnail -> 파일
     public FilterCreateDto.ThumbnailImgUrl uploadFilterThumbnail(MultipartFile thumbnailImg, UUID temporaryFilterId, UUID filterId) {
 
-        TemporaryFilter findTemporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
+        if(temporaryFilterId != null && filterId == null){
+            TemporaryFilter findTemporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
+            if(thumbnailUrlRepository.existsByTemporaryFilter(findTemporaryFilter)){ // 기존 임시저장테이블에 썸네일이 존재하면
+                log.info("두번째 임시저장 경우, 썸네일 s3 데이터 지우기");
+                //s3에 데이터 지우기
+                ThumbnailUrl findThumbnailUrl = thumbnailUrlRepository.findByTemporaryFilter(findTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_THUMBNAIL_IMG_URL));
+                String thumbnails3Url = findThumbnailUrl.getS3Url();
 
-        if(thumbnailUrlRepository.existsByTemporaryFilter(findTemporaryFilter)){ // 기존 임시저장테이블에 썸네일이 존재하면
-            //s3에 데이터 지우기
-            ThumbnailUrl findThumbnailUrl = thumbnailUrlRepository.findByTemporaryFilter(findTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_THUMBNAIL_IMG_URL));
-            String thumbnails3Url = findThumbnailUrl.getS3Url();
+                String key = thumbnails3Url.substring(thumbnails3Url.indexOf(ROOT_DIRECTORY));
 
-            String key = thumbnails3Url.substring(thumbnails3Url.indexOf(ROOT_DIRECTORY));
+                try {
+                    DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                            .bucket(BUCKET)
+                            .key(key)
+                            .build();
+                    amazonS3Client.deleteObject(deleteObjectRequest);
+                    log.info("썸네일 객체 삭제중");
 
-            try {
-                DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-                        .bucket(BUCKET)
-                        .key(key)
-                        .build();
-                amazonS3Client.deleteObject(deleteObjectRequest);
-                log.info("썸네일 객체 삭제중");
-
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                throw new FilterException(FilterErrorResult.THUMBNAIL_IMG_DELETE_FAILED);
+                } catch (Exception e) {
+                    log.error(e.getMessage());
+                    throw new FilterException(FilterErrorResult.THUMBNAIL_IMG_DELETE_FAILED);
+                }
             }
         }
 
@@ -548,7 +320,7 @@ public class CreateServiceImpl implements CreateService{
                 ThumbnailUrl thumbnailUrl = thumbnailUrlRepository.findByTemporaryFilter(findTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
                 thumbnailUrl.updateThumbnailUrl(thumbnailImgUrl.getCloudfrontUrl(), thumbnailImgUrl.getS3Url());
                 thumbnailUrlRepository.save(thumbnailUrl);
-                log.info("기존 임시저장 테이블에 해당하는 썸네일 url 업데이트 중");
+                log.info("두번째 임시저장 경우, 썸네일 url 업데이트");
             }
             else{ // 첫번째 임시저장이면
                 ThumbnailUrl thumbnailUrl = ThumbnailUrl.builder()
@@ -559,12 +331,12 @@ public class CreateServiceImpl implements CreateService{
                 thumbnailUrl.updateTemporaryFilter(findTemporaryFilter);
 //                temporaryFilterRepository.save(findTemporaryFilter);
                 thumbnailUrlRepository.save(thumbnailUrl);
-                log.info("첫 임시저장 테이블 썸네일 url 업데이트 중");
+                log.info("첫 임시저장 경우, 썸네일 url 생성");
             }
 
         } else if (filterId != null && temporaryFilterId == null) { // 바로 필터 등록인 경우
             Filter findFilter = filterRepository.findByFilterId(filterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER));
-
+            log.info("바로 저장 경우, 썸네일 url 생성");
             ThumbnailUrl thumbnailUrl = ThumbnailUrl.builder()
                     .s3Url(thumbnailImgUrl.getS3Url())
                     .cloudfrontUrl(thumbnailImgUrl.getCloudfrontUrl())
@@ -578,27 +350,30 @@ public class CreateServiceImpl implements CreateService{
 
     // rootdirect -> 임시저장UUIDdirect -> thumbnail -> 파일
     public List<FilterCreateDto.RepresentationImgUrl> uploadFilterRepresentativeImages(List<MultipartFile> representationImgs, UUID temporaryFilterId, UUID filterId) {
-        TemporaryFilter findTemporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
+        if(temporaryFilterId != null && filterId == null){
+            TemporaryFilter findTemporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
 
-        if(representationImgUrlRepository.existsAllByTemporaryFilter(findTemporaryFilter)){
-            List<RepresentationImgUrl> findAllRepresentationImgUrl = representationImgUrlRepository.findAllByTemporaryFilter(findTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_REPRESENTATION_IMG_URL));
+            if(representationImgUrlRepository.existsAllByTemporaryFilter(findTemporaryFilter)){
+                List<RepresentationImgUrl> findAllRepresentationImgUrl = representationImgUrlRepository.findAllByTemporaryFilter(findTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_REPRESENTATION_IMG_URL));
+                log.info("두번째 임시저장 경우, 대표사진 s3 삭제");
 
-            for(RepresentationImgUrl representationImgUrl : findAllRepresentationImgUrl){
-                String representationImgS3Url = representationImgUrl.getS3Url();
+                for(RepresentationImgUrl representationImgUrl : findAllRepresentationImgUrl){
+                    String representationImgS3Url = representationImgUrl.getS3Url();
 
-                String key = representationImgS3Url.substring(representationImgS3Url.indexOf(ROOT_DIRECTORY));
+                    String key = representationImgS3Url.substring(representationImgS3Url.indexOf(ROOT_DIRECTORY));
 
-                try {
-                    DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-                            .bucket(BUCKET)
-                            .key(key)
-                            .build();
-                    amazonS3Client.deleteObject(deleteObjectRequest);
-                    log.info("대표사진 객체 삭제중");
+                    try {
+                        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                                .bucket(BUCKET)
+                                .key(key)
+                                .build();
+                        amazonS3Client.deleteObject(deleteObjectRequest);
+                        log.info("대표사진 객체 삭제중");
 
-                } catch (Exception e) {
-                    log.error(e.getMessage());
-                    throw new FilterException(FilterErrorResult.THUMBNAIL_IMG_DELETE_FAILED);
+                    } catch (Exception e) {
+                        log.error(e.getMessage());
+                        throw new FilterException(FilterErrorResult.THUMBNAIL_IMG_DELETE_FAILED);
+                    }
                 }
             }
         }
@@ -664,28 +439,26 @@ public class CreateServiceImpl implements CreateService{
             TemporaryFilter findTemporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
 
             if(representationImgUrlRepository.existsAllByTemporaryFilter(findTemporaryFilter)) { // 두번째 임시저장 -> update
-                log.info("두번째 임시저장 -> 대표사진 업데이트 중");
+                log.info("두번째 임시저장 경우, 대표사진 url db 삭제");
                 List<RepresentationImgUrl> findAllRepresentationImgUrl = representationImgUrlRepository.findAllByTemporaryFilter(findTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_REPRESENTATION_IMG_URL));
+                representationImgUrlRepository.deleteAll(findAllRepresentationImgUrl);
 
-                for(RepresentationImgUrl representationImgUrl : findAllRepresentationImgUrl){
-                    representationImgUrl.updateRepresentationImgUrl(representationImgUrl.getCloudfrontUrl(), representationImgUrl.getS3Url());
-                    representationImgUrlRepository.save(representationImgUrl);
-                }
-            }else{//첫 임시저장
-                log.info("첫 임시저장 -> 대표사진 생성 중");
-                for(FilterCreateDto.RepresentationImgUrl representationImgUrl : representationImgUrls){
-                    RepresentationImgUrl representationImgUrlEntity = RepresentationImgUrl.builder()
-                            .cloudfrontUrl(representationImgUrl.getCloudfrontUrl())
-                            .s3Url(representationImgUrl.getS3Url())
-                            .build();
+            }
 
-                    representationImgUrlEntity.updateTemporaryFilter(findTemporaryFilter);
-                    representationImgUrlRepository.save(representationImgUrlEntity);
-                }
+            log.info("대표사진 url db 생성 중");
+            for(FilterCreateDto.RepresentationImgUrl representationImgUrl : representationImgUrls) {
+                RepresentationImgUrl representationImgUrlEntity = RepresentationImgUrl.builder()
+                        .cloudfrontUrl(representationImgUrl.getCloudfrontUrl())
+                        .s3Url(representationImgUrl.getS3Url())
+                        .build();
+
+                representationImgUrlEntity.updateTemporaryFilter(findTemporaryFilter);
+                representationImgUrlRepository.save(representationImgUrlEntity);
             }
 
         }
         else if(filterId != null && temporaryFilterId == null){
+            log.info("바로 저장 경우, 대표사진 url db에 생성");
             Filter findFilter = filterRepository.findByFilterId(filterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER));
 
             for(FilterCreateDto.RepresentationImgUrl representationImgUrl : representationImgUrls){
@@ -706,7 +479,11 @@ public class CreateServiceImpl implements CreateService{
         if(temporaryFilterId != null && filterId == null){
 
             TemporaryFilter findTemporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_TEMPORARY_FILTER));
-            if(filterTagRepository.existsAllByTemporaryFilter(findTemporaryFilter)) {}
+            if(filterTagRepository.existsAllByTemporaryFilter(findTemporaryFilter)) {
+                log.info("두번째 임시저장 경우, 필터태그 삭제");
+                List<FilterTag> filterTags = filterTagRepository.findAllByTemporaryFilter(findTemporaryFilter).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER_TAG));
+                filterTagRepository.deleteAll(filterTags);
+            }
 
 
             for(UUID tag : requestDto.getFilterInformation().getTagList().getTags()){
@@ -719,12 +496,13 @@ public class CreateServiceImpl implements CreateService{
                 filterTag.updateTag(savedtag);
             }
             findTemporaryFilter.updateTemporaryFilterInfo(requestDto.getFilterInformation().getName(), requestDto.getFilterInformation().getDescription());
+
             temporaryFilterRepository.save(findTemporaryFilter);
+
         } else if (filterId != null && temporaryFilterId == null) {
             Filter findFilter = filterRepository.findByFilterId(filterId).orElseThrow(() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER));
-
+            log.info("바로 저장 경우, 필터태그 생성");
             for(UUID tag : requestDto.getFilterInformation().getTagList().getTags()){
-                log.info("tag : " + tag);
                 FilterTag filterTag = FilterTag.builder().build();
                 filterTag.updateFilter(findFilter);
 
@@ -768,6 +546,8 @@ public class CreateServiceImpl implements CreateService{
 
         filterRepository.save(filter);
 
+
+        log.info("임시저장 필터 옮기기, 자식들과 연관관계 끊기 -> 데이터 삭제");
         //임시저장 필터 자식들과 연관관계 끊기 -> 데이터 삭제
         for(FilterTag temporaryFilterTag : temporaryFilterTags) {
             temporaryFilterTag.deleteTemporaryFilter(temporaryFilter);

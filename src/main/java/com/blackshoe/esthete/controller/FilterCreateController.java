@@ -24,48 +24,6 @@ public class FilterCreateController {
     private final CreateService createService;
     private final JwtService jwtService;
 
-//    @PostMapping("/attribute")
-//    public ResponseEntity<FilterCreateDto.filterAttributeResponse> saveFilterAttribute(
-//            @RequestHeader("Authorization") String accessToken,
-//            @RequestBody FilterCreateDto.filterAttributeRequest requestDto){
-//        UUID userId = jwtService.extractUserId(accessToken);
-//        FilterCreateDto.filterAttributeResponse filterAttributeResponse = createService.saveFilterAttribute(userId, requestDto);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(filterAttributeResponse);
-//    }
-//
-//    @PostMapping(value = "/{temporaryFilterId}/thumbnail", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-//    public ResponseEntity<FilterCreateDto.createTmpFilterResponse> saveFilterThumnail(
-//            @PathVariable UUID temporaryFilterId,
-//            @RequestPart(name = "thumbnail") MultipartFile thumbnail){
-//        FilterCreateDto.ThumbnailImgUrl thumbnailImgUrl = createService.uploadFilterThumbnail(thumbnail, temporaryFilterId);
-//        FilterCreateDto.createTmpFilterResponse tmpFilterResponse = createService.saveThumbnailImage(thumbnailImgUrl, temporaryFilterId);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(tmpFilterResponse);
-//    }
-//
-//    @PostMapping(value = "/{temporary_filter_id}/representation", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-//    public ResponseEntity<FilterCreateDto.createTmpFilterResponse> saveFilterRepresentation(
-//            @PathVariable(name = "temporary_filter_id") UUID temporaryFilterId,
-//            @RequestPart(name = "representation_img") List<MultipartFile> representationImg){
-//        List<FilterCreateDto.RepresentationImgUrl> representationImgUrls = createService.uploadFilterRepresentativeImages(representationImg, temporaryFilterId);
-//        FilterCreateDto.createTmpFilterResponse representationImageResponse = createService.saveRepresentationImage(representationImgUrls, temporaryFilterId);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(representationImageResponse);
-//    }
-//
-//    @PostMapping("/{temporary_filter_id}/information")
-//    ResponseEntity<FilterCreateDto.createTmpFilterResponse> saveTmpFilterInformation(
-//            @PathVariable(name = "temporary_filter_id") UUID temporaryFilterId,
-//            @RequestBody FilterCreateDto.TmpFilterInformationRequest requestDto){
-//        FilterCreateDto.createTmpFilterResponse tmpFilterResponse = createService.saveTempFilterInformation(temporaryFilterId, requestDto);
-//        return  ResponseEntity.status(HttpStatus.OK).body(tmpFilterResponse);
-//    }
-//
-//    @PostMapping("/{temporary_filter_id}/completion")
-//    ResponseEntity<FilterCreateDto.createTmpFilterResponse> completeFilterCreation(
-//            @PathVariable(name = "temporary_filter_id") UUID temporaryFilterId,
-//            @RequestBody FilterCreateDto.TmpFilterInformationRequest requestDto){
-//        FilterCreateDto.createTmpFilterResponse filterResponse = createService.saveTempFilterToFilter(temporaryFilterId, requestDto);
-//        return  ResponseEntity.status(HttpStatus.OK).body(filterResponse);
-//    }
 
     @PostMapping(value = "/temporary_filter", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<FilterCreateDto.TmpFilterResponse> saveTemporaryFilter(
