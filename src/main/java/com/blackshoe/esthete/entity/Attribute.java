@@ -90,4 +90,14 @@ public class Attribute {
         this.highlights = highlights;
         this.shadows = shadows;
     }
+
+    public void changeAttribute(Float brightness, Float sharpness, Float exposure, Float contrast, Float saturation, Float highlights, Float shadows){
+        this.brightness = brightness;
+        this.sharpness = sharpness;
+        this.exposure = exposure;
+        this.contrast = contrast;
+        this.saturation = saturation;
+        this.highlights = highlights;
+        this.shadows = shadows;
+    }
 }

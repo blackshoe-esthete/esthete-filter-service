@@ -11,4 +11,5 @@ import java.util.UUID;
 
 public interface RepresentationImgUrlRepository extends JpaRepository<RepresentationImgUrl, Long> {
     Optional<List<RepresentationImgUrl>> findAllByTemporaryFilter(TemporaryFilter temporaryFilter);
+    Boolean existsAllByTemporaryFilter(TemporaryFilter temporaryFilter);
 }

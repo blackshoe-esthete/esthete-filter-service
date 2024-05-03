@@ -11,4 +11,7 @@ import java.util.UUID;
 
 public interface ThumbnailUrlRepository extends JpaRepository<ThumbnailUrl, Long> {
     Optional<ThumbnailUrl> findByTemporaryFilter(TemporaryFilter temporaryFilter);
+
+
+    Boolean existsByTemporaryFilter(TemporaryFilter temporaryFilter);
 }

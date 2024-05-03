@@ -9,4 +9,6 @@ import java.util.UUID;
 
 public interface TemporaryFilterRepository extends JpaRepository<TemporaryFilter, Long> {
     Optional<TemporaryFilter> findByTemporaryFilterId(UUID temporaryFilterId);
+    Boolean existsByTemporaryFilterId(UUID temporaryFilterId);
+
 }

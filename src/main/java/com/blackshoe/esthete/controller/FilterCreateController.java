@@ -72,7 +72,7 @@ public class FilterCreateController {
             @RequestHeader("Authorization") String accessToken,
             @RequestPart(name = "thumbnail") MultipartFile thumbnail,
             @RequestPart(name = "representation_img") List<MultipartFile> representationImg,
-            @RequestBody FilterCreateDto.CreateFilterRequest requestDto){
+            @RequestPart FilterCreateDto.CreateFilterRequest requestDto){
         UUID userId = jwtService.extractUserId(accessToken);
         FilterCreateDto.TmpFilterResponse tmpFilterResponse = createService.saveTemporaryFilter(userId, thumbnail, representationImg, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(tmpFilterResponse);
@@ -83,8 +83,9 @@ public class FilterCreateController {
             @RequestHeader("Authorization") String accessToken,
             @RequestPart(name = "thumbnail") MultipartFile thumbnail,
             @RequestPart(name = "representation_img") List<MultipartFile> representationImg,
-            @RequestBody FilterCreateDto.CreateFilterRequest requestDto){
+            @RequestPart FilterCreateDto.CreateFilterRequest requestDto){
         UUID userId = jwtService.extractUserId(accessToken);
+        log.info("------------------");
         FilterCreateDto.CreateFilterResponse filterResponse = createService.saveFilter(userId, thumbnail, representationImg, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(filterResponse);
     }

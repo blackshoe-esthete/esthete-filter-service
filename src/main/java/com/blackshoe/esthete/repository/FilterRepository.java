@@ -3,11 +3,15 @@ package com.blackshoe.esthete.repository;
 import com.blackshoe.esthete.dto.FilterDto;
 import com.blackshoe.esthete.entity.Filter;
 import com.blackshoe.esthete.entity.Tag;
+import com.blackshoe.esthete.entity.TemporaryFilter;
 import com.blackshoe.esthete.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.Optional;
+import java.util.UUID;
 
 public interface FilterRepository extends JpaRepository<Filter, Long>{
 
@@ -32,4 +36,7 @@ public interface FilterRepository extends JpaRepository<Filter, Long>{
             " FROM Filter f JOIN f.user u LEFT JOIN Like l ON f.filterId = l.filter.filterId AND l.user = :viewer" +
             " ORDER BY f.viewCount DESC, f.createdAt DESC")
     Page<FilterDto.SearchFilterResponse> searchAllByFilterNameOrWriterNameContaining(User viewer, Pageable pageable);
+
+
+    Optional<Filter> findByFilterId(UUID filterId);
 }

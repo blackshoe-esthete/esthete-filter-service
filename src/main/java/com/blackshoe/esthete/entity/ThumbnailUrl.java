@@ -49,9 +49,13 @@ public class ThumbnailUrl {
         temporaryFilter.setThumbnailUrl(null);
     }
 
+    public void updateThumbnailUrl(String cloudfrontUrl, String s3Url){
+        this.cloudfrontUrl = cloudfrontUrl;
+        this.s3Url = s3Url;
+    }
+
     @Builder
     public ThumbnailUrl(String cloudfrontUrl, String s3Url) {
-        //this.thumbnailUrlId = thumbnailUrlId;
         this.cloudfrontUrl = cloudfrontUrl;
         this.s3Url = s3Url;
     }

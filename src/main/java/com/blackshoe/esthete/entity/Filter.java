@@ -123,4 +123,9 @@ public class Filter {
     public String getStringId() {
         return this.filterId.toString();
     }
+
+    public void updateFilterInfo(String name, String description){
+        this.name = name;
+        this.description = description;
+    }
 }
