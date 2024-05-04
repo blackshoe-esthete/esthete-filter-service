@@ -18,11 +18,7 @@ public class JwtServiceImpl implements JwtService {
             token = token.replace("Bearer ", "");
 
             Claims claims = Jwts.parser()
-<<<<<<< HEAD
-                    .setSigningKey(SECRET_KEY)
-=======
                     .setSigningKey(SECRET_KEY.getBytes())
->>>>>>> 529f1f3f26572dc140e5b44b95c32c6b23d6b217
                     .parseClaimsJws(token)
                     .getBody();
 
@@ -33,8 +29,5 @@ public class JwtServiceImpl implements JwtService {
             throw new SignatureException("유효하지 않은 토큰입니다.");
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 529f1f3f26572dc140e5b44b95c32c6b23d6b217
+
