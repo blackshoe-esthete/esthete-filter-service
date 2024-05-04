@@ -1,10 +1,5 @@
 package com.blackshoe.esthete.service;
 
-//import com.amazonaws.services.s3.AmazonS3Client;
-//import com.amazonaws.services.s3.model.DeleteObjectRequest;
-//import com.amazonaws.services.s3.model.DeleteObjectsRequest;
-//import com.amazonaws.services.s3.model.DeleteObjectsResult;
-//import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.blackshoe.esthete.dto.FilterCreateDto;
 import com.blackshoe.esthete.entity.*;
 import com.blackshoe.esthete.exception.FilterErrorResult;
@@ -23,14 +18,8 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
-import java.awt.*;
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
-import java.util.function.Consumer;
-
-import static org.hibernate.query.sqm.tree.SqmNode.log;
 
 @Service
 @Slf4j
