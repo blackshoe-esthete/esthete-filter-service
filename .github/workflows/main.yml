@@ -89,4 +89,5 @@ jobs:
                 -e S3_BUCKET_NAME='${{ secrets.S3_BUCKET_NAME }}' \
                 -e SPRING_DATASOURCE_DDL_AUTO='${{ secrets.SPRING_DATASOURCE_DDL_AUTO }}' \
                 ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_FILTER_VER }}
+            sleep(15)
             sudo docker image prune -af
