@@ -84,6 +84,9 @@ jobs:
                 -e DB_USERNAME='${{ secrets.DB_USERNAME }}' \
                 -e INITIAL_DB='${{ secrets.INITIAL_DB }}' \
                 -e JWT_SECRET='${{ secrets.JWT_SECRET }}' \
+                -e S3_ACCESS_KEY='${{ secrets.S3_ACCESS_KEY }}' \
+                -e S3_SECRET_KEY='${{ secrets.S3_SECRET_KEY }}' \
+                -e S3_BUCKET_NAME='${{ secrets.S3_BUCKET_NAME }}' \
                 -e SPRING_DATASOURCE_DDL_AUTO='${{ secrets.SPRING_DATASOURCE_DDL_AUTO }}' \
                 ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_VERSION }}
             sudo docker image prune -af
