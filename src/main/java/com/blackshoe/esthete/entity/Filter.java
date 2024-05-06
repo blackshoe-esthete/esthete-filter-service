@@ -11,12 +11,14 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.hibernate.type.SqlTypes;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "filters")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Filter {
@@ -82,6 +84,12 @@ public class Filter {
         }
     }
 
+    @Builder
+    public Filter(String name, String description){
+        this.name = name;
+        this.description = description;
+    }
+
     public void updateUser(User user){
         this.user = user;
         user.addFilter(this);
@@ -94,6 +102,7 @@ public class Filter {
     public void addRepresentationImgUrl(RepresentationImgUrl representationImgUrl){
         this.representationImgUrls.add(representationImgUrl);
     }
+
 
     public void addLike(Like like){
         this.likes.add(like);
@@ -117,5 +126,10 @@ public class Filter {
 
     public String getStringId() {
         return this.filterId.toString();
+    }
+
+    public void updateFilterInfo(String name, String description){
+        this.name = name;
+        this.description = description;
     }
 }

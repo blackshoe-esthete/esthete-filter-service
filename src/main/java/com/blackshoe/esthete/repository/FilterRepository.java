@@ -3,6 +3,7 @@ package com.blackshoe.esthete.repository;
 import com.blackshoe.esthete.dto.FilterDto;
 import com.blackshoe.esthete.entity.Filter;
 import com.blackshoe.esthete.entity.Tag;
+import com.blackshoe.esthete.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
+
 
 @Repository
 public interface FilterRepository extends JpaRepository<Filter, Long>{
@@ -36,6 +38,7 @@ public interface FilterRepository extends JpaRepository<Filter, Long>{
     Page<FilterDto.SearchFilterResponse> searchAllByFilterNameOrWriterNameContainingAndHasTag(@Param("viewerId") UUID viewerId, @Param("tag") Tag tag, @Param("keyword") String keyword, Pageable pageable);
 
     //keyword is null
+
     @Query("SELECT new com.blackshoe.esthete.dto.FilterDto$SearchFilterResponse(" +
             "f, u, :viewerId, l) " +
             "FROM Filter f " +

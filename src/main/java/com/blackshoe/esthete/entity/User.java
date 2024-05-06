@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.hibernate.type.SqlTypes;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -17,6 +18,7 @@ import java.util.*;
 @Getter
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +60,10 @@ public class User {
     }
 
     public void addTemporaryFilter(TemporaryFilter temporaryFilter){
+        this.temporaryFilters.add(temporaryFilter);
+    }
+
+    public void deleteTemporaryFilter(TemporaryFilter temporaryFilter) {
         this.temporaryFilters.add(temporaryFilter);
     }
 

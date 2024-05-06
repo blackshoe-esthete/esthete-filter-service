@@ -11,6 +11,7 @@ import com.blackshoe.esthete.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -22,6 +23,7 @@ public class PurchasingServiceImpl implements PurchasingService {
     private final UserRepository userRepository;
     private final FilterRepository filterRepository;
     @Override
+    @Transactional
     public FilterDto.PurchaseResponse purchaseFilter(FilterDto.PurchaseRequest purchaseRequest) {
 
         User user = userRepository.findByUserId(purchaseRequest.getUserId()).orElseThrow

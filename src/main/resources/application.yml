@@ -10,8 +10,6 @@ spring:
   sql:
     init:
       mode: always
-  jwt:
-    secret: ${JWT_SECRET}
   jpa:
     defer-datasource-initialization: true
 
@@ -22,6 +20,26 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+  jwt:
+    secret: ${JWT_SECRET}
+  cloud:
+    aws:
+      credentials:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+      s3:
+        bucket: ${S3_BUCKET}
+        root-directory: ${S3_ROOT_DIRECTORY}
+        thumbnail-directory: ${S3_THUMBNAIL_DIRECTORY}
+        representation-directory: ${S3_REPRESENTATION_DIRECTORY}
+      region:
+        static: ${S3_BUCKET_REGION}
+      stack:
+        auto: false
+      cloudfront:
+        distribution-domain: ${CLOUDFRONT_DISTRIBUTION_DOMAIN}
         jdbc:
           time_zone: Asia/Seoul
           show_sql: true
@@ -38,3 +56,4 @@ logging:
       hibernate:
         SQL: DEBUG
         type: trace
+
