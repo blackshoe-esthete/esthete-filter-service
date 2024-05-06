@@ -27,6 +27,10 @@ dependencies {
 
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 
+
+	implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.1")
+	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:3.0.1'
+
 	//jwt
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
@@ -36,6 +40,7 @@ dependencies {
 	// swagger
 	implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: '2.2.20'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
 
 	// JAXB API
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'

@@ -13,6 +13,7 @@ import com.blackshoe.esthete.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +26,7 @@ public class FilterServiceImpl implements FilterService{
     private final UserRepository userRepository;
     private final FilterRepository filterRepository;
     @Override
+    @Transactional
     public FilterDto.CreatedListResponse getCreatedFilterList(UUID userId) {
         User user = userRepository.findByUserId(userId).orElseThrow
                 (() -> new UserException(UserErrorResult.NOT_FOUND_USER));
@@ -45,6 +47,7 @@ public class FilterServiceImpl implements FilterService{
     }
 
     @Override
+    @Transactional
     public FilterDto.PurchasedListResponse getPurchasedFilterList(UUID userId) {
 
         User user = userRepository.findByUserId(userId).orElseThrow
@@ -66,6 +69,7 @@ public class FilterServiceImpl implements FilterService{
     }
 
     @Override
+    @Transactional
     public FilterDto.AttributeResponse getFilterAttributes(UUID filterId) {
 
         Filter filter = filterRepository.findByFilterId(filterId).orElseThrow
@@ -89,6 +93,7 @@ public class FilterServiceImpl implements FilterService{
     }
 
     @Override
+    @Transactional
     public FilterDto.ThumbnailResponse getFilterThumbnail(UUID filterId) {
 
         Filter filter = filterRepository.findByFilterId(filterId).orElseThrow
@@ -102,6 +107,7 @@ public class FilterServiceImpl implements FilterService{
     }
 
     @Override
+    @Transactional
     public FilterDto.RepresentationImgListResponse getFilterRepresentations(UUID filterId) {
 
         Filter filter = filterRepository.findByFilterId(filterId).orElseThrow
@@ -119,6 +125,7 @@ public class FilterServiceImpl implements FilterService{
     }
 
     @Override
+    @Transactional
     public FilterDto.FilterDetailsResponse getDetails(UUID filterId, UUID userId) {
 
         Filter filter = filterRepository.findByFilterId(filterId).orElseThrow
