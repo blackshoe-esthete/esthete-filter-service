@@ -94,5 +94,6 @@ jobs:
                 -e S3_REPRESENTATION_DIRECTORY='${{ secrets.S3_REPRESENTATION_DIRECTORY }}' \
                 -e S3_REGION='${{ secrets.S3_REGION }}' \
                 ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_FILTER_VER }}
-            sleep 15 
+            sleep 15
             sudo docker image prune -af
+            sudo docker images ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }} | grep -v ${{ env.NEXT_FILTER_VER }} | awk '{print $3}' | xargs -r sudo docker rmi
