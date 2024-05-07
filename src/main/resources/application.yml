@@ -21,7 +21,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
   jwt:
     secret: ${JWT_SECRET}
   cloud:
@@ -35,7 +35,7 @@ spring:
         thumbnail-directory: ${S3_THUMBNAIL_DIRECTORY}
         representation-directory: ${S3_REPRESENTATION_DIRECTORY}
       region:
-        static: ${S3_BUCKET_REGION}
+        static: ${S3_REGION}
       stack:
         auto: false
       cloudfront:
