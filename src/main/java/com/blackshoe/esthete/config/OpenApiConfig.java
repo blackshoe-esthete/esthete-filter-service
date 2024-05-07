@@ -31,6 +31,7 @@ public class OpenApiConfig {
                 .security(Arrays.asList(securityRequirement))
                 .servers(Arrays.asList(
                         //new io.swagger.v3.oas.models.servers.Server().url("https://user-api.esthete.com").description("Production server"),
+                        new io.swagger.v3.oas.models.servers.Server().url("http://13.125.149.63:8040").description("Test Server"),
                         new io.swagger.v3.oas.models.servers.Server().url("http://localhost:8040").description("Local development server")
                 ));
     }
