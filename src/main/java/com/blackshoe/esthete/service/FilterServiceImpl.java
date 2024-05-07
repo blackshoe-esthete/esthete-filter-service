@@ -85,8 +85,8 @@ public class FilterServiceImpl implements FilterService{
                 .saturation(attribute.getSaturation())
                 .exposure(attribute.getExposure())
                 .sharpness(attribute.getSharpness())
-                .highlights(attribute.getHighlights())
-                .shadows(attribute.getShadows())
+                .hue(attribute.getHue())
+                .temperature(attribute.getTemperature())
                 .build();
 
         return filterAttributesResponse;
@@ -158,8 +158,8 @@ public class FilterServiceImpl implements FilterService{
                 .saturation(attribute.getSaturation())
                 .exposure(attribute.getExposure())
                 .sharpness(attribute.getSharpness())
-                .highlights(attribute.getHighlights())
-                .shadows(attribute.getShadows())
+                .hue(attribute.getHue())
+                .temperature(attribute.getTemperature())
                 .build();
 
         FilterDto.FilterDetailsResponse filterDetailResponse = FilterDto.FilterDetailsResponse.builder()

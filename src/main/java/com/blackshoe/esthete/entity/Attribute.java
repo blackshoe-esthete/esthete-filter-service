@@ -42,11 +42,11 @@ public class Attribute {
     @Column(name = "saturation")
     private Float saturation;
 
-    @Column(name = "highlights")
-    private Float highlights;
+    @Column(name = "hue")
+    private Float hue;
 
-    @Column(name = "shadows")
-    private Float shadows;
+    @Column(name = "temperature")
+    private Float temperature;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, length = 20)
@@ -81,23 +81,23 @@ public class Attribute {
 
 
     @Builder
-    public Attribute(Float brightness, Float sharpness, Float exposure, Float contrast, Float saturation, Float highlights, Float shadows){
+    public Attribute(Float brightness, Float sharpness, Float exposure, Float contrast, Float saturation, Float hue, Float temperature){
         this.brightness = brightness;
         this.sharpness = sharpness;
         this.exposure = exposure;
         this.contrast = contrast;
         this.saturation = saturation;
-        this.highlights = highlights;
-        this.shadows = shadows;
+        this.hue = hue;
+        this.temperature = temperature;
     }
 
-    public void changeAttribute(Float brightness, Float sharpness, Float exposure, Float contrast, Float saturation, Float highlights, Float shadows){
+    public void changeAttribute(Float brightness, Float sharpness, Float exposure, Float contrast, Float saturation, Float hue, Float temperature){
         this.brightness = brightness;
         this.sharpness = sharpness;
         this.exposure = exposure;
         this.contrast = contrast;
         this.saturation = saturation;
-        this.highlights = highlights;
-        this.shadows = shadows;
+        this.hue = hue;
+        this.temperature = temperature;
     }
 }
