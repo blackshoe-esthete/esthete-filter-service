@@ -181,8 +181,8 @@ public class CreateServiceImpl implements CreateService{
                         requestDto.getFilterAttribute().getExposure(),
                         requestDto.getFilterAttribute().getContrast(),
                         requestDto.getFilterAttribute().getSaturation(),
-                        requestDto.getFilterAttribute().getHighlights(),
-                        requestDto.getFilterAttribute().getShadows());
+                        requestDto.getFilterAttribute().getHue(),
+                        requestDto.getFilterAttribute().getTemperature());
 
                 attributeRepository.save(findAttribute);
             }
@@ -194,8 +194,8 @@ public class CreateServiceImpl implements CreateService{
                         .exposure(requestDto.getFilterAttribute().getExposure())
                         .contrast(requestDto.getFilterAttribute().getContrast())
                         .saturation(requestDto.getFilterAttribute().getSaturation())
-                        .highlights(requestDto.getFilterAttribute().getHighlights())
-                        .shadows(requestDto.getFilterAttribute().getShadows())
+                        .hue(requestDto.getFilterAttribute().getHue())
+                        .temperature(requestDto.getFilterAttribute().getTemperature())
                         .build();
                 attribute.updateTemporaryFilter(findTemporaryFilter);
                 attributeRepository.save(attribute);
@@ -210,8 +210,8 @@ public class CreateServiceImpl implements CreateService{
                     .exposure(requestDto.getFilterAttribute().getExposure())
                     .contrast(requestDto.getFilterAttribute().getContrast())
                     .saturation(requestDto.getFilterAttribute().getSaturation())
-                    .highlights(requestDto.getFilterAttribute().getHighlights())
-                    .shadows(requestDto.getFilterAttribute().getShadows())
+                    .hue(requestDto.getFilterAttribute().getHue())
+                    .temperature(requestDto.getFilterAttribute().getTemperature())
                     .build();
 
             attribute.updateFilter(findFilter);
