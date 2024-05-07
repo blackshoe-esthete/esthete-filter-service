@@ -12,87 +12,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class FilterCreateDto {
-//    @Data
-//    @Builder
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public static class filterAttributeRequest {
-//        private Float brightness;
-//        private Float sharpness;
-//        private Float exposure;
-//        private Float contrast;
-//        private Float saturation;
-//        private Float highlights;
-//        private Float shadows;
-//    }
-//
-//    @Data
-//    @Builder
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public static class filterAttributeResponse {
-//        private UUID tmpFilterId;
-//        private LocalDateTime createdAt;
-//    }
-//
-//    @Data
-//    @Builder
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public static class createTmpFilterResponse {
-//        private LocalDateTime createdAt;
-//    }
-//
-//    @Data
-//    @Builder
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public static class ThumbnailImgUrl {
-//        private String cloudfrontUrl;
-//        private String s3Url;
-//    }
-//
-//    @Data
-//    @Builder
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public static class RepresentationImgUrl {
-//        private String cloudfrontUrl;
-//        private String s3Url;
-//    }
-//
-//    @Data
-//    @Builder
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public static class TmpFilterInformationRequest {
-//        private String name;
-//        private String description;
-//        private TagList tagList;
-//    }
-//
-//    @Data
-//    @Builder
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    public static class TagList {
-//        private List<UUID> tags;
-//    }
-
     @Data
     @Builder
     @NoArgsConstructor
@@ -105,8 +24,8 @@ public class FilterCreateDto {
         private Float exposure;
         private Float contrast;
         private Float saturation;
-        private Float highlights;
-        private Float shadows;
+        private Float hue;
+        private Float temperature;
     }
 
 

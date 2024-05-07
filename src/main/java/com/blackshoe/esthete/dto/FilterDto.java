@@ -148,8 +148,8 @@ public class FilterDto {
         private Float exposure;
         private Float contrast;
         private Float saturation;
-        private Float highlights;
-        private Float shadows;
+        private Float hue;
+        private Float temperature;
     }
 
     @Data

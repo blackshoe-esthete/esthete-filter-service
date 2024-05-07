@@ -21,8 +21,10 @@ public class ThumbnailUrl {
     @Column(columnDefinition = "BINARY(16)", name = "thumbnail_url_uuid")
     private UUID thumbnailUrlId;
 
+    @Column(name = "cloudfront_url")
     private String cloudfrontUrl;
 
+    @Column(name = "s3_url")
     private String s3Url;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

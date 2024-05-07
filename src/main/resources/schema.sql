@@ -31,10 +31,15 @@ CREATE TABLE IF NOT EXISTS `temporary_filters` (
 
 -- `filters` 테이블 생성
 CREATE TABLE IF NOT EXISTS `filters` (
- `filter_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
- `created_at` DATETIME(6) NULL,
+    `filter_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `filter_uuid` BINARY(16) NOT NULL UNIQUE,
+    `name` VARCHAR(50) NOT NULL,
+    `description` VARCHAR(100) NOT NULL,
+    `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
-    `user_id` BIGINT NULL,
+    `user_id` BIGINT NOT NULL,
+    `like_count` BIGINT DEFAULT 0,
+    `view_count` BIGINT DEFAULT 0,
     CONSTRAINT `filters_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -46,21 +51,25 @@ CREATE TABLE IF NOT EXISTS `attributes` (
     `exposure` FLOAT NULL,
     `contrast` FLOAT NULL,
     `saturation` FLOAT NULL,
-    `highlights` FLOAT NULL,
-    `shadows` FLOAT NULL,
+    `hue` FLOAT NULL,
+    `temperature` FLOAT NULL,
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
     `filter_id` BIGINT NULL,
+    `temporary_filter_id` BIGINT NULL,
+    CONSTRAINT `attribute_fk_temporary_filter_id` FOREIGN KEY (`temporary_filter_id`) REFERENCES `temporary_filters` (`temporary_filter_id`),
     CONSTRAINT `attribute_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- `filter_tags` 테이블 생성
 CREATE TABLE IF NOT EXISTS `filter_tags` (
- `filter_tag_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
- `filter_id` BIGINT NOT NULL,
- `tag_id` BIGINT NOT NULL,
- `created_at` DATETIME(6) NULL,
+    `filter_tag_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `filter_id` BIGINT NULL,
+    `tag_id` BIGINT NOT NULL,
+    `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
+    `temporary_filter_id` BIGINT NULL,
+    CONSTRAINT `filter_tag_fk_temporary_filter_id` FOREIGN KEY (`temporary_filter_id`) REFERENCES `temporary_filters` (`temporary_filter_id`),
     CONSTRAINT `filter_tag_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`),
     CONSTRAINT `filter_tag_fk_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`tag_id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -73,6 +82,7 @@ CREATE TABLE IF NOT EXISTS `likes` (
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
     `filter_id` BIGINT NOT NULL,
+    `user_uuid` BINARY(16) NOT NULL UNIQUE,
     CONSTRAINT `likes_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
     CONSTRAINT `likes_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -81,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `likes` (
 CREATE TABLE IF NOT EXISTS `photos` (
     `photo_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `photo_uuid` BINARY(16) NOT NULL UNIQUE,
-    `img_url` VARCHAR(100) NOT NULL,
+    `img_url` VARCHAR(150) NOT NULL,
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
     `filter_id` BIGINT NULL,
@@ -104,11 +114,13 @@ CREATE TABLE IF NOT EXISTS `purchasings` (
 
 -- `representation_img_urls` 테이블 생성
 CREATE TABLE IF NOT EXISTS `representation_img_urls` (
- `representation_img_url_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
- `representation_img_url_uuid` BINARY(16) NOT NULL UNIQUE,
-    `cloudfront_url` VARCHAR(100) NOT NULL,
-    `s3_url` VARCHAR(100) NOT NULL,
-    `filter_id` BIGINT NOT NULL,
+    `representation_img_url_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `representation_img_url_uuid` BINARY(16) NOT NULL UNIQUE,
+    `cloudfront_url` VARCHAR(150) NOT NULL,
+    `s3_url` VARCHAR(150) NOT NULL,
+    `filter_id` BIGINT NULL,
+    `temporary_filter_id` BIGINT NULL,
+    CONSTRAINT `representation_fk_temporary_filter_id` FOREIGN KEY (`temporary_filter_id`) REFERENCES `temporary_filters` (`temporary_filter_id`),
     CONSTRAINT `representation_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -116,8 +128,8 @@ CREATE TABLE IF NOT EXISTS `representation_img_urls` (
 CREATE TABLE IF NOT EXISTS `thumbnail_urls` (
     `thumbnail_url_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `thumbnail_url_uuid` BINARY(16) NOT NULL UNIQUE,
-    `cloudfront_url` VARCHAR(100) NOT NULL,
-    `s3_url` VARCHAR(100) NOT NULL,
+    `cloudfront_url` VARCHAR(150) NOT NULL,
+    `s3_url` VARCHAR(150) NOT NULL,
     `filter_id` BIGINT NULL,
     `temporary_filter_id` BIGINT NULL,
     CONSTRAINT `thumbnail_url_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`),
