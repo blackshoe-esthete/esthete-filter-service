@@ -55,3 +55,8 @@ logging:
         SQL: DEBUG
         type: trace
 
+
+swagger:
+  server:
+    url: ${SWAGGER_SERVER_URL}
+
