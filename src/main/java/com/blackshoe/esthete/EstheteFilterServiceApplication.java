@@ -6,9 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-
-@OpenAPIDefinition(servers = {@Server(url = "${swagger.server.url}", description = "Default Server url")})
-
 @SpringBootApplication
 @EnableJpaAuditing
 public class EstheteFilterServiceApplication {

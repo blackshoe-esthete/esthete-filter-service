@@ -56,7 +56,4 @@ logging:
         type: trace
 
 
-swagger:
-  server:
-    url: ${SWAGGER_SERVER_URL}
 
