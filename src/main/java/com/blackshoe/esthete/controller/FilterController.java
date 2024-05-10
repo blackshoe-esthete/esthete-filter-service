@@ -1,18 +1,19 @@
 package com.blackshoe.esthete.controller;
 
+import com.blackshoe.esthete.dto.FilterCreateDto;
 import com.blackshoe.esthete.dto.FilterDto;
 import com.blackshoe.esthete.dto.ResponseDto;
-import com.blackshoe.esthete.service.FilterService;
-import com.blackshoe.esthete.service.JwtService;
-import com.blackshoe.esthete.service.PurchasingService;
-import com.blackshoe.esthete.service.SearchService;
+import com.blackshoe.esthete.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,6 +26,7 @@ public class FilterController {
     private final PurchasingService purchasingService;
     private final FilterService filterService;
     private final JwtService jwtService;
+    private final CreateService createService;
 
     @GetMapping("/searching")
     public ResponseEntity<Page<FilterDto.SearchFilterResponse>> searchFilter(
@@ -160,5 +162,29 @@ public class FilterController {
         purchaseRequest.setUserId(userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(purchasingService.purchaseFilter(purchaseRequest));
+    }
+
+
+    @PostMapping(value = "/temporary_filter", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<FilterCreateDto.TmpFilterResponse> saveTemporaryFilter(
+            @RequestHeader("Authorization") String accessToken,
+            @RequestPart(name = "thumbnail") MultipartFile thumbnail,
+            @RequestPart(name = "representation_img") List<MultipartFile> representationImg,
+            @RequestPart FilterCreateDto.CreateFilterRequest requestDto){
+        UUID userId = jwtService.extractUserId(accessToken);
+        FilterCreateDto.TmpFilterResponse tmpFilterResponse = createService.saveTemporaryFilter(userId, thumbnail, representationImg, requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(tmpFilterResponse);
+    }
+
+    @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<FilterCreateDto.CreateFilterResponse> saveFilter(
+            @RequestHeader("Authorization") String accessToken,
+            @RequestPart(name = "thumbnail") MultipartFile thumbnail,
+            @RequestPart(name = "representation_img") List<MultipartFile> representationImg,
+            @RequestPart FilterCreateDto.CreateFilterRequest requestDto){
+        UUID userId = jwtService.extractUserId(accessToken);
+        log.info("------------------");
+        FilterCreateDto.CreateFilterResponse filterResponse = createService.saveFilter(userId, thumbnail, representationImg, requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(filterResponse);
     }
 }
