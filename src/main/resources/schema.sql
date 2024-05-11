@@ -21,8 +21,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 CREATE TABLE IF NOT EXISTS `temporary_filters` (
    `temporary_filter_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
    `temporary_filter_uuid` BINARY(16) NOT NULL UNIQUE,
-    `name` VARCHAR(50) NOT NULL,
-    `description` VARCHAR(100) NOT NULL,
+    `name` VARCHAR(50) NULL,
+    `description` VARCHAR(100) NULL,
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
     `user_id` BIGINT NOT NULL,
@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS `temporary_filters` (
 CREATE TABLE IF NOT EXISTS `filters` (
     `filter_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `filter_uuid` BINARY(16) NOT NULL UNIQUE,
-    `name` VARCHAR(50) NOT NULL,
-    `description` VARCHAR(100) NOT NULL,
+    `name` VARCHAR(50) NULL,
+    `description` VARCHAR(100) NULL,
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
     `user_id` BIGINT NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `likes` (
 CREATE TABLE IF NOT EXISTS `photos` (
     `photo_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `photo_uuid` BINARY(16) NOT NULL UNIQUE,
-    `img_url` VARCHAR(150) NOT NULL,
+    `img_url` VARCHAR(150) NULL,
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
     `filter_id` BIGINT NULL,
@@ -116,8 +116,8 @@ CREATE TABLE IF NOT EXISTS `purchasings` (
 CREATE TABLE IF NOT EXISTS `representation_img_urls` (
     `representation_img_url_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `representation_img_url_uuid` BINARY(16) NOT NULL UNIQUE,
-    `cloudfront_url` VARCHAR(150) NOT NULL,
-    `s3_url` VARCHAR(150) NOT NULL,
+    `cloudfront_url` VARCHAR(150) NULL,
+    `s3_url` VARCHAR(150) NULL,
     `filter_id` BIGINT NULL,
     `temporary_filter_id` BIGINT NULL,
     CONSTRAINT `representation_fk_temporary_filter_id` FOREIGN KEY (`temporary_filter_id`) REFERENCES `temporary_filters` (`temporary_filter_id`),
@@ -128,8 +128,8 @@ CREATE TABLE IF NOT EXISTS `representation_img_urls` (
 CREATE TABLE IF NOT EXISTS `thumbnail_urls` (
     `thumbnail_url_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `thumbnail_url_uuid` BINARY(16) NOT NULL UNIQUE,
-    `cloudfront_url` VARCHAR(150) NOT NULL,
-    `s3_url` VARCHAR(150) NOT NULL,
+    `cloudfront_url` VARCHAR(150) NULL,
+    `s3_url` VARCHAR(150) NULL,
     `filter_id` BIGINT NULL,
     `temporary_filter_id` BIGINT NULL,
     CONSTRAINT `thumbnail_url_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`),
