@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `filters` (
     `filter_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `filter_uuid` BINARY(16) NOT NULL UNIQUE,
     `name` VARCHAR(50) NULL,
-    `description` VARCHAR(100) NULL,
+    `description` VARCHAR(100) NULL,r
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
     `user_id` BIGINT NOT NULL,
