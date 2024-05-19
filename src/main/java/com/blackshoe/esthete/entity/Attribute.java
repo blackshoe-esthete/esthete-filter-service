@@ -48,6 +48,9 @@ public class Attribute {
     @Column(name = "temperature")
     private Float temperature;
 
+    @Column(name = "gray_scale")
+    private Float grayScale;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, length = 20)
     private LocalDateTime createdAt;
@@ -81,7 +84,7 @@ public class Attribute {
 
 
     @Builder
-    public Attribute(Float brightness, Float sharpness, Float exposure, Float contrast, Float saturation, Float hue, Float temperature){
+    public Attribute(Float brightness, Float sharpness, Float exposure, Float contrast, Float saturation, Float hue, Float temperature, Float grayScale){
         this.brightness = brightness;
         this.sharpness = sharpness;
         this.exposure = exposure;
@@ -89,9 +92,10 @@ public class Attribute {
         this.saturation = saturation;
         this.hue = hue;
         this.temperature = temperature;
+        this.grayScale = grayScale;
     }
 
-    public void changeAttribute(Float brightness, Float sharpness, Float exposure, Float contrast, Float saturation, Float hue, Float temperature){
+    public void changeAttribute(Float brightness, Float sharpness, Float exposure, Float contrast, Float saturation, Float hue, Float temperature, Float grayScale){
         this.brightness = brightness;
         this.sharpness = sharpness;
         this.exposure = exposure;
@@ -99,5 +103,6 @@ public class Attribute {
         this.saturation = saturation;
         this.hue = hue;
         this.temperature = temperature;
+        this.grayScale = grayScale;
     }
 }

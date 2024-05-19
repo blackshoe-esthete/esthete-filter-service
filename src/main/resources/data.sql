@@ -31,10 +31,10 @@ VALUES
     (2, NULL, 2, UNHEX(REPLACE('c5081f94-d300-4c6c-b46d-6fc25d1d74ae', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/filter/7e9e3ad3-d328-4377-8cbf-813d4c69ceaa/thumbnail/304d6328-d13f-4705-a9cd-ff5422c5a571.jpg', 'https://blackshoe-esthete-s3.s3.amazonaws.com/filter/7e9e3ad3-d328-4377-8cbf-813d4c69ceaa/thumbnail/304d6328-d13f-4705-a9cd-ff5422c5a571.jpg')
 ON DUPLICATE KEY UPDATE thumbnail_url_uuid = thumbnail_url_uuid;
 
-INSERT INTO attributes (brightness, contrast, exposure, hue, saturation, temperature, sharpness, attribute_id, created_at, filter_id, temporary_filter_id, updated_at)
+INSERT INTO attributes (brightness, contrast, exposure, hue, saturation, temperature, sharpness, gray_scale, attribute_id, created_at, filter_id, temporary_filter_id, updated_at)
 VALUES
-    (5, 2, 5, 2, 2, 2, 5, 4, NOW(), 1, NULL, NOW()),
-    (1, 4, 3, 6, 5, 7, 2, 5, NOW(), 2, NULL, NOW())
+    (5, 2, 5, 2, 2, 2, 5, 10, 4, NOW(), 1, NULL, NOW()),
+    (1, 4, 3, 6, 5, 7, 2, 30, 5, NOW(), 2, NULL, NOW())
 ON DUPLICATE KEY UPDATE attribute_id = attribute_id;
 
 INSERT INTO filter_tags (created_at, filter_id, filter_tag_id, tag_id, temporary_filter_id, updated_at)
