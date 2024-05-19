@@ -23,8 +23,10 @@ public class RepresentationImgUrl {
     @Column(name = "representation_img_url_uuid", columnDefinition = "BINARY(16)", unique = true)
     private UUID representationImgUrlId;
 
+    @Column(name = "cloudfront_url")
     private String cloudfrontUrl;
 
+    @Column(name = "s3_url")
     private String s3Url;
 //
 //    @CreatedDate

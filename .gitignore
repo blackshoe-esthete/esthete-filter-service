@@ -39,7 +39,6 @@ out/
 
 ### docker-compose.yaml ###
 *.yaml
-*.yml
 data/
 
 my-debug-key.keystore
