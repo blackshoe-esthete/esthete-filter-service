@@ -182,7 +182,8 @@ public class CreateServiceImpl implements CreateService{
                         requestDto.getFilterAttribute().getContrast(),
                         requestDto.getFilterAttribute().getSaturation(),
                         requestDto.getFilterAttribute().getHue(),
-                        requestDto.getFilterAttribute().getTemperature());
+                        requestDto.getFilterAttribute().getTemperature(),
+                        requestDto.getGrayScale());
 
                 attributeRepository.save(findAttribute);
             }
@@ -196,6 +197,7 @@ public class CreateServiceImpl implements CreateService{
                         .saturation(requestDto.getFilterAttribute().getSaturation())
                         .hue(requestDto.getFilterAttribute().getHue())
                         .temperature(requestDto.getFilterAttribute().getTemperature())
+                        .grayScale(requestDto.getGrayScale())
                         .build();
                 attribute.updateTemporaryFilter(findTemporaryFilter);
                 attributeRepository.save(attribute);
@@ -212,6 +214,7 @@ public class CreateServiceImpl implements CreateService{
                     .saturation(requestDto.getFilterAttribute().getSaturation())
                     .hue(requestDto.getFilterAttribute().getHue())
                     .temperature(requestDto.getFilterAttribute().getTemperature())
+                    .grayScale(requestDto.getGrayScale())
                     .build();
 
             attribute.updateFilter(findFilter);

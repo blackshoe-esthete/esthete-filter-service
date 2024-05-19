@@ -87,6 +87,7 @@ public class FilterServiceImpl implements FilterService{
                 .sharpness(attribute.getSharpness())
                 .hue(attribute.getHue())
                 .temperature(attribute.getTemperature())
+                .grayScale(attribute.getGrayScale())
                 .build();
 
         return filterAttributesResponse;
@@ -160,6 +161,7 @@ public class FilterServiceImpl implements FilterService{
                 .sharpness(attribute.getSharpness())
                 .hue(attribute.getHue())
                 .temperature(attribute.getTemperature())
+                .grayScale(attribute.getGrayScale())
                 .build();
 
         FilterDto.FilterDetailsResponse filterDetailResponse = FilterDto.FilterDetailsResponse.builder()

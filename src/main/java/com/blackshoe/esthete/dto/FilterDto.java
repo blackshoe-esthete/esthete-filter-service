@@ -150,6 +150,7 @@ public class FilterDto {
         private Float saturation;
         private Float hue;
         private Float temperature;
+        private Float grayScale;
     }
 
     @Data
