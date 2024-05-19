@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `attributes` (
     `saturation` FLOAT NULL,
     `hue` FLOAT NULL,
     `temperature` FLOAT NULL,
+    `gray_scale` FLOAT NULL,
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
     `filter_id` BIGINT NULL,
@@ -65,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `attributes` (
 CREATE TABLE IF NOT EXISTS `filter_tags` (
     `filter_tag_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `filter_id` BIGINT NULL,
-    `tag_id` BIGINT NOT NULL,
+    `tag_id` BIGINT NULL,
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
     `temporary_filter_id` BIGINT NULL,

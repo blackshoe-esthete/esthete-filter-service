@@ -47,7 +47,7 @@ public class User {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Filter> filters = new ArrayList();
+    private List<Filter> filters = new ArrayList(); // 이거 단방향으로 열어놔도 될듯, 여기는 없애고 Filter 테이블에만 user있도록
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TemporaryFilter> temporaryFilters = new ArrayList();

@@ -93,6 +93,7 @@ public class FilterCreateDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class CreateFilterRequest {
         private FilterAttribute filterAttribute;
+        private Float grayScale;
         private FilterInformation filterInformation;
         private UUID tmpFilterId;
     }
