@@ -4,7 +4,9 @@ INSERT INTO tags (tag_uuid, name, created_at, updated_at, tag_id) VALUES
                                                              (UNHEX(REPLACE('fe96c294-b5f3-425e-a6de-8cc1b13beb5a', '-', '')), '부드러운', NOW(), NOW(), 2),
                                                              (UNHEX(REPLACE('118ccbfb-8caf-498b-913a-16a315b3a859', '-', '')), '평화로운', NOW(), NOW(), 3),
                                                              (UNHEX(REPLACE('4a0db2eb-f4bc-4fa3-ae47-8381ed0da1ab', '-', '')), '차가운', NOW(), NOW(), 4),
-                                                             (UNHEX(REPLACE('ae4a3cee-f7e3-48a1-8b0a-eb4d177b2267', '-', '')), '세련된', NOW(), NOW(), 5)
+                                                             (UNHEX(REPLACE('ae4a3cee-f7e3-48a1-8b0a-eb4d177b2267', '-', '')), '빈티지한', NOW(), NOW(), 5),
+                                                             (UNHEX(REPLACE('3e3f2d48-7e19-4d53-bf91-776d5b0915e3', '-', '')), '몽환적인', NOW(), NOW(), 6),
+                                                             (UNHEX(REPLACE('7d2b1c46-3f2d-45c1-a6a8-392d2b9b48b6', '-', '')), '싱그러운', NOW(), NOW(), 7)
                                                                 ON DUPLICATE KEY UPDATE tag_uuid = tag_uuid;
 INSERT INTO users (user_uuid, nickname, created_at, updated_at, user_id) VALUES
                                                                    (UNHEX(REPLACE('5a0db2eb-f4bc-4fa3-ae47-8381ed0da1ab', '-', '')), 'testuser', NOW(), NOW(), 1)
