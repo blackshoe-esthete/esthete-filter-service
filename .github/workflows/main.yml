@@ -1,9 +1,13 @@
 name: cicd for filter-service
 on:
   push:
-    branches: [ test ]
+    branches:
+        - main
+        - test
   pull_request:
-    branches: [ test ]
+    branches:
+        - main
+        - test
   workflow_dispatch:
 
 env:
