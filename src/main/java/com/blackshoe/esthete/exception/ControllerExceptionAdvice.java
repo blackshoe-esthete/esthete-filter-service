@@ -26,7 +26,7 @@ public class ControllerExceptionAdvice {
 //
 //        return ResponseEntity.status(errorResult.getHttpStatus()).body(responseDto);
 //    }
-    
+
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<ResponseDto> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
 

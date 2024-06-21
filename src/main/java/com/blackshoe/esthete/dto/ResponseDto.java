@@ -3,22 +3,27 @@ package com.blackshoe.esthete.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseDto<T> {
     private T payload;
     private String error;
 
     @Builder(builderMethodName = "success")
-    public ResponseDto(T payload) {
-        this.payload = payload;
+    public static <T> ResponseDto<T> success(T payload) {
+        ResponseDto<T> dto = new ResponseDto<>();
+        dto.setPayload(payload);
+        return dto;
     }
 
     @Builder(builderMethodName = "error")
     public ResponseDto(String error) {
         this.error = error;
     }
+
 
     @Builder
     public ResponseDto(T payload, String error) {
