@@ -44,7 +44,11 @@ spring:
         auto: false
       cloudfront:
         distribution-domain: ${CLOUDFRONT_DISTRIBUTION_DOMAIN}
-
+  servlet:
+    multipart:
+      resolve-lazily: true
+      max-file-size: 50MB
+      max-request-size: 150MB
 
 logging:
   level:
