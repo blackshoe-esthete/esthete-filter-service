@@ -97,6 +97,7 @@ jobs:
                 -e S3_THUMBNAIL_DIRECTORY='${{ secrets.S3_THUMBNAIL_DIRECTORY }}' \
                 -e S3_REPRESENTATION_DIRECTORY='${{ secrets.S3_REPRESENTATION_DIRECTORY }}' \
                 -e S3_REGION='${{ secrets.S3_REGION }}' \
+                -e EUREKA_HOST='${{ secrets.EUREKA_HOST }}' \
                 -e INSTANCE_HOST='${{ secrets.HOST_TEST_DNS }}' \
                 ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.NEXT_FILTER_VER }}
             sleep 15
