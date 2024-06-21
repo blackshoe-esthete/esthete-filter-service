@@ -11,7 +11,7 @@ build/
 .classpath
 .factorypath
 .project
-.settings
+.updatetings
 .springBeans
 .sts4-cache
 bin/
@@ -37,6 +37,9 @@ out/
 ### VS Code ###
 .vscode/
 
+### docker-compose.yaml ###
+*.yaml
+data/
 
 my-debug-key.keystore
 .env

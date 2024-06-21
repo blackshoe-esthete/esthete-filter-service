@@ -16,6 +16,8 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -23,6 +25,7 @@ dependencies {
 
 	// kafka
 	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.apache.kafka:kafka-clients:3.6.0'
 
 	//lombok
 	compileOnly 'org.projectlombok:lombok'
@@ -31,8 +34,42 @@ dependencies {
 	//swagger
 	implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: '2.2.20'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+
+	implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.0")
+	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
+
+	//jwt
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
+	// swagger
+	implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: '2.2.20'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+
+	// JAXB API
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+	// JAXB Runtime
+	implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 }
 
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:2022.0.5"
+	}
+}
 tasks.named('bootBuildImage') {
 	builder = 'paketobuildpacks/builder-jammy-base:latest'
 }

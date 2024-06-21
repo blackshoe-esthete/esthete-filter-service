@@ -2,6 +2,8 @@ server:
   port: 8040
 
 spring:
+  application:
+      name: filter-service
   datasource:
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${INITIAL_DB}?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=utf8&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -23,3 +25,67 @@ spring:
     bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
 #springdoc:
 #  show-login-endpoint: true
+
+  sql:
+    init:
+      mode: always
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: ${SPRING_DATASOURCE_DDL_AUTO}
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Seoul
+        show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    repositories:
+      enabled: true
+    open-in-view: false
+    generate-ddl: true
+    show-sql: true
+  jwt:
+    secret: ${JWT_SECRET}
+  cloud:
+    aws:
+      credentials:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+      s3:
+        bucket: ${S3_BUCKET}
+        root-directory: ${S3_ROOT_DIRECTORY}
+        thumbnail-directory: ${S3_THUMBNAIL_DIRECTORY}
+        representation-directory: ${S3_REPRESENTATION_DIRECTORY}
+      region:
+        static: ${S3_REGION}
+      stack:
+        auto: false
+      cloudfront:
+        distribution-domain: ${CLOUDFRONT_DISTRIBUTION_DOMAIN}
+  servlet:
+    multipart:
+      resolve-lazily: true
+      max-file-size: 50MB
+      max-request-size: 150MB
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_HOST}:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    hostname: ${INSTANCE_HOST}
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type: trace
+
+
+
