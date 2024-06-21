@@ -33,7 +33,7 @@ public class ControllerExceptionAdvice {
         log.error("MaxUploadSizeExceededException", e);
 
         final ResponseDto responseDto = ResponseDto.error()
-                .error("파일 크기가 5MB보다 큽니다.")
+                .error("파일 크기가 50MB보다 큽니다.")
                 .build();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
