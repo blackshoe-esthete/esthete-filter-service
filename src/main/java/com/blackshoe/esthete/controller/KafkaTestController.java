@@ -2,8 +2,6 @@ package com.blackshoe.esthete.controller;
 
 
 import com.blackshoe.esthete.dto.KafkaDto;
-import com.blackshoe.esthete.service.kafka.KafkaFilterInfoProducerService;
-import com.blackshoe.esthete.service.kafka.KafkaFilterInfoProducerServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

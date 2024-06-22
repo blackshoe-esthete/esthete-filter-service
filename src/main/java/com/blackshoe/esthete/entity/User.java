@@ -2,6 +2,7 @@ package com.blackshoe.esthete.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -54,6 +55,12 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Purchasing> purchasings = new ArrayList();
+
+    @Builder
+    public User(UUID userId, String nickname){
+        this.userId = userId;
+        this.nickname = nickname;
+    }
 
     public void addFilter(Filter filter){
         this.filters.add(filter);

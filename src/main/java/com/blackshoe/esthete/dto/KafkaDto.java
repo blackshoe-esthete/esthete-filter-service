@@ -18,8 +18,8 @@ public class KafkaDto {
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class UserInfo {
-        private String name;
-        private String email;
+        private UUID userId;
+        private String nickName;
     }
 
     @Getter
