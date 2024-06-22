@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 public class KafkaDto {
     @Getter
     @Builder
@@ -18,5 +20,16 @@ public class KafkaDto {
     public static class UserInfo {
         private String name;
         private String email;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class FilterInfo{
+        private UUID filterId;
+        private String filterName;
     }
 }
