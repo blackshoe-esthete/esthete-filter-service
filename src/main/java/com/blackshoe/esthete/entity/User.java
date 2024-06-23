@@ -2,6 +2,7 @@ package com.blackshoe.esthete.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -28,7 +29,7 @@ public class User {
     @Column(columnDefinition = "BINARY(16)", name = "user_uuid", unique = true)
     private UUID userId;
 
-    @Column(name = "profile_img_url")
+    @Column(name = "profile_img_url", nullable = false, columnDefinition = "VARCHAR(250) default 'default'")
     private String profileImgUrl;
 
     @Column(name = "nickname")
@@ -55,6 +56,16 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Purchasing> purchasings = new ArrayList();
 
+    @Builder
+    public User(UUID userId, String nickname){
+        this.userId = userId;
+        this.nickname = nickname;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+
     public void addFilter(Filter filter){
         this.filters.add(filter);
     }
@@ -77,5 +88,9 @@ public class User {
 
     public String getStringId() {
         return this.userId.toString();
+    }
+
+    public void updateProfileImgUrl(String profileImgUrl) {
+        this.profileImgUrl = profileImgUrl;
     }
 }

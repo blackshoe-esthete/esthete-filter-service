@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS `filters` (
     `user_id` BIGINT NOT NULL,
     `like_count` BIGINT DEFAULT 0,
     `view_count` BIGINT DEFAULT 0,
+    `is_public` TINYINT DEFAULT 1,
     CONSTRAINT `filters_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
