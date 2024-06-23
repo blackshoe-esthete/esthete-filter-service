@@ -51,15 +51,15 @@ spring:
       resolve-lazily: true
       max-file-size: 50MB
       max-request-size: 150MB
-eureka:
-  client:
-    service-url:
-      defaultZone: http://${EUREKA_HOST}:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-    hostname: ${INSTANCE_HOST}
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://${EUREKA_HOST}:8761/eureka/
+#    register-with-eureka: true
+#    fetch-registry: true
+#  instance:
+#    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+#    hostname: ${INSTANCE_HOST}
 
 logging:
   level:
