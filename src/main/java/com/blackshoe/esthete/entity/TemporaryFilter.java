@@ -56,7 +56,6 @@ public class TemporaryFilter {
     @OneToMany(mappedBy = "temporaryFilter", fetch = FetchType.LAZY ,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RepresentationImgUrl> representationImgUrls = new ArrayList(); //추가함
 
-
     public void setThumbnailUrl(ThumbnailUrl thumbnailUrl){
         this.thumbnailUrl = thumbnailUrl;
     }
@@ -85,19 +84,21 @@ public class TemporaryFilter {
         this.representationImgUrls.add(null); //추가함
     }
 
-    @PrePersist
-    public void setTemporaryFilterId() {
-        if (temporaryFilterId == null) {
-            temporaryFilterId = UUID.randomUUID();
-        }
-    }
-
     @Builder
     public TemporaryFilter(String name, String description){
         this.name = name;
         this.description = description;
     }
 
+    @PrePersist
+    public void prePersist() {
+        if (temporaryFilterId == null) {
+            temporaryFilterId = UUID.randomUUID();
+        }
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    }
 
     public void updateTemporaryFilterInfo(String name, String description){
         this.name = name;

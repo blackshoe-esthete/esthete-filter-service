@@ -50,3 +50,9 @@ VALUES
 ON DUPLICATE KEY UPDATE filter_tag_id = filter_tag_id;
 
 
+INSERT INTO temporary_filters (created_at, temporary_filter_id, updated_at, user_id, temporary_filter_uuid, description, name)
+VALUES
+    (NOW(), 1, NOW(), 1, UNHEX(REPLACE('a720245d-d592-424c-b874-8033cd1b3b2a', '-', '')), 'testTemporaryFilter1description', 'testTemporaryFilter1'),
+    (NOW(), 2, NOW(), 1, UNHEX(REPLACE('7e9e3ad3-d328-2157-8cbf-813d4c69ceaa', '-', '')), 'testTemporaryFilter2description', 'testTemporaryFilter2')
+ON DUPLICATE KEY UPDATE temporary_filter_uuid = temporary_filter_uuid;
+

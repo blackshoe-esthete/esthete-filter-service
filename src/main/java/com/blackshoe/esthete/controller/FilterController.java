@@ -4,6 +4,7 @@ import com.blackshoe.esthete.dto.FilterCreateDto;
 import com.blackshoe.esthete.dto.FilterDto;
 import com.blackshoe.esthete.dto.ResponseDto;
 import com.blackshoe.esthete.service.*;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -188,8 +189,34 @@ public class FilterController {
         return ResponseEntity.status(HttpStatus.CREATED).body(filterResponse);
     }
 
+    @Operation(summary = "임시 필터 리스트 조회(미완성)")
+    @GetMapping("/temporary")
+    public ResponseEntity<Page<FilterDto.ReadTemporary>> readTemporaryFilter(
+            @RequestHeader("Authorization") String accessToken,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+            ) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+
+        return ResponseEntity.ok(filterService.readTemporaryFilter(userId, page, size));
+    }
+
+
+    @Operation(summary = "임시 필터 삭제(미완성)")
+    @DeleteMapping("/{temporaryFilterId}")
+    public ResponseEntity<ResponseDto> deleteTemporaryFilter(
+            @RequestHeader("Authorization") String accessToken,
+            @PathVariable UUID temporaryFilterId) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+        filterService.deleteTemporaryFilter(userId, temporaryFilterId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    @Operation(summary = "필터 삭제(미완성)")
     @DeleteMapping("/{filterId}")
-    public ResponseEntity<ResponseDto> un(
+    public ResponseEntity<ResponseDto> deleteFilter(
             @RequestHeader("Authorization") String accessToken,
             @PathVariable UUID filterId) {
 

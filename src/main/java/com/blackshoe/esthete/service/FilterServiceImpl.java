@@ -9,9 +9,14 @@ import com.blackshoe.esthete.exception.FilterException;
 import com.blackshoe.esthete.exception.UserErrorResult;
 import com.blackshoe.esthete.exception.UserException;
 import com.blackshoe.esthete.repository.FilterRepository;
+import com.blackshoe.esthete.repository.TemporaryFilterRepository;
 import com.blackshoe.esthete.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +30,7 @@ import java.util.stream.Collectors;
 public class FilterServiceImpl implements FilterService{
     private final UserRepository userRepository;
     private final FilterRepository filterRepository;
+    private final TemporaryFilterRepository temporaryFilterRepository;
     @Override
     @Transactional
     public FilterDto.CreatedListResponse getCreatedFilterList(UUID userId) {
@@ -138,6 +144,7 @@ public class FilterServiceImpl implements FilterService{
         List<String> filterTagList = filter.getFilterTags().stream()
                 .map(filterTag -> filterTag.getTag().getStringId())
                 .collect(Collectors.toList());
+
         FilterDto.FilterTagListResponse filterTagListResponse = FilterDto.FilterTagListResponse.builder()
                 .filterTagList(filterTagList)
                 .build();
@@ -183,5 +190,34 @@ public class FilterServiceImpl implements FilterService{
     @Override
     public void deleteFilter(UUID userId, UUID filterId) {
 
+    }
+
+    @Override
+    public void deleteTemporaryFilter(UUID userId, UUID temporaryFilterId) {
+
+    }
+
+    @Override
+    public Page<FilterDto.ReadTemporary> readTemporaryFilter(UUID userId, int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+/*
+        List<FilterDto.FilterBasicInfoResponse> createdFilterList = user.getFilters().stream()
+                .map(filter -> FilterDto.FilterBasicInfoResponse.builder()
+                        .filterId(filter.getFilterId().toString())
+                        .filterName(filter.getName())
+                        .filterThumbnailUrl(filter.getThumbnailUrl().getCloudfrontUrl())
+                        .build())
+                .collect(Collectors.toList());
+
+        FilterDto.CreatedListResponse createdFilterListResponse = FilterDto.CreatedListResponse.builder()
+                .createdFilterList(createdFilterList)
+                .build();
+
+        return createdFilterListResponse;
+ */
+        Page<FilterDto.ReadTemporary> readBasicInfoOfTemporaryFilter = temporaryFilterRepository.readBasicInfo(userId, pageable);
+
+        return readBasicInfoOfTemporaryFilter;
     }
 }

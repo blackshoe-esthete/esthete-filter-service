@@ -1,6 +1,7 @@
 package com.blackshoe.esthete.service;
 
 import com.blackshoe.esthete.dto.FilterDto;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,4 +19,8 @@ public interface FilterService {
     FilterDto.FilterDetailsResponse getDetails(UUID filterId, UUID userId);
 
     void deleteFilter(UUID userId, UUID filterId);
+
+    void deleteTemporaryFilter(UUID userId, UUID temporaryFilterId);
+
+    Page<FilterDto.ReadTemporary> readTemporaryFilter(UUID userId, int page, int size);
 }

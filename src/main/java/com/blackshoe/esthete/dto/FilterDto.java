@@ -193,13 +193,49 @@ public class FilterDto {
         private String filterThumbnail;
         private RepresentationImgListResponse representationImgList;
         private FilterTagListResponse filterTagList;
+
         private Long likeCount;
         private String userId;
         private String profileImgUrl;
         private String nickname;
         private Boolean isLike;
         private LocalDateTime createdAt;
+    }
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class TemporaryFilterDetailsResponse {
+        private AttributeResponse filterAttributes;
+        private String filterThumbnail;
+        private RepresentationImgListResponse representationImgList;
+        private FilterTagListResponse filterTagList;
 
+        private Long likeCount;
+        private String userId;
+        private String profileImgUrl;
+        private String nickname;
+        private Boolean isLike;
+        private LocalDateTime createdAt;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class ReadTemporary {
+        private UUID temporaryFilterId;
+        private String filterThumbnail;
+        private LocalDateTime createdAt;
+
+        @Builder
+        public ReadTemporary(UUID temporaryFilterId, String filterThumbnail, LocalDateTime createdAt) {
+            this.temporaryFilterId = temporaryFilterId;
+            this.filterThumbnail = filterThumbnail != null ? filterThumbnail : "";
+            this.createdAt = createdAt;
+        }
     }
 }
