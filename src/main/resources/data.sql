@@ -8,8 +8,8 @@ INSERT INTO tags (tag_uuid, name, created_at, updated_at, tag_id) VALUES
                                                              (UNHEX(REPLACE('3e3f2d48-7e19-4d53-bf91-776d5b0915e3', '-', '')), '몽환적인', NOW(), NOW(), 6),
                                                              (UNHEX(REPLACE('7d2b1c46-3f2d-45c1-a6a8-392d2b9b48b6', '-', '')), '싱그러운', NOW(), NOW(), 7)
                                                                 ON DUPLICATE KEY UPDATE tag_uuid = tag_uuid;
-INSERT INTO users (user_uuid, nickname, created_at, updated_at, user_id) VALUES
-                                                                   (UNHEX(REPLACE('5a0db2eb-f4bc-4fa3-ae47-8381ed0da1ab', '-', '')), 'testuser', NOW(), NOW(), 1)
+INSERT INTO users (user_uuid, nickname, created_at, updated_at, user_id, profile_img_url) VALUES
+                                                                   (UNHEX(REPLACE('5a0db2eb-f4bc-4fa3-ae47-8381ed0da1ab', '-', '')), 'testuser', NOW(), NOW(), 1, 'default')
                                                                     ON DUPLICATE KEY UPDATE user_uuid = user_uuid;
 
 

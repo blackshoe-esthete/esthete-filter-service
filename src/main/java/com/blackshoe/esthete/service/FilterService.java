@@ -16,4 +16,6 @@ public interface FilterService {
     FilterDto.RepresentationImgListResponse getFilterRepresentations(UUID filterId);
 
     FilterDto.FilterDetailsResponse getDetails(UUID filterId, UUID userId);
+
+    void deleteFilter(UUID userId, UUID filterId);
 }

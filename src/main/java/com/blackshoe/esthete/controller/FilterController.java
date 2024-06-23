@@ -187,4 +187,15 @@ public class FilterController {
         FilterCreateDto.CreateFilterResponse filterResponse = createService.saveFilter(userId, thumbnail, representationImg, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(filterResponse);
     }
+
+    @DeleteMapping("/{filterId}")
+    public ResponseEntity<ResponseDto> un(
+            @RequestHeader("Authorization") String accessToken,
+            @PathVariable UUID filterId) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+        filterService.deleteFilter(userId, filterId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

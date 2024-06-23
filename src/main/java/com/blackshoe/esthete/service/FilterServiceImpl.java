@@ -179,4 +179,9 @@ public class FilterServiceImpl implements FilterService{
 
         return filterDetailResponse;
     }
+
+    @Override
+    public void deleteFilter(UUID userId, UUID filterId) {
+
+    }
 }

@@ -98,6 +98,11 @@ public class Filter {
         user.addFilter(this);
     }
 
+    public void freeFilter(){
+        this.user = null;
+        this.isPublic = false;
+    }
+
     public void setAttribute(Attribute attribute){
         this.attribute = attribute;
     }

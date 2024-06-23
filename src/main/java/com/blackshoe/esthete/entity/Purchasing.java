@@ -31,7 +31,7 @@ public class Purchasing {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "purchasing_fk_user_id"))
-    private User user; //ERD에서 수정, B/L 내부 로직이기 때문에 uuid 대신 user id 사용
+    private User user;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, length = 20)
@@ -43,7 +43,7 @@ public class Purchasing {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "filter_id", foreignKey = @ForeignKey(name = "purchasing_fk_filter_id"))
-    private Filter filter; // Filter와 다대일 양방향, 주인
+    private Filter filter;
 
     @Builder
     public Purchasing(UUID purchasingId, User user, Filter filter, LocalDateTime createdAt, LocalDateTime updatedAt) {

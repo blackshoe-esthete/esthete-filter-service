@@ -85,4 +85,32 @@ public class KafkaConsumerDto {
             this.profileImgUrl = profileImgUrl;
         }
     }
+
+    @Getter
+    @NoArgsConstructor
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class UserNickname {
+        private String userId;
+        private String nickname;
+
+        @Builder
+        public UserNickname(String userId, String nickname) {
+            this.userId = userId;
+            this.nickname = nickname;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class UserDelete {
+        private String userId;
+
+        @Builder
+        public UserDelete(String userId) {
+            this.userId = userId;
+        }
+    }
+
+
 }
