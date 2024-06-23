@@ -1,3 +1,18 @@
+SET FOREGIN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS `tags`;
+DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `temporary_filters`;
+DROP TABLE IF EXISTS `filters`;
+DROP TABLE IF EXISTS `attributes`;
+DROP TABLE IF EXISTS `filter_tags`;
+DROP TABLE IF EXISTS `likes`;
+DROP TABLE IF EXISTS `photos`;
+DROP TABLE IF EXISTS `purchasings`;
+DROP TABLE IF EXISTS `representation_img_urls`;
+DROP TABLE IF EXISTS `thumbnail_urls`;
+DROP TABLE IF EXISTS `user_tags`;
+SET FOREIGN_KEY_CHECKS = 1;
+
 -- `tags` 테이블 생성
 CREATE TABLE IF NOT EXISTS `tags` (
   `tag_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
