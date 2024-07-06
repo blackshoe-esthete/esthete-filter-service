@@ -21,7 +21,7 @@ public class KafkaUserInfoConsumerServiceImpl implements KafkaUserInfoConsumerSe
     private final UserRepository userRepository;
 
     @Override
-    @KafkaListener(topics = "filter-user-create")
+    @KafkaListener(topics = "user-create")
     @Transactional
     public void createUser(String payload, Acknowledgment acknowledgment) {
         log.info("received payload='{}'", payload);

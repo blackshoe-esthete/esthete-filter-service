@@ -67,7 +67,7 @@ public class TemporaryFilter {
 
     public void deleteUser(User user){
         this.user = null;
-        user.deleteTemporaryFilter(null);
+        user.deleteTemporaryFilter(null); // 요거 없애도 될듯
     }
 
     public String getStringId() {
