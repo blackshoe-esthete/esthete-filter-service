@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-public class KafkaDto {
+public class KafkaConsumerDto {
     @Getter
     @Builder
     @NoArgsConstructor
@@ -28,8 +28,7 @@ public class KafkaDto {
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class FilterInfo{
-        private UUID filterId;
-        private String filterName;
+    public static class UserDelete {
+        private UUID userId;
     }
 }
