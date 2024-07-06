@@ -1,6 +1,6 @@
 -- "따뜻한", "부드러운", "평화로운", "차가운", "세련된" 태그 삽입
 -- 태그 전체 삽입
-INSERT INTO tags (tags_uuid, name) VALUES
+INSERT INTO tags (tag_uuid, name) VALUES
                                        (UNHEX(REPLACE('d20e2654-3c4a-4ebe-b1c9-5695ac2a6207', '-', '')), '따뜻한'),
                                        (UNHEX(REPLACE('fe96c294-b5f3-425e-a6de-8cc1b13beb5a', '-', '')), '부드러운'),
                                        (UNHEX(REPLACE('118ccbfb-8caf-498b-913a-16a315b3a859', '-', '')), '평화로운'),
