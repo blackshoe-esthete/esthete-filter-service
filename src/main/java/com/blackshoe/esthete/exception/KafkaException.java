@@ -1,6 +1,7 @@
 package com.blackshoe.esthete.exception;
 
-public class KafkaException extends RuntimeException{
+
+public class KafkaException extends RuntimeException {
     private final KafkaErrorResult kafkaErrorResult;
 
     public KafkaException(KafkaErrorResult kafkaErrorResult) {
