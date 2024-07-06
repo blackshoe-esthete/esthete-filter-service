@@ -19,5 +19,30 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 public class KafkaUserDeleteConsumerServiceImpl implements KafkaUserDeleteConsumerService {
+    private final ObjectMapper objectMapper;
+    private final UserRepository userRepository;
 
+    @Override
+    @KafkaListener(topics = "user-delete")
+    @Transactional
+    public void deleteUser(String payload, Acknowledgment acknowledgment) {
+        log.info("received payload='{}'", payload);
+        KafkaConsumerDto.UserDelete userDelete = null;
+
+        try {
+            // 역직렬화
+            userDelete = objectMapper.readValue(payload, KafkaConsumerDto.UserDelete.class);
+        } catch (Exception e) {
+            log.error("Error while converting json string to user object", e);
+        }
+
+        log.info("User info : {}", userDelete);
+
+        UUID userId = userDelete.getUserId();
+        final User user = userRepository.findByUserId(userId).orElseThrow(() -> new KafkaException(KafkaErrorResult.USER_NOT_FOUND));
+
+        userRepository.delete(user);
+
+        acknowledgment.acknowledge();
+    }
 }
