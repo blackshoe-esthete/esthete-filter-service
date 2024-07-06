@@ -94,7 +94,6 @@ CREATE TABLE IF NOT EXISTS `filter_tags` (
 -- `likes` 테이블 생성
 CREATE TABLE IF NOT EXISTS `likes` (
    `like_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   `like_uuid` BINARY(16) NOT NULL UNIQUE,
     `user_id` BIGINT NOT NULL,
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,

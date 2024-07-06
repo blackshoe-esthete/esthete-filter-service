@@ -2,6 +2,7 @@ package com.blackshoe.esthete.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -25,9 +26,6 @@ public class Like {
     @Column(name = "like_id")
     private Long id;
 
-    @Column(name = "like_uuid", columnDefinition = "BINARY(16)", unique = true)
-    private UUID likeId;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "likes_fk_user_id"))
     private User user;
@@ -47,6 +45,19 @@ public class Like {
     @JoinColumn(name = "filter_id", foreignKey = @ForeignKey(name = "likes_fk_filter_id"))
     private Filter filter; // Filter와 다대일 양방향, 주인
 
+    @PrePersist
+    public void prePersist(){
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @Builder
+    public Like(User user, UUID userId, LocalDateTime createdAt, Filter filter){
+        this.user = user;
+        this.userId = userId;
+        this.filter = filter;
+        this.createdAt = createdAt;
+    }
+
     public void updateFilter(Filter filter){
         this.filter = filter;
         filter.addLike(this);
@@ -56,7 +67,4 @@ public class Like {
         return this.userId.equals(viewerId);
     }
 
-    public String getStringId() {
-        return this.likeId.toString();
-    }
 }

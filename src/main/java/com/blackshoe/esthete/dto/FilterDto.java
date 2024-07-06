@@ -124,9 +124,7 @@ public class FilterDto {
     }
 
     @Data
-    @Builder
     @NoArgsConstructor
-    @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class FilterBasicInfoResponse{
@@ -134,6 +132,12 @@ public class FilterDto {
         private String filterName;
         private String filterThumbnailUrl;
 
+        @Builder
+        public FilterBasicInfoResponse(String filterId, String filterName, String filterThumbnailUrl) {
+            this.filterId = filterId;
+            this.filterName = filterName;
+            this.filterThumbnailUrl = filterThumbnailUrl;
+        }
     }
     @Data
     @Builder
