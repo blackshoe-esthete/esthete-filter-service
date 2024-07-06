@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,7 +30,7 @@ public interface TemporaryFilterRepository extends JpaRepository<TemporaryFilter
         private String filterThumbnail;
         private LocalDateTime createdAt;
      */
-    @Query("SELECT new com.blackshoe.esthete.dto.FilterDto$ReadTemporary(tf.temporaryFilterId, tf.thumbnailUrl.cloudfrontUrl, tf.createdAt) " +
-            "FROM TemporaryFilter tf WHERE tf.user.userId = :userId")
-    Page<FilterDto.ReadTemporary> readBasicInfo(UUID userId, Pageable pageable);
+
+    @Query("SELECT t FROM TemporaryFilter t WHERE t.user.userId = :userId ORDER BY t.createdAt DESC")
+    List<TemporaryFilter> findByUserId(UUID userId, Pageable pageable);
 }

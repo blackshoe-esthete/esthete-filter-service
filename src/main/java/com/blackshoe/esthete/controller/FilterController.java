@@ -190,9 +190,9 @@ public class FilterController {
         return ResponseEntity.status(HttpStatus.CREATED).body(filterResponse);
     }
 
-    @Operation(summary = "임시 필터 리스트 조회(미완성)")
+    @Operation(summary = "임시 필터 리스트 조회")
     @GetMapping("/temporary")
-    public ResponseEntity<Page<FilterDto.ReadTemporary>> readTemporaryFilter(
+    public ResponseEntity<Page<FilterDto.ReadTemporaryDetailsInfoResponse>> readTemporaryFilter(
             @RequestHeader("Authorization") String accessToken,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size

@@ -23,5 +23,5 @@ public interface FilterService {
 
     void deleteTemporaryFilter(UUID userId, UUID temporaryFilterId);
 
-    Page<FilterDto.ReadTemporary> readTemporaryFilter(UUID userId, int page, int size);
+    Page<FilterDto.ReadTemporaryDetailsInfoResponse> readTemporaryFilter(UUID userId, int page, int size);
 }
