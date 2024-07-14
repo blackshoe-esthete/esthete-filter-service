@@ -209,6 +209,8 @@ public class FilterDto {
         private String filterThumbnail;
         private RepresentationImgListResponse representationImgList;
         private FilterTagListResponse filterTagList;
+        private String filterName;
+        private String filterDescription;
 
         private Long likeCount;
         private String userId;
@@ -266,4 +268,5 @@ public class FilterDto {
             this.updatedAt = updatedAt != null ? updatedAt : LocalDateTime.now();
         }
     }
+
 }

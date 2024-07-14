@@ -6,10 +6,7 @@ import com.blackshoe.esthete.exception.FilterErrorResult;
 import com.blackshoe.esthete.exception.FilterException;
 import com.blackshoe.esthete.exception.UserErrorResult;
 import com.blackshoe.esthete.exception.UserException;
-import com.blackshoe.esthete.repository.FilterRepository;
-import com.blackshoe.esthete.repository.RepresentationImgUrlRepository;
-import com.blackshoe.esthete.repository.TemporaryFilterRepository;
-import com.blackshoe.esthete.repository.UserRepository;
+import com.blackshoe.esthete.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
@@ -29,6 +26,7 @@ public class FilterServiceImpl implements FilterService{
     private final FilterRepository filterRepository;
     private final TemporaryFilterRepository temporaryFilterRepository;
     private final RepresentationImgUrlRepository representationImgUrlRepository;
+    private final FilterTagRepository filterTagRepository;
     @Override
     @Transactional
     public FilterDto.CreatedListResponse getCreatedFilterList(UUID userId) {
@@ -174,6 +172,8 @@ public class FilterServiceImpl implements FilterService{
                 .filterThumbnail(filter.getThumbnailUrl().getCloudfrontUrl())
                 .representationImgList(representationImgListResponse)
                 .filterTagList(filterTagListResponse)
+                .filterName(filter.getName())
+                .filterDescription(filter.getDescription())
                 .likeCount(filter.getLikeCount())
                 .userId(user.getStringId())
                 .profileImgUrl(user.getProfileImgUrl())
@@ -225,6 +225,7 @@ public class FilterServiceImpl implements FilterService{
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Page<FilterDto.ReadTemporaryDetailsInfoResponse> readTemporaryFilter(UUID userId, int page, int size) {
 
@@ -233,6 +234,7 @@ public class FilterServiceImpl implements FilterService{
         List<TemporaryFilter> temporaryFilters = temporaryFilterRepository.findByUserId(userId, pageable);
         List<FilterDto.ReadTemporaryDetailsInfoResponse> readTemporaryDetailsInfoResponse = new ArrayList<>();
         List<String> representationImgCloudfrontUrl = new ArrayList<>();
+        List<String> filterTagList = new ArrayList<>();
 
         for(TemporaryFilter temporaryFilter : temporaryFilters){
             List<RepresentationImgUrl> representationImgUrls = representationImgUrlRepository.findAllByTemporaryFilter(temporaryFilter).orElseGet(
@@ -243,12 +245,23 @@ public class FilterServiceImpl implements FilterService{
                 representationImgCloudfrontUrl.add(representationImgUrl.getCloudfrontUrl());
             }
 
+            List<FilterTag> filterTags = filterTagRepository.findAllByTemporaryFilter(temporaryFilter).orElseGet(
+                    ArrayList::new
+            );
+
+            for(FilterTag filterTag : filterTags){
+                filterTagList.add(filterTag.getTag().getStringId());
+            }
+
             Attribute attribute = temporaryFilter.getAttribute() != null ? temporaryFilter.getAttribute() : Attribute.builder().build();
             String thumbnailUrl = temporaryFilter.getThumbnailUrl() != null ? temporaryFilter.getThumbnailUrl().getCloudfrontUrl() : "";
 
             FilterDto.ReadTemporaryDetailsInfoResponse readTemporaryDetailsInfo = FilterDto.ReadTemporaryDetailsInfoResponse.builder()
                     .representationImgList(FilterDto.RepresentationImgListResponse.builder()
                             .representationImgList(representationImgCloudfrontUrl)
+                            .build())
+                    .filterTagList(FilterDto.FilterTagListResponse.builder()
+                            .filterTagList(filterTagList)
                             .build())
                     .temporaryFilterId(temporaryFilter.getTemporaryFilterId())
                     .filterThumbnail(thumbnailUrl)
@@ -261,8 +274,6 @@ public class FilterServiceImpl implements FilterService{
                             .hue(attribute.getHue())
                             .temperature(attribute.getTemperature())
                             .grayScale(attribute.getGrayScale())
-                            .build())
-                    .representationImgList(FilterDto.RepresentationImgListResponse.builder()
                             .build())
                     .updatedAt(temporaryFilter.getUpdatedAt())
                     .build();
