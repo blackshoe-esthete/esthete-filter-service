@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `temporary_filters` (
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
     `user_id` BIGINT NOT NULL,
-    CONSTRAINT `temporary_filter_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+    CONSTRAINT `temporary_filter_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- `filters` 테이블 생성
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `filters` (
     `like_count` BIGINT DEFAULT 0,
     `view_count` BIGINT DEFAULT 0,
     `is_public` TINYINT DEFAULT 1,
-    CONSTRAINT `filters_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+    CONSTRAINT `filters_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- `attributes` 테이블 생성
@@ -74,8 +74,8 @@ CREATE TABLE IF NOT EXISTS `attributes` (
     `updated_at` DATETIME(6) NULL,
     `filter_id` BIGINT NULL,
     `temporary_filter_id` BIGINT NULL,
-    CONSTRAINT `attribute_fk_temporary_filter_id` FOREIGN KEY (`temporary_filter_id`) REFERENCES `temporary_filters` (`temporary_filter_id`),
-    CONSTRAINT `attribute_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`)
+    CONSTRAINT `attribute_fk_temporary_filter_id` FOREIGN KEY (`temporary_filter_id`) REFERENCES `temporary_filters` (`temporary_filter_id`) ON DELETE CASCADE,
+    CONSTRAINT `attribute_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- `filter_tags` 테이블 생성
@@ -86,9 +86,9 @@ CREATE TABLE IF NOT EXISTS `filter_tags` (
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
     `temporary_filter_id` BIGINT NULL,
-    CONSTRAINT `filter_tag_fk_temporary_filter_id` FOREIGN KEY (`temporary_filter_id`) REFERENCES `temporary_filters` (`temporary_filter_id`),
-    CONSTRAINT `filter_tag_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`),
-    CONSTRAINT `filter_tag_fk_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`tag_id`)
+    CONSTRAINT `filter_tag_fk_temporary_filter_id` FOREIGN KEY (`temporary_filter_id`) REFERENCES `temporary_filters` (`temporary_filter_id`) ON DELETE CASCADE,
+    CONSTRAINT `filter_tag_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`) ON DELETE CASCADE,
+    CONSTRAINT `filter_tag_fk_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`tag_id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- `likes` 테이블 생성
@@ -99,8 +99,8 @@ CREATE TABLE IF NOT EXISTS `likes` (
     `updated_at` DATETIME(6) NULL,
     `filter_id` BIGINT NOT NULL,
     `user_uuid` BINARY(16) NOT NULL UNIQUE,
-    CONSTRAINT `likes_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-    CONSTRAINT `likes_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`)
+    CONSTRAINT `likes_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+    CONSTRAINT `likes_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- `photos` 테이블 생성
@@ -112,8 +112,8 @@ CREATE TABLE IF NOT EXISTS `photos` (
     `updated_at` DATETIME(6) NULL,
     `filter_id` BIGINT NULL,
     `temporary_filter_id` BIGINT NULL,
-    CONSTRAINT `photo_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`),
-    CONSTRAINT `photo_fk_temporary_filter_id` FOREIGN KEY (`temporary_filter_id`) REFERENCES `temporary_filters` (`temporary_filter_id`)
+    CONSTRAINT `photo_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`) ON DELETE CASCADE,
+    CONSTRAINT `photo_fk_temporary_filter_id` FOREIGN KEY (`temporary_filter_id`) REFERENCES `temporary_filters` (`temporary_filter_id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- `purchasings` 테이블 생성
@@ -124,8 +124,8 @@ CREATE TABLE IF NOT EXISTS `purchasings` (
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
     `filter_id` BIGINT NULL,
-    CONSTRAINT `purchasing_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-    CONSTRAINT `purchasing_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`)
+    CONSTRAINT `purchasing_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+    CONSTRAINT `purchasing_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- `representation_img_urls` 테이블 생성
@@ -136,8 +136,8 @@ CREATE TABLE IF NOT EXISTS `representation_img_urls` (
     `s3_url` VARCHAR(150) NULL,
     `filter_id` BIGINT NULL,
     `temporary_filter_id` BIGINT NULL,
-    CONSTRAINT `representation_fk_temporary_filter_id` FOREIGN KEY (`temporary_filter_id`) REFERENCES `temporary_filters` (`temporary_filter_id`),
-    CONSTRAINT `representation_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`)
+    CONSTRAINT `representation_fk_temporary_filter_id` FOREIGN KEY (`temporary_filter_id`) REFERENCES `temporary_filters` (`temporary_filter_id`) ON DELETE CASCADE,
+    CONSTRAINT `representation_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- `thumbnail_urls` 테이블 생성
@@ -148,8 +148,8 @@ CREATE TABLE IF NOT EXISTS `thumbnail_urls` (
     `s3_url` VARCHAR(150) NULL,
     `filter_id` BIGINT NULL,
     `temporary_filter_id` BIGINT NULL,
-    CONSTRAINT `thumbnail_url_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`),
-    CONSTRAINT `thumbnail_url_fk_temporary_filter_id` FOREIGN KEY (`temporary_filter_id`) REFERENCES `temporary_filters` (`temporary_filter_id`)
+    CONSTRAINT `thumbnail_url_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`) ON DELETE CASCADE,
+    CONSTRAINT `thumbnail_url_fk_temporary_filter_id` FOREIGN KEY (`temporary_filter_id`) REFERENCES `temporary_filters` (`temporary_filter_id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- `user_tags` 테이블 생성
@@ -157,6 +157,6 @@ CREATE TABLE IF NOT EXISTS `user_tags` (
    `user_tag_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
    `user_id` BIGINT NOT NULL,
    `tag_id` BIGINT NOT NULL,
-   CONSTRAINT `user_tag_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-    CONSTRAINT `user_tag_fk_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`tag_id`)
+   CONSTRAINT `user_tag_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+    CONSTRAINT `user_tag_fk_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`tag_id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
