@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public interface FilterRepository extends JpaRepository<Filter, Long>{
     //join filter, user, like
     @Query("SELECT new com.blackshoe.esthete.dto.FilterDto$SearchFilterResponse(f, u, :viewerId, l)" +
             " FROM Filter f JOIN f.user u LEFT JOIN Like l ON f.filterId = l.filter.filterId AND l.userId = :viewerId" +
-            " WHERE f.name LIKE %:keyword% OR u.nickname LIKE %:keyword% ORDER BY f.viewCount DESC, f.createdAt DESC")
+            " WHERE f.isPublic = true AND f.name LIKE %:keyword% OR u.nickname LIKE %:keyword% ORDER BY f.viewCount DESC, f.createdAt DESC")
     Page<FilterDto.SearchFilterResponse> searchAllByFilterNameOrWriterNameContaining(@Param("viewerId") UUID viewerId, @Param("keyword") String keyword, Pageable pageable);
 
     @Query("SELECT new com.blackshoe.esthete.dto.FilterDto$SearchFilterResponse(f, u, :viewerId, l) " +
@@ -33,7 +34,7 @@ public interface FilterRepository extends JpaRepository<Filter, Long>{
             "LEFT JOIN Like l ON f.filterId = l.filter.filterId AND l.userId = :viewerId " +
             "JOIN FilterTag ft ON f = ft.filter " +
             "JOIN Tag t ON ft.tag = t AND t = :tag " +
-            "WHERE (f.name LIKE %:keyword% OR u.nickname LIKE %:keyword%) " +
+            "WHERE f.isPublic = true AND (f.name LIKE %:keyword% OR u.nickname LIKE %:keyword%) " +
             "ORDER BY f.viewCount DESC, f.createdAt DESC")
     Page<FilterDto.SearchFilterResponse> searchAllByFilterNameOrWriterNameContainingAndHasTag(@Param("viewerId") UUID viewerId, @Param("tag") Tag tag, @Param("keyword") String keyword, Pageable pageable);
 
@@ -44,7 +45,10 @@ public interface FilterRepository extends JpaRepository<Filter, Long>{
             "FROM Filter f " +
             "JOIN f.user u " +
             "LEFT JOIN Like l ON f.filterId = l.filter.filterId AND l.userId = :viewerId " +
+            "WHERE f.isPublic = true " +
             "ORDER BY f.viewCount DESC, f.createdAt DESC")
     Page<FilterDto.SearchFilterResponse> searchAll(@Param("viewerId") UUID viewerId, Pageable pageable);
 
+    @Query("SELECT f FROM Filter f WHERE f.user = :user")
+    List<Filter> findByUser(User user);
 }

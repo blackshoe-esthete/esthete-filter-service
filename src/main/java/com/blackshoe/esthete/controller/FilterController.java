@@ -2,8 +2,10 @@ package com.blackshoe.esthete.controller;
 
 import com.blackshoe.esthete.dto.FilterCreateDto;
 import com.blackshoe.esthete.dto.FilterDto;
+import com.blackshoe.esthete.dto.LikeDto;
 import com.blackshoe.esthete.dto.ResponseDto;
 import com.blackshoe.esthete.service.*;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,7 +29,7 @@ public class FilterController {
     private final FilterService filterService;
     private final JwtService jwtService;
     private final CreateService createService;
-
+    private final LikeService likeService;
     @GetMapping("/searching")
     public ResponseEntity<Page<FilterDto.SearchFilterResponse>> searchFilter(
              @RequestHeader("Authorization") String accessToken,
@@ -186,5 +188,77 @@ public class FilterController {
         log.info("------------------");
         FilterCreateDto.CreateFilterResponse filterResponse = createService.saveFilter(userId, thumbnail, representationImg, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(filterResponse);
+    }
+
+    @Operation(summary = "임시 필터 리스트 조회")
+    @GetMapping("/temporary")
+    public ResponseEntity<Page<FilterDto.ReadTemporaryDetailsInfoResponse>> readTemporaryFilter(
+            @RequestHeader("Authorization") String accessToken,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+            ) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+
+        return ResponseEntity.ok(filterService.readTemporaryFilter(userId, page, size));
+    }
+
+    @Operation(summary = "임시 필터 삭제(미완성)")
+    @DeleteMapping("/{temporaryFilterId}")
+    public ResponseEntity<ResponseDto> deleteTemporaryFilter(
+            @RequestHeader("Authorization") String accessToken,
+            @PathVariable UUID temporaryFilterId) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+        filterService.deleteTemporaryFilter(userId, temporaryFilterId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    @Operation(summary = "필터 삭제(미완성)")
+    @DeleteMapping("/{filterId}")
+    public ResponseEntity<ResponseDto> deleteFilter(
+            @RequestHeader("Authorization") String accessToken,
+            @PathVariable UUID filterId) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+        filterService.deleteFilter(userId, filterId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @Operation(summary = "좋아요 필터 리스트 조회")
+    @GetMapping("/like")
+    public ResponseEntity<Page<LikeDto.ReadResponse>> getLikeFilterList(
+            @RequestHeader("Authorization") String accessToken,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+
+        return ResponseEntity.ok(likeService.getLikeFilterList(userId, page, size));
+    }
+
+    @Operation(summary = "필터 좋아요")
+    @PostMapping("/{filterId}/like")
+    public ResponseEntity<ResponseDto> likeFilter(
+            @RequestHeader("Authorization") String accessToken,
+            @PathVariable UUID filterId) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+        likeService.likeFilter(userId, filterId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(summary = "필터 좋아요 취소")
+    @DeleteMapping("/{filterId}/unlike")
+    public ResponseEntity<ResponseDto> unlikeFilter(
+            @RequestHeader("Authorization") String accessToken,
+            @PathVariable UUID filterId) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+        likeService.unlikeFilter(userId, filterId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

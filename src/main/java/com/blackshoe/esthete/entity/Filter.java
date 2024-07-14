@@ -36,6 +36,9 @@ public class Filter {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "is_public", columnDefinition = "TINYINT(1) default 1")
+    private Boolean isPublic;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, length = 20)
     private LocalDateTime createdAt;
@@ -93,6 +96,11 @@ public class Filter {
     public void updateUser(User user){
         this.user = user;
         user.addFilter(this);
+    }
+
+    public void freeFilter(){
+        this.user = null;
+        this.isPublic = false;
     }
 
     public void setAttribute(Attribute attribute){
