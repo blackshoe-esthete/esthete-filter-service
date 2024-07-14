@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `updated_at` DATETIME(6) NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- `temporary_filters` 테이블 생성
+-- `temporary_filters` 테이블 생성 test
 CREATE TABLE IF NOT EXISTS `temporary_filters` (
    `temporary_filter_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
    `temporary_filter_uuid` BINARY(16) NOT NULL UNIQUE,
