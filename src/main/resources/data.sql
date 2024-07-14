@@ -50,7 +50,9 @@ ON DUPLICATE KEY UPDATE representation_img_url_uuid = representation_img_url_uui
 INSERT INTO thumbnail_urls (filter_id, temporary_filter_id, thumbnail_url_id, thumbnail_url_uuid, cloudfront_url, s3_url)
 VALUES
     (1, NULL, 1, UNHEX(REPLACE('c1a9fbe6-a3d3-4134-be35-d11127f4e70f', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-thumbnail.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-thumbnail.png'),
-    (2, NULL, 2, UNHEX(REPLACE('c5081f94-d300-4c6c-b46d-6fc25d1d74ae', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-photo2.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-photo2.png')
+    (2, NULL, 2, UNHEX(REPLACE('c5081f94-d300-4c6c-b46d-6fc25d1d74ae', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-photo2.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-photo2.png'),
+    (NULL, 1, 1, UNHEX(REPLACE('c1a9fbe6-a3d3-4134-be35-d11127f4e70f', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-thumbnail.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-thumbnail.png'),
+    (NULL, 2, 2, UNHEX(REPLACE('c5081f94-d300-4c6c-b46d-6fc25d1d74ae', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-photo2.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-photo2.png')
 ON DUPLICATE KEY UPDATE thumbnail_url_uuid = thumbnail_url_uuid;
 
 INSERT INTO attributes (brightness, contrast, exposure, hue, saturation, temperature, sharpness, gray_scale, attribute_id, created_at, filter_id, temporary_filter_id, updated_at)
