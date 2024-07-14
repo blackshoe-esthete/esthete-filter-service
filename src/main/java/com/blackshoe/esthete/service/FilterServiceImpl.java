@@ -186,13 +186,43 @@ public class FilterServiceImpl implements FilterService{
     }
 
     @Override
+    @Transactional
     public void deleteFilter(UUID userId, UUID filterId) {
+        final User user = userRepository.findByUserId(userId).orElseThrow(
+                () -> new UserException(UserErrorResult.NOT_FOUND_USER)
+        );
 
+        final Filter filter = filterRepository.findByFilterId(filterId).orElseThrow(
+                () -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER)
+        );
+
+        if(!filter.getUser().equals(user)){
+            throw new FilterException(FilterErrorResult.NOT_FOUND_FILTER);
+
+        }else{
+            user.removeFilter(filter);
+            filterRepository.delete(filter);
+        }
     }
 
     @Override
+    @Transactional
     public void deleteTemporaryFilter(UUID userId, UUID temporaryFilterId) {
+        final User user = userRepository.findByUserId(userId).orElseThrow(
+                () -> new UserException(UserErrorResult.NOT_FOUND_USER)
+        );
+//5a0db2eb-f4bc-4fa3-ae47-8381ed0da1ab
+        final TemporaryFilter temporaryFilter = temporaryFilterRepository.findByTemporaryFilterId(temporaryFilterId).orElseThrow(
+                () -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER)
+        );
 
+        if(!temporaryFilter.getUser().equals(user)){
+            throw new FilterException(FilterErrorResult.NOT_FOUND_FILTER);
+        }else{
+            user.removeTemporaryFilter(temporaryFilter);
+            temporaryFilterRepository.delete(temporaryFilter);
+
+        }
     }
 
     @Override
@@ -234,6 +264,7 @@ public class FilterServiceImpl implements FilterService{
                             .build())
                     .representationImgList(FilterDto.RepresentationImgListResponse.builder()
                             .build())
+                    .updatedAt(temporaryFilter.getUpdatedAt())
                     .build();
 
             readTemporaryDetailsInfoResponse.add(readTemporaryDetailsInfo);

@@ -203,8 +203,8 @@ public class FilterController {
         return ResponseEntity.ok(filterService.readTemporaryFilter(userId, page, size));
     }
 
-    @Operation(summary = "임시 필터 삭제(미완성)")
-    @DeleteMapping("/{temporaryFilterId}")
+    @Operation(summary = "임시 필터 삭제")
+    @DeleteMapping("/temporary/{temporaryFilterId}")
     public ResponseEntity<ResponseDto> deleteTemporaryFilter(
             @RequestHeader("Authorization") String accessToken,
             @PathVariable UUID temporaryFilterId) {
@@ -214,7 +214,7 @@ public class FilterController {
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-    @Operation(summary = "필터 삭제(미완성)")
+    @Operation(summary = "필터 삭제")
     @DeleteMapping("/{filterId}")
     public ResponseEntity<ResponseDto> deleteFilter(
             @RequestHeader("Authorization") String accessToken,

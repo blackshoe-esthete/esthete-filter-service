@@ -59,6 +59,7 @@ public class TemporaryFilter {
     public void setThumbnailUrl(ThumbnailUrl thumbnailUrl){
         this.thumbnailUrl = thumbnailUrl;
     }
+
     public void updateUser(User user){
         this.user = user;
         user.addTemporaryFilter(this);
@@ -98,6 +99,10 @@ public class TemporaryFilter {
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
         }
+    }
+
+    public void freeUser(){
+        this.user = null;
     }
 
     public void updateTemporaryFilterInfo(String name, String description){

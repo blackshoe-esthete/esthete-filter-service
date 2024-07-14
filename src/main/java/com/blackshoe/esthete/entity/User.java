@@ -74,6 +74,7 @@ public class User {
         this.temporaryFilters.add(temporaryFilter);
     }
 
+    // 임시필터 transfer 용도
     public void deleteTemporaryFilter(TemporaryFilter temporaryFilter) {
         this.temporaryFilters.add(temporaryFilter);
     }
@@ -96,5 +97,13 @@ public class User {
 
     public void updateNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void removeTemporaryFilter(TemporaryFilter temporaryFilter) {
+        this.temporaryFilters.remove(temporaryFilter);
+    }
+
+    public void removeFilter(Filter filter) {
+        this.filters.remove(filter);
     }
 }
