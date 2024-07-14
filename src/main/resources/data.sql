@@ -47,6 +47,12 @@ VALUES
     (2, 4, NULL, UNHEX(REPLACE('8fe63e8c-153a-4ed7-b661-744d0a7c4bdc', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-photo.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-photo.png')
 ON DUPLICATE KEY UPDATE representation_img_url_uuid = representation_img_url_uuid;
 
+INSERT INTO temporary_filters (created_at, temporary_filter_id, updated_at, user_id, temporary_filter_uuid, description, name)
+VALUES
+    (NOW(), 1, NOW(), 1, UNHEX(REPLACE('a720245d-d592-424c-b874-8033cd1b3b2a', '-', '')), 'testTemporaryFilter1description', 'testTemporaryFilter1'),
+    (NOW(), 2, NOW(), 1, UNHEX(REPLACE('7e9e3ad3-d328-2157-8cbf-813d4c69ceaa', '-', '')), 'testTemporaryFilter2description', 'testTemporaryFilter2')
+    ON DUPLICATE KEY UPDATE temporary_filter_uuid = temporary_filter_uuid;
+
 INSERT INTO thumbnail_urls (filter_id, temporary_filter_id, thumbnail_url_id, thumbnail_url_uuid, cloudfront_url, s3_url)
 VALUES
     (1, NULL, 1, UNHEX(REPLACE('c1a9fbe6-a3d3-4134-be35-d11127f4e70f', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-thumbnail.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-thumbnail.png'),
@@ -72,9 +78,5 @@ VALUES
 ON DUPLICATE KEY UPDATE filter_tag_id = filter_tag_id;
 
 
-INSERT INTO temporary_filters (created_at, temporary_filter_id, updated_at, user_id, temporary_filter_uuid, description, name)
-VALUES
-    (NOW(), 1, NOW(), 1, UNHEX(REPLACE('a720245d-d592-424c-b874-8033cd1b3b2a', '-', '')), 'testTemporaryFilter1description', 'testTemporaryFilter1'),
-    (NOW(), 2, NOW(), 1, UNHEX(REPLACE('7e9e3ad3-d328-2157-8cbf-813d4c69ceaa', '-', '')), 'testTemporaryFilter2description', 'testTemporaryFilter2')
-ON DUPLICATE KEY UPDATE temporary_filter_uuid = temporary_filter_uuid;
+
 
