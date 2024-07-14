@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
 CREATE TABLE IF NOT EXISTS `users` (
    `user_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
    `user_uuid` BINARY(16) NOT NULL UNIQUE,
-    `profile_img_url` VARCHAR(250) NULL,
+    `profile_img_url` VARCHAR(250) NULL DEFAULT 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png',
     `nickname` VARCHAR(50) NOT NULL,
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL

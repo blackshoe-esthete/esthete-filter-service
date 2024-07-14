@@ -29,7 +29,7 @@ INSERT INTO tags (tag_uuid, name) VALUES
     ON DUPLICATE KEY UPDATE tag_uuid = tag_uuid;
 
 INSERT INTO users (user_uuid, nickname, created_at, updated_at, user_id, profile_img_url) VALUES
-                                                                   (UNHEX(REPLACE('5a0db2eb-f4bc-4fa3-ae47-8381ed0da1ab', '-', '')), 'testuser', NOW(), NOW(), 1, 'default')
+                                                                   (UNHEX(REPLACE('5a0db2eb-f4bc-4fa3-ae47-8381ed0da1ab', '-', '')), 'testuser', NOW(), NOW(), 1, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png')
                                                                     ON DUPLICATE KEY UPDATE user_uuid = user_uuid;
 
 
@@ -41,16 +41,16 @@ ON DUPLICATE KEY UPDATE filter_uuid = filter_uuid;
 
 INSERT INTO representation_img_urls (filter_id, representation_img_url_id, temporary_filter_id, representation_img_url_uuid, cloudfront_url, s3_url)
 VALUES
-    (1, 1, NULL, UNHEX(REPLACE('62cc8b3f-4ddf-4518-beaa-63651df8403d', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/filter/a720245d-d592-432c-b874-8033cd1b3b2a/representation/6857bd1f-fef5-48e0-8ecb-1d4ee6fe96da.jpg', 'https://blackshoe-esthete-s3.s3.amazonaws.com/filter/a720245d-d592-432c-b874-8033cd1b3b2a/representation/6857bd1f-fef5-48e0-8ecb-1d4ee6fe96da.jpg'),
-    (1, 2, NULL, UNHEX(REPLACE('4db99727-e273-47dd-9dde-d06563e5c53e', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/filter/a720245d-d592-432c-b874-8033cd1b3b2a/representation/cf755b9d-74c1-4994-9fa1-0d45c5fe3d7b.webp', 'https://blackshoe-esthete-s3.s3.amazonaws.com/filter/a720245d-d592-432c-b874-8033cd1b3b2a/representation/cf755b9d-74c1-4994-9fa1-0d45c5fe3d7b.webp'),
-    (1, 3, NULL, UNHEX(REPLACE('838f5b54-3134-4b54-9b41-857c74df7857', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/filter/a720245d-d592-432c-b874-8033cd1b3b2a/representation/8619115d-d03d-4e1d-afc0-89fd4c72e0ea.jpg', 'https://blackshoe-esthete-s3.s3.amazonaws.com/filter/a720245d-d592-432c-b874-8033cd1b3b2a/representation/8619115d-d03d-4e1d-afc0-89fd4c72e0ea.jpg'),
-    (2, 4, NULL, UNHEX(REPLACE('8fe63e8c-153a-4ed7-b661-744d0a7c4bdc', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/filter/7e9e3ad3-d328-4377-8cbf-813d4c69ceaa/representation/0437f09a-0713-4213-9183-9d32a7653d81.jpg', 'https://blackshoe-esthete-s3.s3.amazonaws.com/filter/7e9e3ad3-d328-4377-8cbf-813d4c69ceaa/representation/0437f09a-0713-4213-9183-9d32a7653d81.jpg')
+    (1, 1, NULL, UNHEX(REPLACE('62cc8b3f-4ddf-4518-beaa-63651df8403d', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-photo.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-photo.png'),
+    (1, 2, NULL, UNHEX(REPLACE('4db99727-e273-47dd-9dde-d06563e5c53e', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-photo2.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-photo2.png'),
+    (1, 3, NULL, UNHEX(REPLACE('838f5b54-3134-4b54-9b41-857c74df7857', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-photo3.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-photo3.png'),
+    (2, 4, NULL, UNHEX(REPLACE('8fe63e8c-153a-4ed7-b661-744d0a7c4bdc', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-photo.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-photo.png')
 ON DUPLICATE KEY UPDATE representation_img_url_uuid = representation_img_url_uuid;
 
 INSERT INTO thumbnail_urls (filter_id, temporary_filter_id, thumbnail_url_id, thumbnail_url_uuid, cloudfront_url, s3_url)
 VALUES
-    (1, NULL, 1, UNHEX(REPLACE('c1a9fbe6-a3d3-4134-be35-d11127f4e70f', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/filter/a720245d-d592-432c-b874-8033cd1b3b2a/thumbnail/13675aac-5091-4804-b2c0-9b7597aafbdc.jpg', 'https://blackshoe-esthete-s3.s3.amazonaws.com/filter/a720245d-d592-432c-b874-8033cd1b3b2a/thumbnail/13675aac-5091-4804-b2c0-9b7597aafbdc.jpg'),
-    (2, NULL, 2, UNHEX(REPLACE('c5081f94-d300-4c6c-b46d-6fc25d1d74ae', '-', '')), 'https://d30asln0ue7bf5.cloudfront.net/filter/7e9e3ad3-d328-4377-8cbf-813d4c69ceaa/thumbnail/304d6328-d13f-4705-a9cd-ff5422c5a571.jpg', 'https://blackshoe-esthete-s3.s3.amazonaws.com/filter/7e9e3ad3-d328-4377-8cbf-813d4c69ceaa/thumbnail/304d6328-d13f-4705-a9cd-ff5422c5a571.jpg')
+    (1, NULL, 1, UNHEX(REPLACE('c1a9fbe6-a3d3-4134-be35-d11127f4e70f', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-thumbnail.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-thumbnail.png'),
+    (2, NULL, 2, UNHEX(REPLACE('c5081f94-d300-4c6c-b46d-6fc25d1d74ae', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-photo2.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-photo2.png')
 ON DUPLICATE KEY UPDATE thumbnail_url_uuid = thumbnail_url_uuid;
 
 INSERT INTO attributes (brightness, contrast, exposure, hue, saturation, temperature, sharpness, gray_scale, attribute_id, created_at, filter_id, temporary_filter_id, updated_at)

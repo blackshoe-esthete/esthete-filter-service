@@ -248,19 +248,22 @@ public class FilterDto {
         private AttributeResponse filterAttributes;
         private RepresentationImgListResponse representationImgList;
         private FilterTagListResponse filterTagList;
+        private LocalDateTime updatedAt;
 
         @Builder
         public ReadTemporaryDetailsInfoResponse(UUID temporaryFilterId,
                                                 String filterThumbnail,
                                                 AttributeResponse filterAttributes,
                                                 RepresentationImgListResponse representationImgList,
-                                                FilterTagListResponse filterTagList) {
+                                                FilterTagListResponse filterTagList,
+                                                LocalDateTime updatedAt) {
             this.temporaryFilterId = temporaryFilterId;
             this.filterThumbnail = filterThumbnail != null ? filterThumbnail : "";
             this.filterAttributes = filterAttributes != null ? filterAttributes : new AttributeResponse(
                     String.valueOf(temporaryFilterId), 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
             this.representationImgList = representationImgList != null ? representationImgList : new RepresentationImgListResponse(new ArrayList<>());
             this.filterTagList = filterTagList != null ? filterTagList : new FilterTagListResponse(new ArrayList<>());
+            this.updatedAt = updatedAt != null ? updatedAt : LocalDateTime.now();
         }
     }
 }
