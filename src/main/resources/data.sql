@@ -29,7 +29,7 @@ INSERT INTO tags (tag_uuid, name) VALUES
     ON DUPLICATE KEY UPDATE tag_uuid = tag_uuid;
 
 INSERT INTO users (user_uuid, nickname, created_at, updated_at, user_id, profile_img_url) VALUES
-                                                                   (UNHEX(REPLACE('5a0db2eb-f4bc-4fa3-ae47-8381ed0da1ab', '-', '')), 'testuser', NOW(), NOW(), 1, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png')
+                                                                   (UNHEX(REPLACE('65b87d26-9482-4984-843a-bee6efb3d9cd', '-', '')), 'testuser', NOW(), NOW(), 1, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png')
                                                                     ON DUPLICATE KEY UPDATE user_uuid = user_uuid;
 
 
