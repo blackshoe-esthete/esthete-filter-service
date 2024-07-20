@@ -33,13 +33,6 @@ public class Tag {
     @Column(name = "name")
     private String name;
 
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, length = 20)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at", length = 20)
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FilterTag> filterTags = new ArrayList();

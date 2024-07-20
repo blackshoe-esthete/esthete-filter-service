@@ -30,6 +30,7 @@ public class FilterController {
     private final JwtService jwtService;
     private final CreateService createService;
     private final LikeService likeService;
+    private final RecommendService recommendService;
     @GetMapping("/searching")
     public ResponseEntity<Page<FilterDto.SearchFilterResponse>> searchFilter(
              @RequestHeader("Authorization") String accessToken,
@@ -260,5 +261,40 @@ public class FilterController {
         likeService.unlikeFilter(userId, filterId);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @Operation(summary = "사용자 선호 필터 태그 추가")
+    @PostMapping("/tags/{tagId}")
+    public ResponseEntity<ResponseDto> addTag(
+            @RequestHeader("Authorization") String accessToken,
+            @PathVariable UUID tagId) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+        recommendService.addTag(userId, tagId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(summary = "사용자 선호 필터 태그 삭제")
+    @DeleteMapping("/tags/{tagId}")
+    public ResponseEntity<ResponseDto> deleteTag(
+            @RequestHeader("Authorization") String accessToken,
+            @PathVariable UUID tagId) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+        recommendService.deleteTag(userId, tagId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @Operation(summary = "사용자 선호 필터 태그 리스트 조회")
+    @GetMapping("/tags")
+    public ResponseEntity<ResponseDto<List<FilterDto.TagResponse>> > getTagList(
+            @RequestHeader("Authorization") String accessToken) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+        List<FilterDto.TagResponse> tagList = recommendService.getTagList(userId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.success(tagList));
     }
 }

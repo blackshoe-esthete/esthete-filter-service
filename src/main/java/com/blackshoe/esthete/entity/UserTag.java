@@ -36,6 +36,6 @@ public class UserTag {
 
     public void updateUser(User user) {
         this.user = user;
-        //user.addUserTag(this);
+        user.addUserTag(this);
     }
 }

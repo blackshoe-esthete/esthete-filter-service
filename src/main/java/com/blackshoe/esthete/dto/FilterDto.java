@@ -246,6 +246,8 @@ public class FilterDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class ReadTemporaryDetailsInfoResponse {
         private UUID temporaryFilterId;
+        private String filterName;
+        private String description;
         private String filterThumbnail;
         private AttributeResponse filterAttributes;
         private RepresentationImgListResponse representationImgList;
@@ -254,12 +256,16 @@ public class FilterDto {
 
         @Builder
         public ReadTemporaryDetailsInfoResponse(UUID temporaryFilterId,
+                                                String filterName,
+                                                String description,
                                                 String filterThumbnail,
                                                 AttributeResponse filterAttributes,
                                                 RepresentationImgListResponse representationImgList,
                                                 FilterTagListResponse filterTagList,
                                                 LocalDateTime updatedAt) {
             this.temporaryFilterId = temporaryFilterId;
+            this.filterName = filterName != null ? filterName : "";
+            this.description = description != null ? description : "";
             this.filterThumbnail = filterThumbnail != null ? filterThumbnail : "";
             this.filterAttributes = filterAttributes != null ? filterAttributes : new AttributeResponse(
                     String.valueOf(temporaryFilterId), 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
@@ -269,4 +275,19 @@ public class FilterDto {
         }
     }
 
+    @Data
+    @NoArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class TagResponse {
+
+        private String tagId;
+        private String tagName;
+
+        @Builder
+        public TagResponse(String tagId, String tagName) {
+            this.tagId = tagId;
+            this.tagName = tagName;
+        }
+    }
 }

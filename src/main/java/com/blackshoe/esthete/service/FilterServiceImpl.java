@@ -257,6 +257,8 @@ public class FilterServiceImpl implements FilterService{
             String thumbnailUrl = temporaryFilter.getThumbnailUrl() != null ? temporaryFilter.getThumbnailUrl().getCloudfrontUrl() : "";
 
             FilterDto.ReadTemporaryDetailsInfoResponse readTemporaryDetailsInfo = FilterDto.ReadTemporaryDetailsInfoResponse.builder()
+                    .filterName(temporaryFilter.getName())
+                    .description(temporaryFilter.getDescription())
                     .representationImgList(FilterDto.RepresentationImgListResponse.builder()
                             .representationImgList(representationImgCloudfrontUrl)
                             .build())
