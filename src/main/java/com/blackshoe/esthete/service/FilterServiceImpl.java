@@ -228,45 +228,37 @@ public class FilterServiceImpl implements FilterService{
     @Transactional(readOnly = true)
     @Override
     public Page<FilterDto.ReadTemporaryDetailsInfoResponse> readTemporaryFilter(UUID userId, int page, int size) {
-
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-
         List<TemporaryFilter> temporaryFilters = temporaryFilterRepository.findByUserId(userId, pageable);
         List<FilterDto.ReadTemporaryDetailsInfoResponse> readTemporaryDetailsInfoResponse = new ArrayList<>();
-        List<String> representationImgCloudfrontUrl = new ArrayList<>();
-        List<String> filterTagList = new ArrayList<>();
 
         for(TemporaryFilter temporaryFilter : temporaryFilters){
-            List<RepresentationImgUrl> representationImgUrls = representationImgUrlRepository.findAllByTemporaryFilter(temporaryFilter).orElseGet(
-                    ArrayList::new
-            );
+            List<String> representationImgCloudfrontUrl = representationImgUrlRepository
+                    .findAllByTemporaryFilter(temporaryFilter)
+                    .orElseGet(ArrayList::new)
+                    .stream()
+                    .map(RepresentationImgUrl::getCloudfrontUrl)
+                    .collect(Collectors.toList());
 
-            for(RepresentationImgUrl representationImgUrl : representationImgUrls){
-                representationImgCloudfrontUrl.add(representationImgUrl.getCloudfrontUrl());
+            List<String> filterTagList = filterTagRepository
+                    .findAllByTemporaryFilter(temporaryFilter)
+                    .orElseGet(ArrayList::new)
+                    .stream()
+                    .map(filterTag -> filterTag.getTag().getStringId())
+                    .collect(Collectors.toList());
+
+            Attribute attribute = temporaryFilter.getAttribute();
+            if (attribute == null) {
+                attribute = Attribute.builder().build();
             }
-
-            List<FilterTag> filterTags = filterTagRepository.findAllByTemporaryFilter(temporaryFilter).orElseGet(
-                    ArrayList::new
-            );
-
-            for(FilterTag filterTag : filterTags){
-                filterTagList.add(filterTag.getTag().getStringId());
-            }
-
-            Attribute attribute = temporaryFilter.getAttribute() != null ? temporaryFilter.getAttribute() : Attribute.builder().build();
-            String thumbnailUrl = temporaryFilter.getThumbnailUrl() != null ? temporaryFilter.getThumbnailUrl().getCloudfrontUrl() : "";
 
             FilterDto.ReadTemporaryDetailsInfoResponse readTemporaryDetailsInfo = FilterDto.ReadTemporaryDetailsInfoResponse.builder()
                     .filterName(temporaryFilter.getName())
                     .description(temporaryFilter.getDescription())
-                    .representationImgList(FilterDto.RepresentationImgListResponse.builder()
-                            .representationImgList(representationImgCloudfrontUrl)
-                            .build())
-                    .filterTagList(FilterDto.FilterTagListResponse.builder()
-                            .filterTagList(filterTagList)
-                            .build())
+                    .representationImgList(new FilterDto.RepresentationImgListResponse(representationImgCloudfrontUrl))
+                    .filterTagList(new FilterDto.FilterTagListResponse(filterTagList))
                     .temporaryFilterId(temporaryFilter.getTemporaryFilterId())
-                    .filterThumbnail(thumbnailUrl)
+                    .filterThumbnail(temporaryFilter.getThumbnailUrl() != null ? temporaryFilter.getThumbnailUrl().getCloudfrontUrl() : "")
                     .filterAttributes(FilterDto.AttributeResponse.builder()
                             .brightness(attribute.getBrightness())
                             .contrast(attribute.getContrast())
@@ -283,8 +275,6 @@ public class FilterServiceImpl implements FilterService{
             readTemporaryDetailsInfoResponse.add(readTemporaryDetailsInfo);
         }
 
-        Page<FilterDto.ReadTemporaryDetailsInfoResponse> readBasicInfoOfTemporaryFilter = new PageImpl<>(readTemporaryDetailsInfoResponse, pageable, temporaryFilters.size());
-
-        return readBasicInfoOfTemporaryFilter;
+        return new PageImpl<>(readTemporaryDetailsInfoResponse, pageable, temporaryFilters.size());
     }
 }
