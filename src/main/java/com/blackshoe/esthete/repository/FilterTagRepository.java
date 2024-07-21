@@ -20,10 +20,6 @@ public interface FilterTagRepository extends JpaRepository<FilterTag, Long> {
     void deleteByFilter(Filter filter);
 
     @Modifying
-    @Query("DELETE FROM FilterTag ft WHERE ft.filter.user = :user")
-    void deleteByUserOfFilter(User user);
-
-    @Modifying
     @Query("DELETE FROM FilterTag ft WHERE ft.temporaryFilter.user = :user")
-    void deleteByUserOfTemporaryFilter(User user);
+    void deleteByUser(User user);
 }

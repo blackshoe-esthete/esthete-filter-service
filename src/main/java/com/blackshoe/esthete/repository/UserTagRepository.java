@@ -4,6 +4,7 @@ import com.blackshoe.esthete.entity.Tag;
 import com.blackshoe.esthete.entity.User;
 import com.blackshoe.esthete.entity.UserTag;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -17,4 +18,8 @@ public interface UserTagRepository extends JpaRepository<UserTag, Long> {
 
     @Query("SELECT ut FROM UserTag ut JOIN FETCH ut.tag WHERE ut.user = :user")
     List<UserTag> findByUserWithTags(@Param("user") User user);
+
+    @Modifying
+    @Query("DELETE FROM UserTag ut WHERE ut.user = :user")
+    void deleteByUser(User user);
 }

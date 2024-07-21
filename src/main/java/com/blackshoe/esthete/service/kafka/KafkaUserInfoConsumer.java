@@ -6,10 +6,7 @@ import com.blackshoe.esthete.exception.KafkaException;
 import com.blackshoe.esthete.dto.KafkaConsumerDto;
 import com.blackshoe.esthete.entity.User;
 import com.blackshoe.esthete.exception.KafkaErrorResult;
-import com.blackshoe.esthete.repository.FilterRepository;
-import com.blackshoe.esthete.repository.FilterTagRepository;
-import com.blackshoe.esthete.repository.TemporaryFilterRepository;
-import com.blackshoe.esthete.repository.UserRepository;
+import com.blackshoe.esthete.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +27,7 @@ public class KafkaUserInfoConsumer{
     private final FilterRepository filterRepository;
     private final FilterTagRepository filterTagRepository;
     private final TemporaryFilterRepository temporaryFilterRepository;
-
+    private final UserTagRepository userTagRepository;
     @KafkaListener(topics = "user-create")
     @Transactional
     public void createUser(String payload, Acknowledgment acknowledgment) {
@@ -126,15 +123,10 @@ public class KafkaUserInfoConsumer{
         UUID userId = UUID.fromString(userDeleteDto.getUserId());
         final User user = userRepository.findByUserId(userId).orElseThrow(() -> new KafkaException(KafkaErrorResult.USER_NOT_FOUND));
 
-        filterTagRepository.deleteByUserOfTemporaryFilter(user);
+        filterTagRepository.deleteByUser(user);
         temporaryFilterRepository.deleteByUser(user);
-
-        filterTagRepository.deleteByUserOfFilter(user);
-
-        List<Filter> filters = user.getFilters();
-        for (Filter filter : filters) {
-            filter.freeFilter();
-        }
+        filterRepository.deleteByUser(user);
+        userTagRepository.deleteByUser(user);
 
         userRepository.delete(user);
 
