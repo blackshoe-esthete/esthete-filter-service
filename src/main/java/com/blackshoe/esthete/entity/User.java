@@ -29,7 +29,7 @@ public class User {
     @Column(columnDefinition = "BINARY(16)", name = "user_uuid", unique = true)
     private UUID userId;
 
-    @Column(name = "profile_img_url", nullable = false, columnDefinition = "VARCHAR(250) default 'default'")
+    @Column(name = "profile_img_url", columnDefinition = "VARCHAR(250) default 'default'")
     private String profileImgUrl;
 
     @Column(name = "nickname")
@@ -57,9 +57,10 @@ public class User {
     private List<Purchasing> purchasings = new ArrayList();
 
     @Builder
-    public User(UUID userId, String nickname){
+    public User(UUID userId, String nickname,LocalDateTime createdAt) {
         this.userId = userId;
         this.nickname = nickname;
+        this.createdAt = createdAt;
     }
 
     public void setUserId(UUID userId) {

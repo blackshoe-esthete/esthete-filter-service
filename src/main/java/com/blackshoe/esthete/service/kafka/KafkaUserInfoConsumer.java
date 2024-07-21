@@ -15,6 +15,7 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,6 +48,7 @@ public class KafkaUserInfoConsumer{
 
         User user = User.builder()
                 .nickname(userCreate.getNickname())
+                .createdAt(LocalDateTime.now())
                 .build();
 
         user.setUserId(userId);
