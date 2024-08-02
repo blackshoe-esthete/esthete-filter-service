@@ -1,9 +1,6 @@
 package com.blackshoe.esthete.controller;
 
-import com.blackshoe.esthete.dto.FilterCreateDto;
-import com.blackshoe.esthete.dto.FilterDto;
-import com.blackshoe.esthete.dto.LikeDto;
-import com.blackshoe.esthete.dto.ResponseDto;
+import com.blackshoe.esthete.dto.*;
 import com.blackshoe.esthete.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -287,9 +284,20 @@ public class FilterController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @Operation(summary = "사용자 선호 필터 태그 수정")
+    @PutMapping("/tags")
+    public ResponseEntity<ResponseDto<List<FilterDto.TagResponse>>> editTagList(
+            @RequestHeader("Authorization") String accessToken,
+            @RequestBody UserDto.EditTagsDto editTagsRequest) {
+
+        UUID userId = jwtService.extractUserId(accessToken);
+        List<FilterDto.TagResponse> tagList = recommendService.editUserTags(userId, editTagsRequest);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.success(tagList));
+    }
     @Operation(summary = "사용자 선호 필터 태그 리스트 조회")
     @GetMapping("/tags")
-    public ResponseEntity<ResponseDto<List<FilterDto.TagResponse>> > getTagList(
+    public ResponseEntity<ResponseDto<List<FilterDto.TagResponse>>> getTagList(
             @RequestHeader("Authorization") String accessToken) {
 
         UUID userId = jwtService.extractUserId(accessToken);

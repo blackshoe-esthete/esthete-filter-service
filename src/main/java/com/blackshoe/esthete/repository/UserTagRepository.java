@@ -22,4 +22,5 @@ public interface UserTagRepository extends JpaRepository<UserTag, Long> {
     @Modifying
     @Query("DELETE FROM UserTag ut WHERE ut.user = :user")
     void deleteByUser(User user);
+
 }
