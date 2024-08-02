@@ -77,6 +77,51 @@ VALUES
     (NOW(), 2, 6, 5, NULL, NOW())
 ON DUPLICATE KEY UPDATE filter_tag_id = filter_tag_id;
 
+-- 유저 2 추가
+INSERT INTO users (user_uuid, nickname, created_at, updated_at, user_id, profile_img_url) VALUES
+    (UNHEX(REPLACE('75c87d26-9482-4984-843a-bee6efb3d9ce', '-', '')), 'testuser2', NOW(), NOW(), 2, 'https://d1g6qszf7cmafu.cloudfront.net/default/profile.png')
+    ON DUPLICATE KEY UPDATE user_uuid = user_uuid;
 
+-- 유저 2의 새로운 필터 추가
+INSERT INTO filters (created_at, filter_id, updated_at, user_id, filter_uuid, description, name)
+VALUES
+    (NOW(), 3, NOW(), 2, UNHEX(REPLACE('b830245d-d592-432c-b874-8033cd1b3b2b', '-', '')), 'testFilter3description', 'testFilter3'),
+    (NOW(), 4, NOW(), 2, UNHEX(REPLACE('8f9e3ad3-d328-4377-8cbf-813d4c69ceab', '-', '')), 'testFilter4description', 'testFilter4')
+    ON DUPLICATE KEY UPDATE filter_uuid = filter_uuid;
 
+-- 새 필터의 대표 이미지 추가 (기존 URL 사용)
+INSERT INTO representation_img_urls (filter_id, representation_img_url_id, temporary_filter_id, representation_img_url_uuid, cloudfront_url, s3_url)
+VALUES
+    (3, 5, NULL, UNHEX(REPLACE('72cc8b3f-4ddf-4518-beaa-63651df8403e', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-photo.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-photo.png'),
+    (4, 6, NULL, UNHEX(REPLACE('9fe63e8c-153a-4ed7-b661-744d0a7c4bdd', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-photo2.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-photo2.png')
+    ON DUPLICATE KEY UPDATE representation_img_url_uuid = representation_img_url_uuid;
 
+-- 새 필터의 썸네일 추가 (기존 URL 사용)
+INSERT INTO thumbnail_urls (filter_id, temporary_filter_id, thumbnail_url_id, thumbnail_url_uuid, cloudfront_url, s3_url)
+VALUES
+    (3, NULL, 5, UNHEX(REPLACE('d1a9fbe6-a3d3-4134-be35-d11127f4e70f', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-thumbnail.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-thumbnail.png'),
+    (4, NULL, 6, UNHEX(REPLACE('d5081f94-d300-4c6c-b46d-6fc25d1d74af', '-', '')), 'https://d1g6qszf7cmafu.cloudfront.net/test/test-photo2.png', 'https://esthete-bucket.s3.ap-northeast-2.amazonaws.com/test-photo2.png')
+    ON DUPLICATE KEY UPDATE thumbnail_url_uuid = thumbnail_url_uuid;
+
+-- 새 필터의 속성 추가
+INSERT INTO attributes (brightness, contrast, exposure, hue, saturation, temperature, sharpness, gray_scale, attribute_id, created_at, filter_id, temporary_filter_id, updated_at)
+VALUES
+    (3, 4, 2, 5, 3, 4, 6, 15, 6, NOW(), 3, NULL, NOW()),
+    (2, 5, 4, 3, 6, 3, 4, 20, 7, NOW(), 4, NULL, NOW())
+    ON DUPLICATE KEY UPDATE attribute_id = attribute_id;
+
+-- 새 필터의 태그 추가
+INSERT INTO filter_tags (created_at, filter_id, filter_tag_id, tag_id, temporary_filter_id, updated_at)
+VALUES
+    (NOW(), 3, 7, 3, NULL, NOW()),
+    (NOW(), 3, 8, 4, NULL, NOW()),
+    (NOW(), 4, 9, 6, NULL, NOW()),
+    (NOW(), 4, 10, 7, NULL, NOW())
+    ON DUPLICATE KEY UPDATE filter_tag_id = filter_tag_id;
+
+-- 유저 1의 구매 정보 추가 (유저 2의 필터 구매)
+INSERT INTO purchasings (purchasing_uuid, user_id, filter_id, created_at, updated_at)
+VALUES
+    (UNHEX(REPLACE('f47ac10b-58cc-4372-a567-0e02b2c3d479', '-', '')), 1, 3, NOW(), NOW()),
+    (UNHEX(REPLACE('550e8400-e29b-41d4-a716-446655440000', '-', '')), 1, 4, NOW(), NOW())
+    ON DUPLICATE KEY UPDATE purchasing_uuid = VALUES(purchasing_uuid);
