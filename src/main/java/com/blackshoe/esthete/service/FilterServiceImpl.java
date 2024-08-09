@@ -126,16 +126,21 @@ public class FilterServiceImpl implements FilterService{
 
         return representationImgListResponse;
     }
-
     @Override
     @Transactional
-    public FilterDto.FilterDetailsResponse getDetails(UUID filterId, UUID userId) {
+    public FilterDto.FilterDetailsResponse getDetails(UUID filterId, UUID viewerId) {
 
         Filter filter = filterRepository.findByFilterId(filterId).orElseThrow
                 (() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER));
 
-        User user = userRepository.findByUserId(userId).orElseThrow
-                (() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+        User filterOwner = filter.getUser(); // 필터를 게시한 사용자
+
+        boolean isLike = false;
+        if (viewerId != null) {
+            User viewer = userRepository.findByUserId(viewerId).orElseThrow
+                    (() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+            isLike = filter.getLikes().stream().anyMatch(like -> like.getUser().equals(viewer));
+        }
 
         List<String> filterTagList = filter.getFilterTags().stream()
                 .map(filterTag -> filterTag.getTag().getStringId())
@@ -167,7 +172,7 @@ public class FilterServiceImpl implements FilterService{
                 .grayScale(attribute.getGrayScale())
                 .build();
 
-        FilterDto.FilterDetailsResponse filterDetailResponse = FilterDto.FilterDetailsResponse.builder()
+        return FilterDto.FilterDetailsResponse.builder()
                 .filterAttributes(filterAttributesResponse)
                 .filterThumbnail(filter.getThumbnailUrl().getCloudfrontUrl())
                 .representationImgList(representationImgListResponse)
@@ -175,15 +180,70 @@ public class FilterServiceImpl implements FilterService{
                 .filterName(filter.getName())
                 .filterDescription(filter.getDescription())
                 .likeCount(filter.getLikeCount())
-                .userId(user.getStringId())
-                .profileImgUrl(user.getProfileImgUrl())
-                .nickname(user.getNickname())
-                .isLike(filter.getLikes().stream().anyMatch(like -> like.getUser().equals(user)))
+                .userId(filterOwner.getStringId())
+                .profileImgUrl(filterOwner.getProfileImgUrl())
+                .nickname(filterOwner.getNickname())
+                .isLike(isLike)
                 .createdAt(filter.getCreatedAt())
                 .build();
-
-        return filterDetailResponse;
     }
+//    @Override
+//    @Transactional
+//    public FilterDto.FilterDetailsResponse getDetails(UUID filterId, UUID userId) {
+//
+//        Filter filter = filterRepository.findByFilterId(filterId).orElseThrow
+//                (() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER));
+//
+//        User user = userRepository.findByUserId(userId).orElseThrow
+//                (() -> new UserException(UserErrorResult.NOT_FOUND_USER));
+//
+//        List<String> filterTagList = filter.getFilterTags().stream()
+//                .map(filterTag -> filterTag.getTag().getStringId())
+//                .collect(Collectors.toList());
+//
+//        FilterDto.FilterTagListResponse filterTagListResponse = FilterDto.FilterTagListResponse.builder()
+//                .filterTagList(filterTagList)
+//                .build();
+//
+//        List<String> representationImgList = filter.getRepresentationImgUrls().stream()
+//                .map(representation -> representation.getCloudfrontUrl())
+//                .collect(Collectors.toList());
+//
+//        FilterDto.RepresentationImgListResponse representationImgListResponse = FilterDto.RepresentationImgListResponse.builder()
+//                .representationImgList(representationImgList)
+//                .build();
+//
+//        Attribute attribute = filter.getAttribute();
+//
+//        FilterDto.AttributeResponse filterAttributesResponse = FilterDto.AttributeResponse
+//                .builder()
+//                .brightness(attribute.getBrightness())
+//                .contrast(attribute.getContrast())
+//                .saturation(attribute.getSaturation())
+//                .exposure(attribute.getExposure())
+//                .sharpness(attribute.getSharpness())
+//                .hue(attribute.getHue())
+//                .temperature(attribute.getTemperature())
+//                .grayScale(attribute.getGrayScale())
+//                .build();
+//
+//        FilterDto.FilterDetailsResponse filterDetailResponse = FilterDto.FilterDetailsResponse.builder()
+//                .filterAttributes(filterAttributesResponse)
+//                .filterThumbnail(filter.getThumbnailUrl().getCloudfrontUrl())
+//                .representationImgList(representationImgListResponse)
+//                .filterTagList(filterTagListResponse)
+//                .filterName(filter.getName())
+//                .filterDescription(filter.getDescription())
+//                .likeCount(filter.getLikeCount())
+//                .userId(user.getStringId())
+//                .profileImgUrl(user.getProfileImgUrl())
+//                .nickname(user.getNickname())
+//                .isLike(filter.getLikes().stream().anyMatch(like -> like.getUser().equals(user)))
+//                .createdAt(filter.getCreatedAt())
+//                .build();
+//
+//        return filterDetailResponse;
+//    }
 
     @Override
     @Transactional

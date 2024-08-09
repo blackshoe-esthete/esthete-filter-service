@@ -28,45 +28,23 @@ public class FilterController {
     private final CreateService createService;
     private final LikeService likeService;
     private final RecommendService recommendService;
+
     @GetMapping("/searching")
     public ResponseEntity<Page<FilterDto.SearchFilterResponse>> searchFilter(
-             @RequestHeader("Authorization") String accessToken,
+             @RequestHeader(value = "Authorization", required = false) String accessToken,
              @RequestParam(required = false) String keyword,
              @RequestParam(required = false) UUID tagId,
              @RequestParam(required = false, defaultValue = "0") Integer page,
              @RequestParam(required = false, defaultValue = "10") Integer size) {
 
-        UUID userId = jwtService.extractUserId(accessToken);
-
-        log.info("searchFilter userId: {}", userId.toString());
+        UUID userId = accessToken != null ? jwtService.extractUserId(accessToken) : null;
+        if(userId != null)
+            log.info("searchFilter userId: {}", userId.toString());
+        else
+            log.info("searchFilter userId: null");
         log.info("searchFilter keyword: {}", keyword);
 
-        if (keyword == null) {
-            FilterDto.SearchAllRequest searchAllRequest = FilterDto.SearchAllRequest.builder()
-                    .userId(userId)
-                    .build();
-
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    searchService.searchAll(searchAllRequest, page, size));
-        }
-        if(tagId == null) {
-            FilterDto.SearchWithKeywordRequest searchWithKeywordRequest = FilterDto.SearchWithKeywordRequest.builder()
-                    .userId(userId)
-                    .keyword(keyword)
-                    .build();
-
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    searchService.searchAllByFilterNameOrWriterNameContaining(searchWithKeywordRequest, page, size));
-        }
-
-        FilterDto.SearchWithKeywordAndTagRequest searchWithTagRequest = FilterDto.SearchWithKeywordAndTagRequest.builder()
-                .userId(userId)
-                .keyword(keyword)
-                .tagId(tagId)
-                .build();
-
-        return ResponseEntity.status(HttpStatus.OK).body(
-                searchService.searchAllByFilterNameOrWriterNameContainingAndHasTag(searchWithTagRequest, page, size));
+        return ResponseEntity.status(HttpStatus.OK).body(searchService.search(userId, keyword, tagId, page, size));
     }
 
     //제작 필터 리스트 조회
@@ -139,12 +117,15 @@ public class FilterController {
     //필터 상세보기
     @GetMapping("/{filterId}/details")
     public ResponseEntity<ResponseDto<FilterDto.FilterDetailsResponse>> getFilterDetail(
-            @RequestHeader("Authorization") String accessToken,
+            @RequestHeader(value = "Authorization", required = false) String accessToken,
             @PathVariable UUID filterId) {
 
-        UUID userId = jwtService.extractUserId(accessToken);
+        UUID viewerId = null;
+        if (accessToken != null && !accessToken.isEmpty()) {
+            viewerId = jwtService.extractUserId(accessToken);
+        }
 
-        FilterDto.FilterDetailsResponse filterDetailResponse = filterService.getDetails(filterId, userId);
+        FilterDto.FilterDetailsResponse filterDetailResponse = filterService.getDetails(filterId, viewerId);
 
         ResponseDto responseDto = ResponseDto.success(filterDetailResponse);
 

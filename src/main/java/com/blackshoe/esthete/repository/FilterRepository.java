@@ -56,4 +56,14 @@ public interface FilterRepository extends JpaRepository<Filter, Long>{
     @Modifying
     @Query("DELETE FROM Filter f WHERE f.user = :user")
     void deleteByUser(User user);
+
+    @Query("SELECT new com.blackshoe.esthete.dto.FilterDto$SearchFilterResponse(f, u, :userId, l) " +
+            "FROM Filter f " +
+            "JOIN f.user u " +
+            "LEFT JOIN Like l ON f.filterId = l.filter.filterId AND l.userId = :userId " +
+            "JOIN FilterTag ft ON f = ft.filter " +
+            "JOIN Tag t ON ft.tag = t AND t = :tag " +
+            "WHERE f.isPublic = true " +
+            "ORDER BY f.viewCount DESC, f.createdAt DESC")
+    Page<FilterDto.SearchFilterResponse> searchAllByTag(@Param("userId") UUID userId, @Param("tag") Tag tag, Pageable pageable);
 }

@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 public class FilterDto {
 
     @Data
-    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -36,7 +35,7 @@ public class FilterDto {
         private String nickname;
         private String profileImgUrl;
 
-
+        @Builder
         public SearchFilterResponse(Filter filter, User writer, UUID viewerId, Like like) {
             this.filterId = filter.getFilterId().toString();
             this.filterName = filter.getName();
@@ -288,6 +287,21 @@ public class FilterDto {
         public TagResponse(String tagId, String tagName) {
             this.tagId = tagId;
             this.tagName = tagName;
+        }
+    }
+    @Data
+    @NoArgsConstructor
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class SearchWithTagRequest {
+
+        private UUID userId;
+        private UUID tagId;
+
+        @Builder
+        public SearchWithTagRequest(UUID userId, UUID tagId) {
+            this.userId = userId;
+            this.tagId = tagId;
         }
     }
 }

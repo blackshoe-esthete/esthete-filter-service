@@ -12,6 +12,7 @@ import com.blackshoe.esthete.exception.UserException;
 import com.blackshoe.esthete.repository.FilterRepository;
 import com.blackshoe.esthete.repository.LikeRepository;
 import com.blackshoe.esthete.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -39,6 +40,7 @@ public class LikeServiceImpl implements LikeService{
         return likeFilterList;
     }
 
+    @Transactional
     @Override
     public void likeFilter(UUID userId, UUID filterId) {
         final User user = userRepository.findByUserId(userId).orElseThrow
@@ -46,6 +48,7 @@ public class LikeServiceImpl implements LikeService{
 
         final Filter filter = filterRepository.findByFilterId(filterId).orElseThrow
                 (() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER));
+        filter.increaseLikeCount();
 
         Like like = Like.builder()
                 .user(user)
@@ -57,6 +60,7 @@ public class LikeServiceImpl implements LikeService{
         likeRepository.save(like);
     }
 
+    @Transactional
     @Override
     public void unlikeFilter(UUID userId, UUID filterId) {
         final User user = userRepository.findByUserId(userId).orElseThrow
@@ -64,6 +68,8 @@ public class LikeServiceImpl implements LikeService{
 
         final Filter filter = filterRepository.findByFilterId(filterId).orElseThrow
                 (() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER));
+
+        filter.decreaseLikeCount();
 
         Like like = likeRepository.findByUserAndFilter(user, filter).orElseThrow
                 (() -> new FilterException(FilterErrorResult.NOT_FOUND_LIKE));

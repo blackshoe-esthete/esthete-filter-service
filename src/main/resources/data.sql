@@ -25,7 +25,9 @@ INSERT INTO tags (tag_uuid, name) VALUES
                                        (UNHEX(REPLACE('61715019-1f05-45e6-91e2-13b50d818efb', '-', '')), '신비로운'),
                                        (UNHEX(REPLACE('b06da443-52c2-4398-9bdf-6a7f3f14f29f', '-', '')), '순수한'),
                                        (UNHEX(REPLACE('c5a5ff7b-0b40-4683-b796-5c295b1908a5', '-', '')), '고요한'),
-                                       (UNHEX(REPLACE('ec2b0244-e37c-4fd0-8aee-c11c831124b3', '-', '')), '고급스러운')
+                                       (UNHEX(REPLACE('ec2b0244-e37c-4fd0-8aee-c11c831124b3', '-', '')), '고급스러운'),
+                                       (UNHEX(REPLACE('c5a5ff7b-0d12-4683-b796-5c215b1908a5', '-', '')), '몽환적인'),
+                                       (UNHEX(REPLACE('ec2b0244-ed42-4fd0-8aee-c11a831124b3', '-', '')), '싱그러운')
     ON DUPLICATE KEY UPDATE tag_uuid = tag_uuid;
 
 INSERT INTO users (user_uuid, nickname, created_at, updated_at, user_id, profile_img_url) VALUES

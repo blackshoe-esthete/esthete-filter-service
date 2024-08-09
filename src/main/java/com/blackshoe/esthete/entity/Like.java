@@ -64,6 +64,7 @@ public class Like {
     }
 
     public Boolean isUserLike(UUID viewerId){
+        if(viewerId == null) return false;
         return this.userId.equals(viewerId);
     }
 
