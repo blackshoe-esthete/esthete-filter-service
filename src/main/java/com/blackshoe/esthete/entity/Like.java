@@ -30,7 +30,7 @@ public class Like {
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "likes_fk_user_id"))
     private User user;
 
-    @Column(name = "user_uuid", columnDefinition = "BINARY(16)", unique = true)
+    @Column(name = "user_uuid", columnDefinition = "BINARY(16)")
     private UUID userId;
 
     @CreatedDate

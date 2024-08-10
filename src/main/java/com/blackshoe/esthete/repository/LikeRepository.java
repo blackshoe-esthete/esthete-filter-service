@@ -27,8 +27,8 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
             "WHERE l.userId = :userId")
     Page<LikeDto.ReadResponse> readByUserId(UUID userId, Pageable pageable);
 
-    @Query("SELECT COUNT(l) FROM Like l WHERE l.user = :user AND l.filter = :filter")
-    Optional<Boolean> existsByUserAndFilter(User user, Filter filter);
+    @Query("SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END FROM Like l WHERE l.user = :user AND l.filter = :filter")
+    boolean existsByUserAndFilter(User user, Filter filter);
 
     @Query("SELECT l FROM Like l WHERE l.user = :user AND l.filter = :filter")
     Optional<Like> findByUserAndFilter(User user, Filter filter);

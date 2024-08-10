@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `likes` (
     `created_at` DATETIME(6) NULL,
     `updated_at` DATETIME(6) NULL,
     `filter_id` BIGINT NOT NULL,
-    `user_uuid` BINARY(16) NOT NULL UNIQUE,
+    `user_uuid` BINARY(16) NOT NULL,
     CONSTRAINT `likes_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
     CONSTRAINT `likes_fk_filter_id` FOREIGN KEY (`filter_id`) REFERENCES `filters` (`filter_id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

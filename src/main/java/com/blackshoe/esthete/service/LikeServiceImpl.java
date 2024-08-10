@@ -48,6 +48,12 @@ public class LikeServiceImpl implements LikeService{
 
         final Filter filter = filterRepository.findByFilterId(filterId).orElseThrow
                 (() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER));
+
+        //ALREADY_LIKE
+        if(likeRepository.existsByUserAndFilter(user, filter)){
+            throw new FilterException(FilterErrorResult.ALREADY_LIKE);
+        }
+
         filter.increaseLikeCount();
 
         Like like = Like.builder()
@@ -68,6 +74,11 @@ public class LikeServiceImpl implements LikeService{
 
         final Filter filter = filterRepository.findByFilterId(filterId).orElseThrow
                 (() -> new FilterException(FilterErrorResult.NOT_FOUND_FILTER));
+
+        //NOT_LIKE
+        if(!likeRepository.existsByUserAndFilter(user, filter)){
+            throw new FilterException(FilterErrorResult.NOT_LIKE);
+        }
 
         filter.decreaseLikeCount();
 
