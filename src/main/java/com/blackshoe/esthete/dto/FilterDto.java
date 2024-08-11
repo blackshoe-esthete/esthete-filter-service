@@ -90,7 +90,6 @@ public class FilterDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class PurchaseRequest {
         private UUID filterId;
-        private UUID userId;
     }
 
     @Data

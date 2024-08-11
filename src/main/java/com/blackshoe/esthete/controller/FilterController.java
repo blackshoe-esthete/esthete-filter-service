@@ -140,9 +140,8 @@ public class FilterController {
             @RequestBody FilterDto.PurchaseRequest purchaseRequest) {
 
         UUID userId = jwtService.extractUserId(accessToken);
-        purchaseRequest.setUserId(userId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(purchasingService.purchaseFilter(purchaseRequest));
+        return ResponseEntity.status(HttpStatus.OK).body(purchasingService.purchaseFilter(purchaseRequest, userId));
     }
 
 

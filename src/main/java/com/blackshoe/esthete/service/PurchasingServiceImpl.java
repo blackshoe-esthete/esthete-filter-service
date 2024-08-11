@@ -24,9 +24,9 @@ public class PurchasingServiceImpl implements PurchasingService {
     private final FilterRepository filterRepository;
     @Override
     @Transactional
-    public FilterDto.PurchaseResponse purchaseFilter(FilterDto.PurchaseRequest purchaseRequest) {
+    public FilterDto.PurchaseResponse purchaseFilter(FilterDto.PurchaseRequest purchaseRequest, UUID userId) {
 
-        User user = userRepository.findByUserId(purchaseRequest.getUserId()).orElseThrow
+        User user = userRepository.findByUserId(userId).orElseThrow
                 (() -> new UserException(UserErrorResult.NOT_FOUND_USER));
 
         Filter filter = filterRepository.findByFilterId(purchaseRequest.getFilterId()).orElseThrow
